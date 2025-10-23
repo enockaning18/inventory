@@ -12,74 +12,71 @@
             <li>
                 <a href="nav_link.php">
                     <span class="icon">
-                        <ion-icon name="home-outline"></ion-icon>
+                        <ion-icon name="speedometer-outline"></ion-icon>
                     </span>
-                    <span class="title">Nav Link</span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="computers.php" >
+                    <span class="icon">
+                        <ion-icon name="laptop-outline"></ion-icon>
+                    </span>
+                    <span class="title">Computers </span>
                 </a>
             </li>
 
             <li>
                 <a href="nav_link.php">
                     <span class="icon">
-                        <ion-icon name="gift-outline"></ion-icon>
+                        <ion-icon name="flask-outline"></ion-icon>
                     </span>
-                    <span class="title">Nav Link</span>
+                    <span class="title">Labs</span>
                 </a>
             </li>
 
             <li>
                 <a href="nav_link.php">
                     <span class="icon">
-                        <ion-icon name="cash-outline"></ion-icon>
+                        <ion-icon name="school-outline"></ion-icon>
                     </span>
-                    <span class="title">Nav Link</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="nav_link.php">
-                    <span class="icon">
-                        <ion-icon name="person-outline"></ion-icon>
-                    </span>
-                    <span class="title">Nav Link</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="nav_link.php">
-                    <span class="icon">
-                        <ion-icon name="chatbubbles-outline"></ion-icon>
-                    </span>
-                    <span class="title">Nav Link</span>
+                    <span class="title">Instructors</span>
                 </a>
             </li>
 
             <li>
                 <a href="#">
                     <span class="icon">
-                        <ion-icon name="people-outline"></ion-icon>
+                        <ion-icon name="pricetag-outline"></ion-icon>
                     </span>
-                    <span class="title">Nav Link</span>
+                    <span class="title">Brand</span>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <span class="icon">
-                        <ion-icon name="print-outline"></ion-icon>
+                        <ion-icon name="alert-circle-outline"></ion-icon>
                     </span>
-                    <span class="title">Nav Link</span>
+                    <span class="title">Issues</span>
                 </a>
             </li>
 
             <li>
                 <a href="#">
                     <span class="icon">
-                        <ion-icon name="log-out-outline"></ion-icon>
+                        <ion-icon name="document-text-outline"></ion-icon>
                     </span>
-                    <span class="title">Nav Link</span>
+                    <span class="title">Report</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="icon">
+                        <ion-icon name="exit-outline"></ion-icon>
+                    </span>
+                    <span class="title">Logout</span>
                 </a>
             </li>
         </ul>
     </div>
-
-    
