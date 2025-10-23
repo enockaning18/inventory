@@ -52,7 +52,7 @@ require_once('alert.php');
                         <form action=" " method="POST" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="email" name="userid" placeholder="Enter your email or username" autofocus />
+                                <input type="email" class="form-control" id="email" name="userid" placeholder="Enter your email or username" autofocus />
                             </div>
                             <div class="mb-3 form-password-toggle">
                                 <div class="d-flex justify-content-between">
