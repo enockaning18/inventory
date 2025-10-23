@@ -28,16 +28,16 @@
             </li>
 
             <li>
-                <a href="nav_link.php">
+                <a href="labs.php">
                     <span class="icon">
-                        <ion-icon name="flask-outline"></ion-icon>
+                        <ion-icon name="home-outline"></ion-icon>
                     </span>
                     <span class="title">Labs</span>
                 </a>
             </li>
 
             <li>
-                <a href="nav_link.php">
+                <a href="instructor.php">
                     <span class="icon">
                         <ion-icon name="school-outline"></ion-icon>
                     </span>
@@ -46,7 +46,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="brand.php">
                     <span class="icon">
                         <ion-icon name="pricetag-outline"></ion-icon>
                     </span>

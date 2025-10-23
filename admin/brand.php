@@ -9,7 +9,7 @@ require_once('alert.php');
 
 <head>
     <meta charset="UTF-8">
-    <title> Computers </title>
+    <title> Brand </title>
     <link rel="shortcut icon" href="../assets/imgs/icons/frhab-favlogo.ico" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -28,50 +28,23 @@ require_once('alert.php');
     ?>
     <div class=" mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
-            <h3 class="my-auto">
-                <ion-icon name="laptop-outline" ></ion-icon>
-                Computers
-            </h3>
-            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Computer</button>
+            <h3><ion-icon name="pricetag-outline"></ion-icon> Brand</h3>
+            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Brand</button>
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 7rem">
             <form class="row g-3" id="Form" method="POST" action="">
                 <div class="col-md-4">
-                    <label class="form-label">Computer Name</label>
+                    <label class="form-label">Band Name</label>
                     <input type="hidden" name="id" value="" class="form-control">
                     <input required type="text" name="" value="" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Select Brad</label>
-                    <select required id="Type" name="_type" class="form-select">
-                        <option value="">Choose Brand</option>
-                    </select>
+                    <label class="form-label">Date Added</label>
+                    <input required type="text" name="" value="" class="form-control">
                 </div>
+                
 
-                <div class="col-md-4">
-                    <label class="form-label">Serial Number</label>
-                    <input required type="text" name="" value="" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Memory Size</label>
-                    <input required type="text" name="" value="" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Hard Drive Size</label>
-                    <input required type="text" name="" value="" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Lab</label>
-                    <select required id="Type" name="_type" class="form-select">
-                        <option value="">Choose Lab</option>
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label"> Date Added</label>
-                    <input required type="date" name="" value="" class="form-control">
-                </div>
             </form>
         </div>
     </div>
@@ -81,14 +54,14 @@ require_once('alert.php');
             <div class="col">
                 <div class="card shadow">
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
-                        <h5 class="mb-0" style="color: maroon;">List of Computers </h5>
+                        <h5 class="mb-0" style="color: maroon;">Brand List </h5>
                         <form id="filterForm" class="d-flex gap-2">
                             <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search ..">
 
                             <select name="reporttype" id="reporttype" class="form-select">
                                 <option value="">All</option>
                                 <option value=""></option>
-
+                                
                             </select>
                         </form>
                     </div>
@@ -97,14 +70,9 @@ require_once('alert.php');
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Computer Name</th>
-                                    <th>Computer Brand</th>
-                                    <th>Serial Number</th>
-                                    <th>Memory Size</th>
-                                    <th>Hard Drive Size</th>
-                                    <th>Lap</th>
+                                    <th>Brand Name</th>
                                     <th>Date Added</th>
-                                    <th>Action</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="Table">
