@@ -35,7 +35,7 @@ require_once('alert.php');
             <form class="row g-3" id="Form" method="POST" action="">
 
                 <div class="col-md-4">
-                    <label class="form-label">Repot Type</label>
+                    <label class="form-label">Report Type</label>
                     <select required id="Type" name="_type" class="form-select">
                         <option value="">Choose Report Type</option>
                         <option value=""> </option>

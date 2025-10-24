@@ -29,7 +29,7 @@ require_once('alert.php');
     <div class=" mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="my-auto">
-                <ion-icon name="laptop-outline" ></ion-icon>
+                <ion-icon name="laptop-outline"></ion-icon>
                 Computers
             </h3>
             <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Computer</button>
@@ -40,37 +40,37 @@ require_once('alert.php');
                 <div class="col-md-4">
                     <label class="form-label">Computer Name</label>
                     <input type="hidden" name="id" value="" class="form-control">
-                    <input required type="text" name="" value="" class="form-control">
+                    <input required type="text" name="computer_name" value="" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Select Brad</label>
-                    <select required id="Type" name="_type" class="form-select">
+                    <select required id="Type" name="brnad" class="form-select">
                         <option value="">Choose Brand</option>
                     </select>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Serial Number</label>
-                    <input required type="text" name="" value="" class="form-control">
+                    <input required type="text" name="serial_number" value="" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Memory Size</label>
-                    <input required type="text" name="" value="" class="form-control">
+                    <input required type="text" name="" value="memory_size" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Hard Drive Size</label>
-                    <input required type="text" name="" value="" class="form-control">
+                    <input required type="text" name="hard_drive_size" value="" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Lab</label>
-                    <select required id="Type" name="_type" class="form-select">
+                    <select required id="Type" name="lab" class="form-select">
                         <option value="">Choose Lab</option>
                     </select>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label"> Date Added</label>
-                    <input required type="date" name="" value="" class="form-control">
+                    <input required type="date" name="date_added" value="" class="form-control">
                 </div>
             </form>
         </div>

@@ -28,44 +28,43 @@ require_once('alert.php');
     ?>
     <div class=" mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
-            <h3><ion-icon name="cash-outline"></ion-icon> Label</h3>
-            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update</button>
+            <h3><ion-icon name="cash-outline"></ion-icon> Issues  </h3>
+            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Issue </button>
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 7rem">
             <form class="row g-3" id="Form" method="POST" action="">
+
                 <div class="col-md-4">
-                    <label class="form-label">Label Name</label>
-                    <input type="hidden" name="id" value="" class="form-control">
-                    <input required type="text" name="" value="" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Label Name</label>
-                    <input required type="text" name="" value="" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Label Name</label>
-                    <input required type="text" name="" value="" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Label Name</label>
-                    <input required type="text" name="" value="" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Label Type</label>
-                    <select required id="Type" name="_type" class="form-select">
-                        <option value="">Select</option>
-                        <option value="">Select</option>
-                        <option value="">Select</option>
-                        <option value="">Select</option>
+                    <label class="form-label">Computers</label>
+                    <select required id="Type" name="type" class="form-select">
                         <option value="">Select</option>
                     </select>
                 </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Issue Type</label>
+                    <select required id="Type" name="type" class="form-select">
+                        <option value="">Select</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                        <label class="form-label">Lab</label>
+                    <select required id="Type" name="type" class="form-select">
+                        <option value="">Select</option>
+                    </select>
+                </div>
+
                 
                 <div class="col-md-4">
-                    <label class="form-label"> Date</label>
-                    <input required type="date" name="" value="" class="form-control">
+                    <label class="form-label">Issue Date</label>
+                    <input required type="text" name="" value="" class="form-control">
                 </div>
+                <div class="col-md-4">
+                    <label class="form-label">Issue Discription</label>
+                    <textarea class="form-control" name="text" id=""></textarea>
+                </div>
+
             </form>
         </div>
     </div>
@@ -93,12 +92,12 @@ require_once('alert.php');
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Column</th>
-                                    <th>Column</th>
-                                    <th>Column</th>
-                                    <th>Column</th>
-                                    <th>Column</th>
-                                    <th>Column</th>
+                                    <th>Compuer</th>
+                                    <th>Issue </th>
+                                    <th>Lab</th>
+                                    <th>Issue Date </th>
+                                    <th>Issue Discription</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="Table">

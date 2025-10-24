@@ -19,7 +19,7 @@
             </li>
 
             <li>
-                <a href="computers.php" >
+                <a href="computers.php">
                     <span class="icon">
                         <ion-icon name="laptop-outline"></ion-icon>
                     </span>
@@ -54,7 +54,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="issues.php">
                     <span class="icon">
                         <ion-icon name="alert-circle-outline"></ion-icon>
                     </span>
@@ -63,7 +63,7 @@
             </li>
 
             <li>
-                <a href="report.php">
+                <a href="reports.php">
                     <span class="icon">
                         <ion-icon name="document-text-outline"></ion-icon>
                     </span>
