@@ -1,7 +1,29 @@
 <?php
 
 require_once('alert.php');
+require_once('baseConnect/dbConnect.php');
 
+
+// initialize variables used in the form when edit btn is called
+
+if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
+    $edit_id = intval($_GET['edit_id']);
+    $stmt = $conn->prepare("SELECT id, computer_name, brand, serial_number, memory_size, hard_drive_size, lab 
+                            FROM computers WHERE id = ?");
+    $stmt->bind_param("i", $edit_id);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
+    if ($row) {
+        $id = $row['id'];
+        $computer_name = $row['computer_name'];
+        $brand  = $row['brand'];
+        $serial_number = $row['serial_number'];
+        $memory_size = $row['memory_size'];
+        $hard_drive_size = $row['hard_drive_size'];
+        $lab = $row['lab'];
+    }
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -36,42 +58,40 @@ require_once('alert.php');
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 7rem">
-            <form class="row g-3" id="Form" method="POST" action="">
+            <form class="row g-3" id="Form" method="POST" action="actions/computer_action.php">
                 <div class="col-md-4">
                     <label class="form-label">Computer Name</label>
-                    <input type="hidden" name="id" value="" class="form-control">
-                    <input required type="text" name="computer_name" value="" class="form-control">
+                    <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
+                    <input required type="text" name="computer_name" value="<?php echo isset($computer_name) ? $computer_name : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Select Brad</label>
-                    <select required id="Type" name="brnad" class="form-select">
+                    <select required id="Type" name="brand" class="form-select">
                         <option value="">Choose Brand</option>
+                        <option value="1" <?php echo (isset($brand) && $brand == '1') ? 'selected' : '' ?>>HP</option>
                     </select>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Serial Number</label>
-                    <input required type="text" name="serial_number" value="" class="form-control">
+                    <input required type="text" name="serial_number" value="<?php echo isset($serial_number) ? $serial_number : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Memory Size</label>
-                    <input required type="text" name="" value="memory_size" class="form-control">
+                    <input required type="text" name="memory_size" value="<?php echo isset($memory_size) ? $memory_size : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Hard Drive Size</label>
-                    <input required type="text" name="hard_drive_size" value="" class="form-control">
+                    <input required type="text" name="hard_drive_size" value="<?php echo isset($hard_drive_size) ? $hard_drive_size : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Lab</label>
                     <select required id="Type" name="lab" class="form-select">
                         <option value="">Choose Lab</option>
+                        <option value="1" <?php echo (isset($lab) && $lab == '1') ? 'selected' : '' ?>>Lab 1</option>
                     </select>
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label"> Date Added</label>
-                    <input required type="date" name="date_added" value="" class="form-control">
-                </div>
             </form>
         </div>
     </div>
@@ -102,12 +122,12 @@ require_once('alert.php');
                                     <th>Serial Number</th>
                                     <th>Memory Size</th>
                                     <th>Hard Drive Size</th>
-                                    <th>Lap</th>
+                                    <th>Lab</th>
                                     <th>Date Added</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="Table">
+                            <tbody id="computer_table">
                                 <!-- fetch the data using the ajax -->
                             </tbody>
                         </table>
@@ -124,51 +144,42 @@ require_once('alert.php');
         </div>
     </div>
 
-    <!-- script files inclusion -->
+    <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/jquery.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
     <script>
-        // show/hide filed based on type selected
-        document.getElementById("Type").addEventListener("change", function() {
-            const Field = document.getElementById("Field");
-            Field.style.display = this.value === "none" ? "none" : "block";
-        });
-
         $(document).ready(function() {
-            function loads(search = '', reporttype = '') {
+            function load_computer(search = '') {
                 $.ajax({
-                    url: "actions/",
+                    url: "actions/fetch_computer.php",
                     type: "POST",
                     data: {
-                        search: search,
-                        reporttype: reporttype
+                        search: search
                     },
                     success: function(data) {
-                        $("#Table").html(data);
+                        $("#computer_table").html(data);
                     }
                 });
             }
 
-            // on page load, fetch data
-            loads();
+            // Load on page start
+            load_computer();
 
-            // search data
+            // Search computer
             $("#searchBox").on("keyup", function() {
                 let search = $(this).val();
-                let reporttype = $("#reporttype").val();
-                loads(search, reporttype);
-            });
-
-            // filter data
-            $("#reporttype").on("change", function() {
-                let search = $("#searchBox").val();
-                let reporttype = $(this).val();
-                loads(search, reporttype);
+                load_computer(search);
             });
         });
     </script>
+
+
+    <?php
+    $title = "Computer";
+    successAlert($title);
+    ?>
 </body>
 
 </html>

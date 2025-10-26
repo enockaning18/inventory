@@ -3,7 +3,7 @@
             <li>
                 <a href="nav_link.php" class="">
                     <span class="icon">
-                        <img src="../assets/imgs/icons/frhab-logo.png" width="55px" height="50px" alt="">
+                        <img src="assets/imgs/inventory_logo.png" class="img-fluid" width="100px"  alt="">
                     </span>
                     <span class="title" style="font-size: 22px; color: yellow;">Inventory</span>
                 </a>
@@ -37,7 +37,7 @@
             </li>
 
             <li>
-                <a href="instructor.php">
+                <a href="instructors.php">
                     <span class="icon">
                         <ion-icon name="school-outline"></ion-icon>
                     </span>
@@ -46,7 +46,7 @@
             </li>
 
             <li>
-                <a href="brand.php">
+                <a href="brands.php">
                     <span class="icon">
                         <ion-icon name="pricetag-outline"></ion-icon>
                     </span>

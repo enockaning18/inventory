@@ -9,7 +9,7 @@ require_once('alert.php');
 
 <head>
     <meta charset="UTF-8">
-    <title> Instructor </title>
+    <title> Brand </title>
     <link rel="shortcut icon" href="../assets/imgs/icons/frhab-favlogo.ico" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -28,45 +28,17 @@ require_once('alert.php');
     ?>
     <div class=" mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
-            <h3><ion-icon name="school-outline"></ion-icon> Instructor </h3>
-            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save / Update Instructor</button>
+            <h3><ion-icon name="pricetag-outline"></ion-icon> Brand</h3>
+            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Brand</button>
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 7rem">
             <form class="row g-3" id="Form" method="POST" action="">
                 <div class="col-md-4">
-                    <label class="form-label">First Name</label>
+                    <label class="form-label">Band Name</label>
                     <input type="hidden" name="id" value="" class="form-control">
                     <input required type="text" name="" value="" class="form-control">
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label">Last Name</label>
-                    <input required type="text" name="" value="" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Phone</label>
-                    <input required type="number" name="" value="" class="form-control">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Email</label>
-                    <input required type="email" name="" value="" class="form-control">
-                </div>
-
-                
-                <div class="col-md-4">
-                    <label class="form-label">Assign Lab</label>
-                    <select required id="Type" name="_type" class="form-select">
-                        <option value="">Select Lab</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Couse</label>
-                    <select required id="Type" name="_type" class="form-select">
-                        <option value="">Select Course</option>
-                    </select>
-                </div>
-               
             </form>
         </div>
     </div>
@@ -76,16 +48,14 @@ require_once('alert.php');
             <div class="col">
                 <div class="card shadow">
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
-                        <h5 class="mb-0" style="color: maroon;">List of Instructors</h5>
+                        <h5 class="mb-0" style="color: maroon;">Brand List </h5>
                         <form id="filterForm" class="d-flex gap-2">
                             <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search ..">
 
                             <select name="reporttype" id="reporttype" class="form-select">
                                 <option value="">All</option>
-                                <option value=""> </option>
-                                <option value=""> </option>
-                                <option value=""> </option>
-                                <option value=""> </option>
+                                <option value=""></option>
+                                
                             </select>
                         </form>
                     </div>
@@ -94,12 +64,9 @@ require_once('alert.php');
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Full Name</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>Assign Lab</th>
-                                    <th>Course</th>
-                                    <th>Action</th>
+                                    <th>Brand Name</th>
+                                    <th>Date Added</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="Table">

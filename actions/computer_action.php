@@ -1,63 +1,64 @@
 <?php
 
 // require your database connection
-require_once "../../baseConnect/dbConnect.php";
+require_once('../baseConnect/dbConnect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $donor_id           = mysqli_real_escape_string($conn, $_POST['id']);
-    $donor_firstname    = mysqli_real_escape_string($conn, $_POST['firstname']);
-    $donor_lastname     = mysqli_real_escape_string($conn, $_POST['lastname']);
-    $donor_phone        = mysqli_real_escape_string($conn, $_POST['phone']);
-    $donation_type      = mysqli_real_escape_string($conn, $_POST['donation_type']);
-    $item_donated       = mysqli_real_escape_string($conn, $_POST['item_donated']);
-    $donation_date      = mysqli_real_escape_string($conn, $_POST['donation_date']);
+    $id           = mysqli_real_escape_string($conn, $_POST['id']);
+    $computer_name    = mysqli_real_escape_string($conn, $_POST['computer_name']);
+    $brand     = mysqli_real_escape_string($conn, $_POST['brand']);
+    $serial_number        = mysqli_real_escape_string($conn, $_POST['serial_number']);
+    $memory_size      = mysqli_real_escape_string($conn, $_POST['memory_size']);
+    $hard_drive_size       = mysqli_real_escape_string($conn, $_POST['hard_drive_size']);
+    $lab      = mysqli_real_escape_string($conn, $_POST['lab']);
+    $date_added      = mysqli_real_escape_string($conn, $_POST['date_added']);
 
 
-    // check whether donation id exists
-    if ($donor_id != "") {
+    // check whether computer id exists
+    if (!empty($id)) {
 
         // update the record
-        $stmt = $conn->prepare("UPDATE donationfrm SET donor_firstname = ?, donor_lastname = ?, donor_phone = ?, donation_type = ?, item_donated = ?, donation_date = ? WHERE donation_id = ?");
+        $stmt = $conn->prepare("UPDATE computers SET computer_name = ?, brand = ?, serial_number = ?, memory_size = ?, hard_drive_size = ?, lab = ? WHERE id = ?");
 
         if ($stmt) {
-            $stmt->bind_param("ssssssi", $donor_firstname, $donor_lastname, $donor_phone, $donation_type, $item_donated, $donation_date, $donor_id);
+            $stmt->bind_param("ssssssi", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $id);
 
             if ($stmt->execute()) {
-                header("Location: ../donations.php?status=update");
+                header("Location: ../computers.php?status=update");
                 exit();
             } else {
-                header("Location: ../donations.php?status=error");
+                header("Location: ../computers.php?status=error");
                 exit();
             }
 
             $stmt->close();
         } else {
             // SQL error (wrong table/columns)
-            header("Location: ../donations.php?status=error");
+            header("Location: ../computers.php?status=error");
             exit();
         }
     } else {
 
         // insert a new record
-        $stmt = $conn->prepare("INSERT INTO donationfrm (donor_firstname, donor_lastname, donor_phone, donation_type, item_donated, donation_date) 
+        $stmt = $conn->prepare("INSERT INTO computers (computer_name, brand, serial_number, memory_size, hard_drive_size, lab) 
                 VALUES (?, ?, ?, ?, ?, ?)");
 
         if ($stmt) {
-            $stmt->bind_param("ssssss", $donor_firstname, $donor_lastname, $donor_phone, $donation_type, $item_donated, $donation_date);
+            $stmt->bind_param("ssssss", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab);
 
             if ($stmt->execute()) {
-                header("Location: ../donations.php?status=save");
+                header("Location: ../computers.php?status=save");
                 exit();
             } else {
-                header("Location: ../donations.php?status=error");
+                header("Location: ../computers.php?status=error");
                 exit();
             }
 
             $stmt->close();
         } else {
             // SQL error (wrong table/columns)
-            header("Location: ../donations.php?status=error");
+            header("Location: ../computers.php?status=error");
             exit();
         }
     }
