@@ -63,7 +63,7 @@
             </li>
 
             <li>
-                <a href="reports.php">
+                <a href="report.php">
                     <span class="icon">
                         <ion-icon name="document-text-outline"></ion-icon>
                     </span>

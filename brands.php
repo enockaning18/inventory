@@ -33,11 +33,11 @@ require_once('alert.php');
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 7rem">
-            <form class="row g-3" id="Form" method="POST" action="">
+            <form class="row g-3" id="Form" method="POST" action="actions/brand_action.php">
                 <div class="col-md-4">
                     <label class="form-label">Band Name</label>
                     <input type="hidden" name="id" value="" class="form-control">
-                    <input required type="text" name="" value="" class="form-control">
+                    <input required type="text" name="brand_name" value="" class="form-control">
                 </div>
             </form>
         </div>
@@ -69,7 +69,7 @@ require_once('alert.php');
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="Table">
+                            <tbody id="brand_table">
                                 <!-- fetch the data using the ajax -->
                             </tbody>
                         </table>
@@ -86,51 +86,42 @@ require_once('alert.php');
         </div>
     </div>
 
-    <!-- script files inclusion -->
+    <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/jquery.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
     <script>
-        // show/hide filed based on type selected
-        document.getElementById("Type").addEventListener("change", function() {
-            const Field = document.getElementById("Field");
-            Field.style.display = this.value === "none" ? "none" : "block";
-        });
-
         $(document).ready(function() {
-            function loads(search = '', reporttype = '') {
+            function load_brand(search = '') {
                 $.ajax({
-                    url: "actions/",
+                    url: "actions/fetch_brand.php",
                     type: "POST",
                     data: {
-                        search: search,
-                        reporttype: reporttype
+                        search: search
                     },
                     success: function(data) {
-                        $("#Table").html(data);
+                        $("#brand_table").html(data);
                     }
                 });
             }
 
-            // on page load, fetch data
-            loads();
+            // Load on page start
+            load_brand();
 
-            // search data
+            // Search computer
             $("#searchBox").on("keyup", function() {
                 let search = $(this).val();
-                let reporttype = $("#reporttype").val();
-                loads(search, reporttype);
-            });
-
-            // filter data
-            $("#reporttype").on("change", function() {
-                let search = $("#searchBox").val();
-                let reporttype = $(this).val();
-                loads(search, reporttype);
+                load_brand(search);
             });
         });
     </script>
+
+
+    <?php
+    $title = "Brand";
+    successAlert($title);
+    ?>
 </body>
 
 </html>

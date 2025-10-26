@@ -5,59 +5,57 @@ require_once('../baseConnect/dbConnect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id           = mysqli_real_escape_string($conn, $_POST['id']);
-    $first_name  = mysqli_real_escape_string($conn, $_POST['first_name']);
-    $last_name     = mysqli_real_escape_string($conn, $_POST['last_name']);
-    $phone        = mysqli_real_escape_string($conn, $_POST['phone']);
-    $email      = mysqli_real_escape_string($conn, $_POST['email']);
-    $lab_assigned      = mysqli_real_escape_string($conn, $_POST['lab_assigned']);
-    $course      = mysqli_real_escape_string($conn, $_POST['course']);
+    $lab_name  = mysqli_real_escape_string($conn, $_POST['lab_name']);
+    $lab_course  = mysqli_real_escape_string($conn, $_POST['lab_course']);
+    $instructor     = mysqli_real_escape_string($conn, $_POST['instructor']);
+    $number_computers        = mysqli_real_escape_string($conn, $_POST['number_computers']);
 
 
 
-    // check whether computer id exists
+    // check whether lab id exists
     if (!empty($id)) {
 
         // update the record
-        $stmt = $conn->prepare("UPDATE instructors SET first_name = ?, last_name = ?, phone = ?, email = ?, lab_assigned = ?, course = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE lab SET lab_name = ?,  lab_course = ?, instructor = ?, number_computers = ? WHERE id = ?");
 
         if ($stmt) {
-            $stmt->bind_param("ssssisi", $first_name, $last_name, $phone, $email, $lab_assigned, $course, $id);
+            $stmt->bind_param("ssisi",$lab_name, $lab_course, $instructor, $number_computers, $id);
 
             if ($stmt->execute()) {
-                header("Location: ../instructors.php?status=update");
+                header("Location: ../labs.php?status=update");
                 exit();
             } else {
-                header("Location: ../instructors.php?status=error");
+                header("Location: ../labs.php?status=error");
                 exit();
             }
 
             $stmt->close();
         } else {
             // SQL error (wrong table/columns)
-            header("Location: ../instructors.php?status=error");
+            header("Location: ../labs.php?status=error");
             exit();
         }
     } else {
 
         // insert a new record
-        $stmt = $conn->prepare("INSERT INTO instructors (first_name, last_name, phone, email, lab_assigned, course) 
-                VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO lab (lab_name, lab_course, instructor, number_computers) 
+                VALUES (?, ?, ?, ?)");
 
         if ($stmt) {
-            $stmt->bind_param("ssssis", $first_name, $last_name, $phone, $email, $lab_assigned, $course);
+            $stmt->bind_param("ssis", $lab_name, $lab_course, $instructor, $number_computers);
 
             if ($stmt->execute()) {
-                header("Location: ../instructors.php?status=save");
+                header("Location: ../labs.php?status=save");
                 exit();
             } else {
-                header("Location: ../instructors.php?status=error");
+                header("Location: ../labs.php?status=error");
                 exit();
             }
 
             $stmt->close();
         } else {
             // SQL error (wrong table/columns)
-            header("Location: ../instructors.php?status=error");
+            header("Location: ../labs.php?status=error");
             exit();
         }
     }
