@@ -75,13 +75,10 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 </div>
 
 
-                <div class="col-md-4">
-                    <label class="form-label">Assign course</label>
-                    <select required id="Type" name="lab_assigned" class="form-select">
-                        <option value="">Select course</option>
-                        <option value="2" <?php echo (isset($lab_assigned) && $lab_assigned == '2' ) ? 'selected' : '' ?>>Lab 8</option>
-                    </select>
-                </div>
+
+
+
+
                 <div class="col-md-4">
                     <label class="form-label">Course</label>
                     <input required type="text" name="course" value="<?php echo isset($course) ? $course : '' ?>" class="form-control">
@@ -103,7 +100,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <select name="reporttype" id="reporttype" class="form-select">
                                 <option value="">All</option>
                                 <option value=""> </option>
-                        
+
                             </select>
                         </form>
                     </div>
@@ -115,7 +112,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                     <th>Full Name</th>
                                     <th>Phone</th>
                                     <th>Email</th>
-                                    <th>Assign course</th>
+
                                     <th>Course</th>
                                     <th>Date Added</th>
                                     <th>Action</th>

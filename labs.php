@@ -64,12 +64,20 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Instructor</label>
+                    <label class="form-label"> Instructor</label>
+                    <?php
+                    $query_command = "SELECT * FROM instructors ";
+                    $result = $conn->query($query_command);
+                    ?>
                     <select required id="Type" name="instructor" class="form-select">
                         <option value="">Select Instructor</option>
-                        <option value="1" <?php echo (isset($instructor) && $instructor == '1') ? 'selected' : ''; ?>>Simon</option>
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($instructor) && $instructor ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['first_name'] . ' ' . $row['last_name'] ?></option>
+                        <?php } ?>
+
                     </select>
                 </div>
+
                 <div class="col-md-4">
                     <label class="form-label">Number of Computers</label>
                     <input required type="number" name="number_computers" value="<?php echo isset($number_computers) ? $number_computers : '' ?>" class="form-control">

@@ -29,7 +29,7 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['brand_name']) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
-                <a class='text-decoration-none'href='actions/brands.php.php?id=" . $row['id'] . "'>
+                <a class='text-decoration-none'href='actions/edit_brand.php?id=" . $row['id'] . "'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>
                     <a class='text-decoration-none'href='actions/delete_brand.php?id=" . $row['id'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS DATA?');\">
@@ -39,7 +39,7 @@ if ($result && $result->num_rows > 0) {
             </tr>";
     }
 } else {
-    echo "<tr><td colspan='7' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No computers Record(s) Found</td></tr>";
+    echo "<tr><td colspan='10' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No computers Record(s) Found</td></tr>";
 }
 
 $conn->close();

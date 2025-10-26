@@ -12,7 +12,8 @@ if (!$conn) {
 $search     = isset($_POST['search']) ? trim($_POST['search']) : '';
 $reporttype = isset($_POST['reporttype']) ? trim($_POST['reporttype']) : '';
 
-$sql = "SELECT * FROM lab WHERE 1";
+$sql = "SELECT lab.id, instructors.first_name, instructors.last_name, lab_name, lab_course, instructor, number_computers, lab.date_added FROM lab 
+        INNER JOIN instructors ON lab.instructor = lab.instructor WHERE 1";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
@@ -37,7 +38,7 @@ if ($result && $result->num_rows > 0) {
                 <th scope='row'>" . $counter++ . "</th>
                 <td>" . htmlspecialchars($row['lab_name']) . "</td>
                 <td>" . htmlspecialchars($row['lab_course']) . "</td>
-                <td>" . htmlspecialchars($row['instructor']) . "</td>
+                <td>" . htmlspecialchars($row['first_name']) . ' ' . $row['last_name'] . "</td>
                 <td>" . htmlspecialchars($row['number_computers']) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>

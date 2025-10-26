@@ -1,8 +1,23 @@
 <?php
 
 require_once('alert.php');
+require_once('baseConnect/dbConnect.php');
 
-?>
+
+// initialize variables used in the form when edit btn is called
+
+if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
+    $edit_id = intval($_GET['edit_id']);
+    $stmt = $conn->prepare("SELECT id, brand_name FROM brand WHERE id = ?");
+    $stmt->bind_param("i", $edit_id);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
+    if ($row) {
+        $id = $row['id'];
+        $brand_name = $row['brand_name'];
+    }
+    $stmt->close();
+} ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,9 +50,9 @@ require_once('alert.php');
         <div class="g-3" style="margin-bottom: 7rem">
             <form class="row g-3" id="Form" method="POST" action="actions/brand_action.php">
                 <div class="col-md-4">
+                    <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
                     <label class="form-label">Band Name</label>
-                    <input type="hidden" name="id" value="" class="form-control">
-                    <input required type="text" name="brand_name" value="" class="form-control">
+                    <input required type="text" name="brand_name" value="<?php echo isset($brand_name) ? $brand_name : '' ?>" class="form-control">
                 </div>
             </form>
         </div>
@@ -55,7 +70,7 @@ require_once('alert.php');
                             <select name="reporttype" id="reporttype" class="form-select">
                                 <option value="">All</option>
                                 <option value=""></option>
-                                
+
                             </select>
                         </form>
                     </div>

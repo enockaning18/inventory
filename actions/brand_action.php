@@ -5,8 +5,8 @@ require_once('../baseConnect/dbConnect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $id           = mysqli_real_escape_string($conn, $_POST['id']);
-    $brand_name    = mysqli_real_escape_string($conn, $_POST['brand_name']);
+    $id  = mysqli_real_escape_string($conn, $_POST['id']);
+    $brand_name = mysqli_real_escape_string($conn, $_POST['brand_name']);
 
     // check whether brand id exists
     if (!empty($id)) {

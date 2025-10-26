@@ -65,10 +65,17 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="text" name="computer_name" value="<?php echo isset($computer_name) ? $computer_name : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Select Brad</label>
+                    <label class="form-label">Select Brand</label>
+                    <?php
+                    $query_command = "SELECT * FROM brand ";
+                    $result = $conn->query($query_command);
+                    ?>
                     <select required id="Type" name="brand" class="form-select">
                         <option value="">Choose Brand</option>
-                        <option value="1" <?php echo (isset($brand) && $brand == '1') ? 'selected' : '' ?>>HP</option>
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($brand) && $brand ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['brand_name'] ?></option>
+                        <?php } ?>
+
                     </select>
                 </div>
 
@@ -88,7 +95,13 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <label class="form-label">Lab</label>
                     <select required id="Type" name="lab" class="form-select">
                         <option value="">Choose Lab</option>
-                        <option value="1" <?php echo (isset($lab) && $lab == '1') ? 'selected' : '' ?>>Lab 1</option>
+                        <?php
+                        $query_command = "SELECT * FROM lab ";
+                        $result = $conn->query($query_command);
+                        ?>
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($lab) && $lab ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['lab_name'] ?></option>
+                        <?php } ?>
                     </select>
                 </div>
 

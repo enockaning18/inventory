@@ -11,14 +11,13 @@ if (!$conn) {
 // Collect filters
 $search     = isset($_POST['search']) ? trim($_POST['search']) : '';
 
-$sql = "SELECT * FROM instructors WHERE 1";
+$sql = "SELECT * FROM instructors  WHERE 1";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
     $sql .= " AND (first_name LIKE '%$search%' 
               OR last_name LIKE '%$search%' 
               OR phone LIKE '%$search%' 
-              OR lab_assigned LIKE '%$search%' 
               OR course LIKE '%$search%' 
               OR email LIKE '%$search%')";
 }
@@ -34,7 +33,6 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['first_name']) . ' ' . $row['last_name']. "</td>
                 <td>" . htmlspecialchars($row['phone']) . "</td>
                 <td>" . htmlspecialchars($row['email']) . "</td>
-                <td>" . htmlspecialchars($row['lab_assigned']) . "</td>
                 <td>" . htmlspecialchars($row['Course']) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
