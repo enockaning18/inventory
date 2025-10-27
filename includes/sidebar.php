@@ -32,7 +32,7 @@
                     <span class="icon">
                         <ion-icon name="home-outline"></ion-icon>
                     </span>
-                    <span class="title">Labs</span>
+                    <span class="title">Labs / Course </span>
                 </a>
             </li>
 

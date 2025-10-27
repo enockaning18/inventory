@@ -8,7 +8,7 @@ require_once('baseConnect/dbConnect.php');
 
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, first_name, last_name, phone, email, lab_assigned, course  FROM instructors WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, first_name, last_name, phone, email, lab_id, course  FROM instructors WHERE id = ?");
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
@@ -18,8 +18,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         $last_name  = $row['last_name'];
         $phone = $row['phone'];
         $email = $row['email'];
-        $lab_assigned = $row['lab_assigned'];
-        $course = $row['course'];
+        $lab_id = $row['lab_id'];
+        $course_id = $row['course_id'];
     }
     $stmt->close();
 }
@@ -74,14 +74,34 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="email" name="email" value="<?php echo isset($email) ? $email : '' ?>" class="form-control">
                 </div>
 
+                <div class="col-md-4">
+                    <label class="form-label"> Course</label>
+                    <?php
+                    $query_command = "SELECT * FROM course ";
+                    $result = $conn->query($query_command);
+                    ?>
+                    <select required id="Type" name="course_id" class="form-select">
+                        <option value="">Select Course</option>
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($course_id) && $course_id ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['course_name']?></option>
+                        <?php } ?>
 
-
-
-
+                    </select>
+                </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Course</label>
-                    <input required type="text" name="course" value="<?php echo isset($course) ? $course : '' ?>" class="form-control">
+                    <label class="form-label"> Lab </label>
+                    <?php
+                    $query_command = "SELECT * FROM lab ";
+                    $result = $conn->query($query_command);
+                    ?>
+                    <select required id="Type" name="lab_id" class="form-select">
+                        <option value="">Select Lab</option>
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($lab_id) && $lab_id ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['lab_name']?></option>
+                        <?php } ?>
+
+                    </select>
                 </div>
 
             </form>

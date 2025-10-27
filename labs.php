@@ -8,16 +8,36 @@ require_once('baseConnect/dbConnect.php');
 
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, lab_name, lab_course, instructor, number_computers  FROM lab WHERE id = ?");
+    $stmt = $conn->prepare("SELECT lab_name, course.course_name, CONCAT(first_name, ' ', last_name) AS full_name, lab.number_computers, lab.date_added, lab.id, lab.course_id, course.course_name FROM instructors
+    INNER JOIN course ON course.id = instructors.id
+    LEFT JOIN lab ON lab.id = instructors.lab_id WHERE  lab.id = ?");
+
+
+
+
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
     if ($row) {
         $id = $row['id'];
         $lab_name = $row['lab_name'];
-        $lab_course  = $row['lab_course'];
-        $instructor = $row['instructor'];
+        $course_id  = $row['course_id'];
+        // $instructor = $row['instructor'];
         $number_computers = $row['number_computers'];
+        $course_name = $row['course_name'];
+    }
+    $stmt->close();
+
+} else if (isset($_GET['edit_course_id']) && is_numeric($_GET['edit_course_id'])) {
+    $edit_course_id = intval($_GET['edit_course_id']);
+    $stmt = $conn->prepare("SELECT * FROM course WHERE id = ?");
+
+    $stmt->bind_param("i", $edit_course_id);
+    $stmt->execute();
+    $course_row = $stmt->get_result()->fetch_assoc();
+    if ($course_row) {
+        $id_course = $course_row['id'];
+        $course_name = $course_row['course_name'];
     }
     $stmt->close();
 }
@@ -47,43 +67,78 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     ?>
     <div class=" mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
-            <h3><ion-icon name="home-outline"></ion-icon> Lab</h3>
-            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Lab</button>
+            <h3><ion-icon name="home-outline"></ion-icon> Lab & Couse</h3>
+            <!-- <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)"></button> -->
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 7rem">
-            <form class="row g-3" id="Form" method="POST" action="actions/lab_action.php">
-                <div class="col-md-4">
-                    <label class="form-label">Lab Name</label>
-                    <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
-                    <input required type="text" name="lab_name" value="<?php echo isset($lab_name) ? $lab_name : '' ?>" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Lab Course</label>
-                    <input required type="text" name="lab_course" value="<?php echo isset($lab_course) ? $lab_course : '' ?>" class="form-control">
-                </div>
+            <div class="container mt-4">
+                <div class="row g-4">
 
-                <div class="col-md-4">
-                    <label class="form-label"> Instructor</label>
-                    <?php
-                    $query_command = "SELECT * FROM instructors ";
-                    $result = $conn->query($query_command);
-                    ?>
-                    <select required id="Type" name="instructor" class="form-select">
-                        <option value="">Select Instructor</option>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($instructor) && $instructor ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['first_name'] . ' ' . $row['last_name'] ?></option>
-                        <?php } ?>
+                    <!-- FORM 1: LAB INFORMATION -->
 
-                    </select>
+                    <div class="col-12 col-md-6 ">
+                        <form id="LabForm" method="POST" action="actions/lab_action.php" class="p-3 border rounded bg-light shadow-sm">
+                            <h5 class="mb-3 ">Lab Information</h5>
+
+                            <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
+
+                            <div class="mb-3">
+                                <label class="form-label">Lab Name</label>
+                                <input required type="text" name="lab_name" value="<?php echo isset($lab_name) ? $lab_name : '' ?>" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Course</label>
+                                <?php
+                                $query_command = "SELECT * FROM course";
+                                $result = $conn->query($query_command);
+                                ?>
+                                <select required name="course_id" class="form-select">
+                                    <option value="">Select Course</option>
+                                    <?php while ($row = $result->fetch_assoc()) { ?>
+                                        <option value="<?php echo $row['id'] ?>" <?php echo (isset($course_id) && $course_id ==  $row['id']) ? 'selected' : '' ?>>
+                                            <?php echo $row['course_name']  ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+
+
+
+                            <div class="mb-3">
+                                <label class="form-label">Number of Computers</label>
+                                <input required type="number" name="number_computers" value="<?php echo isset($number_computers) ? $number_computers : '' ?>" class="form-control">
+                            </div>
+
+                            <div class="text-end">
+                                <button type="submit" class="btn text-white btn-primary">Save / Update Lab</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- ======================= -->
+                    <!-- FORM 2: COURSE DETAILS -->
+                    <!-- ======================= -->
+                    <div class="col-12 col-md-6 ">
+                        <form id="CourseForm" method="POST" action="actions/course_action.php" class="p-3 border rounded bg-light shadow-sm">
+                            <h5 class="mb-3 ">Course Details</h5>
+
+                            <input type="hidden" name="id" value="<?php echo isset($id_course) ? $id_course : '' ?>">
+
+                            <div class="mb-3">
+                                <label class="form-label">Course Name</label>
+                                <input required type="text" name="course_name" value="<?php echo isset($course_name) ? $course_name : '' ?>" class="form-control">
+                            </div>
+
+
+                            <div class="text-end">
+                                <button type="submit" class="btn text-white btn-success">Save / Update Course</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Number of Computers</label>
-                    <input required type="number" name="number_computers" value="<?php echo isset($number_computers) ? $number_computers : '' ?>" class="form-control">
-                </div>
-
-            </form>
+            </div>
         </div>
     </div>
 
@@ -98,6 +153,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
                             <select name="reporttype" id="reporttype" class="form-select">
                                 <option value="">All</option>
+                                <option value="">Lab</option>
+                                <option value="">Course</option>
                             </select>
                         </form>
                     </div>
@@ -161,6 +218,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             });
         });
     </script>
+
+
 
 
     <?php

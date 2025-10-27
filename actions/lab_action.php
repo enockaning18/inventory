@@ -6,8 +6,7 @@ require_once('../baseConnect/dbConnect.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id           = mysqli_real_escape_string($conn, $_POST['id']);
     $lab_name  = mysqli_real_escape_string($conn, $_POST['lab_name']);
-    $lab_course  = mysqli_real_escape_string($conn, $_POST['lab_course']);
-    $instructor     = mysqli_real_escape_string($conn, $_POST['instructor']);
+    $course_id  = mysqli_real_escape_string($conn, $_POST['course_id']);
     $number_computers        = mysqli_real_escape_string($conn, $_POST['number_computers']);
 
 
@@ -16,10 +15,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($id)) {
 
         // update the record
-        $stmt = $conn->prepare("UPDATE lab SET lab_name = ?,  lab_course = ?, instructor = ?, number_computers = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE lab SET lab_name = ?,  course_id = ?,   number_computers = ? WHERE id = ?");
 
         if ($stmt) {
-            $stmt->bind_param("ssisi",$lab_name, $lab_course, $instructor, $number_computers, $id);
+            $stmt->bind_param("sisi",$lab_name, $course_id,  $number_computers, $id);
 
             if ($stmt->execute()) {
                 header("Location: ../labs.php?status=update");
@@ -38,11 +37,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
 
         // insert a new record
-        $stmt = $conn->prepare("INSERT INTO lab (lab_name, lab_course, instructor, number_computers) 
-                VALUES (?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO lab (lab_name, course_id,  number_computers ) 
+                VALUES (?, ?, ?)");
 
         if ($stmt) {
-            $stmt->bind_param("ssis", $lab_name, $lab_course, $instructor, $number_computers);
+            $stmt->bind_param("sis", $lab_name, $course_id,  $number_computers);
 
             if ($stmt->execute()) {
                 header("Location: ../labs.php?status=save");

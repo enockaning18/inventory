@@ -12,6 +12,15 @@ function successAlert($title)
                     confirmButtonText: 'Done'
                 });
 
+            <?php elseif ($_GET['status'] == 'save_course'): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'New Course ',
+                    text: "New Course Added Successfully",
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Done'
+                });
+
             <?php elseif ($_GET['status'] == 'delete'): ?>
                 Swal.fire({
                     icon: 'success',
@@ -26,6 +35,14 @@ function successAlert($title)
                     icon: 'success',
                     title: 'Update <?php echo $title; ?>',
                     text: "<?php echo $title; ?> Successfully Updated",
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Okay'
+                });
+            <?php elseif ($_GET['status'] == 'update_course'): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Update Course',
+                    text: "  Course Successfully Updated",
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Okay'
                 });

@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 27, 2025 at 12:27 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Oct 27, 2025 at 05:52 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,8 +38,7 @@ CREATE TABLE `brand` (
 --
 
 INSERT INTO `brand` (`id`, `brand_name`, `date_added`) VALUES
-(3, 'Lenovo', '2025-10-26'),
-(4, 'HP', '2025-10-26');
+(1, 'Lenovo ', '2025-10-27');
 
 -- --------------------------------------------------------
 
@@ -63,7 +62,25 @@ CREATE TABLE `computers` (
 --
 
 INSERT INTO `computers` (`id`, `computer_name`, `brand`, `serial_number`, `memory_size`, `hard_drive_size`, `lab`, `date_added`) VALUES
-(11, 'XUAJJA ', 3, 'ASDASADA22', '25GIG', '500GIG', 8, '2025-10-26');
+(2, 'DESKTOP-N9R4ILO', 1, '26100.6899', '5gig', '500gig ', 1, '2025-10-27');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `course`
+--
+
+CREATE TABLE `course` (
+  `id` int(11) NOT NULL,
+  `course_name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `course`
+--
+
+INSERT INTO `course` (`id`, `course_name`) VALUES
+(4, 'Software En5');
 
 -- --------------------------------------------------------
 
@@ -75,9 +92,10 @@ CREATE TABLE `instructors` (
   `id` int(11) NOT NULL,
   `first_name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
+  `lab_id` int(11) NOT NULL,
   `phone` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `Course` varchar(100) NOT NULL,
+  `course_id` int(11) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -85,8 +103,8 @@ CREATE TABLE `instructors` (
 -- Dumping data for table `instructors`
 --
 
-INSERT INTO `instructors` (`id`, `first_name`, `last_name`, `phone`, `email`, `Course`, `date_added`) VALUES
-(8, 'Sosu', 'Rosemary', '0554944071', 'susorosemaryasd@gmail.com', 'Software Eng', '2025-10-26');
+INSERT INTO `instructors` (`id`, `first_name`, `last_name`, `lab_id`, `phone`, `email`, `course_id`, `date_added`) VALUES
+(4, 'Okyere', 'Enock', 1, '0556061647', 'okyere@gmail.com', 4, '2025-10-27');
 
 -- --------------------------------------------------------
 
@@ -98,7 +116,7 @@ CREATE TABLE `issues` (
   `id` int(11) NOT NULL,
   `computer` int(11) NOT NULL,
   `issue_type` varchar(100) NOT NULL,
-  `lab` int(11) NOT NULL,
+  `lab` int(11) DEFAULT NULL,
   `issue_date` date NOT NULL DEFAULT current_timestamp(),
   `issue_description` varchar(250) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
@@ -113,8 +131,7 @@ CREATE TABLE `issues` (
 CREATE TABLE `lab` (
   `id` int(11) NOT NULL,
   `lab_name` varchar(100) NOT NULL,
-  `lab_course` varchar(100) NOT NULL,
-  `instructor` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
   `number_computers` varchar(100) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -123,8 +140,8 @@ CREATE TABLE `lab` (
 -- Dumping data for table `lab`
 --
 
-INSERT INTO `lab` (`id`, `lab_name`, `lab_course`, `instructor`, `number_computers`, `date_added`) VALUES
-(8, 'Lab 8', 'Software Eng', 8, '40', '2025-10-26');
+INSERT INTO `lab` (`id`, `lab_name`, `course_id`, `number_computers`, `date_added`) VALUES
+(1, 'Lab 10', 4, '20', '2025-10-27');
 
 --
 -- Indexes for dumped tables
@@ -141,28 +158,37 @@ ALTER TABLE `brand`
 --
 ALTER TABLE `computers`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `brand_id` (`brand`);
+  ADD KEY `brand_id` (`brand`),
+  ADD KEY `lab_id` (`lab`);
+
+--
+-- Indexes for table `course`
+--
+ALTER TABLE `course`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `instructors`
 --
 ALTER TABLE `instructors`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_lab_id` (`lab_id`),
+  ADD KEY `fk_course_id` (`course_id`);
 
 --
 -- Indexes for table `issues`
 --
 ALTER TABLE `issues`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `computer_id` (`computer`),
-  ADD KEY `lab_id` (`lab`);
+  ADD KEY `fklab_id` (`lab`),
+  ADD KEY `computer_id` (`computer`);
 
 --
 -- Indexes for table `lab`
 --
 ALTER TABLE `lab`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `instructor_id` (`instructor`);
+  ADD KEY `fk_course_id` (`course_id`) USING BTREE;
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -172,31 +198,37 @@ ALTER TABLE `lab`
 -- AUTO_INCREMENT for table `brand`
 --
 ALTER TABLE `brand`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `computers`
 --
 ALTER TABLE `computers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `course`
+--
+ALTER TABLE `course`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `instructors`
 --
 ALTER TABLE `instructors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `issues`
 --
 ALTER TABLE `issues`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `lab`
 --
 ALTER TABLE `lab`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -206,20 +238,28 @@ ALTER TABLE `lab`
 -- Constraints for table `computers`
 --
 ALTER TABLE `computers`
-  ADD CONSTRAINT `brand_id` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`);
+  ADD CONSTRAINT `brand_id` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `lab_id` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `instructors`
+--
+ALTER TABLE `instructors`
+  ADD CONSTRAINT `fk_course_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_lab_id` FOREIGN KEY (`lab_id`) REFERENCES `lab` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `issues`
 --
 ALTER TABLE `issues`
-  ADD CONSTRAINT `computer_id` FOREIGN KEY (`computer`) REFERENCES `computers` (`id`),
-  ADD CONSTRAINT `lab_id` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`);
+  ADD CONSTRAINT `computer_id` FOREIGN KEY (`computer`) REFERENCES `computers` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fklab_id` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `lab`
 --
 ALTER TABLE `lab`
-  ADD CONSTRAINT `instructor_id` FOREIGN KEY (`instructor`) REFERENCES `instructors` (`id`);
+  ADD CONSTRAINT `fk_courseid` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
