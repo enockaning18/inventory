@@ -111,7 +111,7 @@ function successAlert($title)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops... can\'t delete',
-                    text: 'Lab / Course has been assigned instructor ',
+                    text: 'Lab / Course has been assigned to an instructor ',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });

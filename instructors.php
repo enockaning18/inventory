@@ -54,7 +54,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 7rem">
-            <form class="row g-3" id="Form" method="POST" action="actions/instructor_action.php">
+            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/instructor_action.php">
                 <div class="col-md-4">
                     <label class="form-label">First Name</label>
                     <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">

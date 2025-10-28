@@ -85,11 +85,11 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Memory Size</label>
-                    <input required type="text" name="memory_size" value="<?php echo isset($memory_size) ? $memory_size : '' ?>" class="form-control">
+                    <input required type="number" name="memory_size" value="<?php echo isset($memory_size) ? $memory_size : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Hard Drive Size</label>
-                    <input required type="text" name="hard_drive_size" value="<?php echo isset($hard_drive_size) ? $hard_drive_size : '' ?>" class="form-control">
+                    <input required type="number" name="hard_drive_size" value="<?php echo isset($hard_drive_size) ? $hard_drive_size : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Lab</label>

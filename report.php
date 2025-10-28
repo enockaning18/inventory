@@ -32,7 +32,7 @@ require_once('alert.php');
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 7rem">
-            <form class="row g-3" id="Form" method="POST" action="">
+            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="">
 
                 <div class="col-md-4">
                     <label class="form-label">Report Type</label>

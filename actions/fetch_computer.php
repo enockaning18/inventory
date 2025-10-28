@@ -38,8 +38,8 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['computer_name']) . "</td>
                 <td>" . htmlspecialchars($row['brand_name']) . "</td>
                 <td>" . htmlspecialchars($row['serial_number']) . "</td>
-                <td>" . htmlspecialchars($row['memory_size']) . "</td>
-                <td>" . htmlspecialchars($row['hard_drive_size']) . "</td>
+                <td>" . htmlspecialchars($row['memory_size']) . '(gig)'. "</td>
+                <td>" . htmlspecialchars($row['hard_drive_size']) . '(gig)'. "</td>
                 <td>" . htmlspecialchars($row['lab_name']) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
