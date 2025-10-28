@@ -82,6 +82,17 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <option value="systemengineer">System Engineering</option>
                         <option value="hardware_network">Hardware & Networking</option>
                         <option value="cyber">Cyber Security</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label"> Module</label>
+                    <select required id="Type" name="course_model" class="form-select">
+                        <option value="">Choose Module</option>
+                        <option value="1">PHP</option>
+                        <option value="2">HTML 5</option>
+                    </select>
+                </div>
 
                 <div class="col-md-4">
                     <label class="form-label"> Batch Time</label>
@@ -94,56 +105,6 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <option value="3pm - 5pm" <?php echo (isset($batch_time) && $batch_time ==  $row['batch_time']) ? 'selected' : '' ?>>3pm - 5pm</option>
                     </select>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label"> Session</label>
-                    <select required id="Type" name="session" class="form-select">
-                        <option value="">Choose Session</option>
-                        <option value="Weekend" <?php echo (isset($session) && $session ==  $row['session']) ? 'selected' : '' ?>>Weekend </option>
-                        <option value="Weekday" <?php echo (isset($session) && $session ==  $row['session']) ? 'selected' : '' ?>>Weekday</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label"> Course</label>
-                    <select required id="Type" name="course_id" class="form-select">
-                        <option value="">Choose Course</option>
-                        <option value="">Software</option>
-                        <option value="">Cyber Sequrity</option>
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label"> Course Module</label>
-                    <select required id="Type" name="course_model" class="form-select">
-                        <option value="">Choose Module</option>
-                        <option value="1">PHP</option>
-                        <option value="2">HTML 5</option>
-
-                    <label class="form-label">Date Booked </label>
-                    <input required type="date" name="date_booked" value="<?php echo isset($date_booked) ? $date_booked : '' ?>" class="form-control">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Start Time </label>
-                    <select required id="Type" name="start_time" class="form-select">
-                        <option value="">Choose Batch</option>
-                        <option value="7am - 9am">7am - 9am</option>
-                        <option value="9am - 11am">9am - 11am</option>
-                        <option value="11am - 1pm">11am - 1pm</option>
-                        <option value="1pm - 3pm">1pm - 3pm</option>
-                        <option value="3pm - 5pm">3pm - 5pm</option>
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label"> Course Model</label>
-                    <select required id="Type" name="course_model" class="form-select">
-                        <option value="">Choose Model</option>
-                        <option value="1">PHP</option>
-                        <option value="2">HTML 5</option>
-                    </select>
-                </div>
-
-
 
                 <div class="col-md-4">
                     <label class="form-label"> Batch Semester </label>
@@ -151,18 +112,29 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <option value="">Choose Semester</option>
                         <option value="Semester 1">Semester 1</option>
                         <option value="Semester 2">Semester 2</option>
+                        <option value="Semester 3">Semester 3</option>
+                        <option value="Semester 4">Semester 4</option>
                     </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label"> Session</label>
+                    <select required id="Type" name="session" class="form-select">
+                        <option value="">Choose Session</option>
+                        <option value="Weekday" <?php echo (isset($session) && $session ==  $row['session']) ? 'selected' : '' ?>>Weekday</option>
+                        <option value="Weekend" <?php echo (isset($session) && $session ==  $row['session']) ? 'selected' : '' ?>>Weekend </option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Date Booked </label>
+                    <input required type="date" name="date_booked" value="<?php echo isset($date_booked) ? $date_booked : '' ?>" class="form-control">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Start Time </label>
                     <input type="time" name="start_time" id="start_time" class="form-control" required>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Date Booked </label>
-                    <input required type="date" name="date_booked" value="" class="form-control">
-                </div>                              
+                </div>                          
 
                 <div class="col-md-4">
                     <label class="form-label"> Exam Lab </label>
