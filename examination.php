@@ -107,9 +107,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <label class="form-label"> Course</label>
                     <select required id="Type" name="course_id" class="form-select">
                         <option value="">Choose Course</option>
-                        <option value="1" <?php echo (isset($course_id) && $course_id ==  $row['course_id']) ? 'selected' : '' ?>>Software</option>
-                        <option value="2" <?php echo (isset($course_id) && $course_id ==  $row['course_id']) ? 'selected' : '' ?>>Cyber Security</option>
->>>>>>> Stashed changes
+                        <option value="">Software</option>
+                        <option value="">Cyber Sequrity</option>
                     </select>
                 </div>
 
@@ -129,28 +128,6 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <label class="form-label">Start Time </label>
                     <select required id="Type" name="start_time" class="form-select">
                         <option value="">Choose Batch</option>
-                        <option value="7am - 9am" <?php echo (isset($start_time) && $start_time ==  $row['start_time']) ? 'selected' : '' ?>>7am - 9am</option>
-                        <option value="9am - 11am" <?php echo (isset($start_time) && $start_time ==  $row['start_time']) ? 'selected' : '' ?>>9am - 11am</option>
-                        <option value="11am - 1pm" <?php echo (isset($start_time) && $start_time ==  $row['start_time']) ? 'selected' : '' ?>>11am - 1pm</option>
-                        <option value="1pm - 3pm" <?php echo (isset($start_time) && $start_time ==  $row['start_time']) ? 'selected' : '' ?>>1pm - 3pm</option>
-                        <option value="3pm - 5pm" <?php echo (isset($start_time) && $start_time ==  $row['start_time']) ? 'selected' : '' ?>>3pm - 5pm</option>
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label"> Course Model</label>
-                    <select required id="Type" name="course_model" class="form-select">
-                        <option value="">Choose Model</option>
-                        <option value="1" <?php echo (isset($course_model) && $course_model ==  $row['course_model']) ? 'selected' : '' ?>>PHP</option>
-                        <option value="2" <?php echo (isset($course_model) && $course_model ==  $row['course_model']) ? 'selected' : '' ?>>HTML 5</option>
->>>>>>> Stashed changes
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label"> Batch Time</label>
-                    <select required id="Type" name="batch_time" class="form-select">
-                        <option value="none">Choose Batch</option>
                         <option value="7am - 9am">7am - 9am</option>
                         <option value="9am - 11am">9am - 11am</option>
                         <option value="11am - 1pm">11am - 1pm</option>
@@ -160,27 +137,22 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label"> Batch Semester </label>
-                    <select required id="Type" name="batch_semester" class="form-select">
-                        <option value="">Choose Semester</option>
-<<<<<<< Updated upstream
-                        <option value="Semester 1">Semester 1</option>
-                        <option value="Semester 2">Semester 2</option>
-                        <option value="Semester 3">Semester 3</option>
-                        <option value="Semester 4">Semester 4</option>
-=======
-                        <option value="Semester 1" <?php echo (isset($batch_semester) && $batch_semester ==  $row['batch_semester']) ? 'selected' : '' ?>>Semester 1</option>
-                        <option value="Semester 2" <?php echo (isset($batch_semester) && $batch_semester ==  $row['batch_semester']) ? 'selected' : '' ?>>Semester 2</option>
->>>>>>> Stashed changes
+                    <label class="form-label"> Course Model</label>
+                    <select required id="Type" name="course_model" class="form-select">
+                        <option value="">Choose Model</option>
+                        <option value="1">PHP</option>
+                        <option value="2">HTML 5</option>
                     </select>
                 </div>
 
+
+
                 <div class="col-md-4">
-                    <label class="form-label"> Session</label>
-                    <select required id="Type" name="session" class="form-select">
-                        <option value="none">Choose Session</option>
-                        <option value="weekday">Weekday</option>
-                        <option value="weekend">Weekend</option>
+                    <label class="form-label"> Batch Semester </label>
+                    <select required id="Type" name="batch_semester" class="form-select">
+                        <option value="">Choose Semester</option>
+                        <option value="Semester 1">Semester 1</option>
+                        <option value="Semester 2">Semester 2</option>
                     </select>
                 </div>
 
@@ -197,15 +169,9 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <div class="col-md-4">
                     <label class="form-label"> Exam Lab </label>
                     <select required id="Type" name="lab_id" class="form-select">
-<<<<<<< Updated upstream
-                        <option value="none">Choose Lab</option>
+                        <option value="">Choose Lab</option>
                         <option value="1">Lab 1</option>
                         <option value="2">Lab 2</option>
-=======
-                        <option value="">Choose Lab</option>
-                        <option value="1" <?php echo (isset($lab_id) && $lab_id ==  $row['lab_id']) ? 'selected' : '' ?>>Lab 1</option>
-                        <option value="2" <?php echo (isset($lab_id) && $lab_id ==  $row['lab_id']) ? 'selected' : '' ?>>Lab 2</option>
->>>>>>> Stashed changes
                     </select>
                 </div>
 
