@@ -64,61 +64,41 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input type="hidden" value="" name="id">
                     <input required type="date" name="examination_date" value="" class="form-control">
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label"> Batch Time</label>
-                    <select required id="Type" name="batch_time" class="form-select">
-                        <option value="">Choose Batch</option>
-                        <option value="7am - 9am">7am - 9am</option>
-                        <option value="9am - 11am">9am - 11am</option>
-                        <option value="11am - 1pm">11am - 1pm</option>
-                        <option value="1pm - 3pm">1pm - 3pm</option>
-                        <option value="3pm - 5pm">3pm - 5pm</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label"> Session</label>
-                    <select required id="Type" name="session" class="form-select">
-                        <option value="">Choose Session</option>
-                        <option value="">Weekend </option>
-                        <option value="">Weekday</option>
-                    </select>
-                </div>
+                
                 <div class="col-md-4">
                     <label class="form-label"> Course</label>
                     <select required id="Type" name="course_id" class="form-select">
-                        <option value="">Choose Course</option>
-                        <option value="">Software</option>
-                        <option value="">Cyber Sequrity</option>
+                        <option value="none">Choose Course</option>
+                        <option value="software">Software</option>
+                        <option value="database">Database</option>
+                        <option value="graphics">Graphics & Web</option>
+                        <option value="workplace">IT @ Workplace</option>
+                        <option value="systemengineer">System Engineering</option>
+                        <option value="hardware_network">Hardware & Networking</option>
+                        <option value="cyber">Cyber Security</option>
                     </select>
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Date Booked </label>
-                    <input required type="date" name="date_booked" value="" class="form-control">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Start Time </label>
-                    <select required id="Type" name="start_time" class="form-select">
-                        <option value="">Choose Batch</option>
-                        <option value="7am - 9am">7am - 9am</option>
-                        <option value="9am - 11am">9am - 11am</option>
-                        <option value="11am - 1pm">11am - 1pm</option>
-                        <option value="1pm - 3pm">1pm - 3pm</option>
-                        <option value="3pm - 5pm">3pm - 5pm</option>
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label"> Course Model</label>
+                    <label class="form-label"> Course Module</label>
                     <select required id="Type" name="course_model" class="form-select">
-                        <option value="">Choose Model</option>
+                        <option value="">Choose Module</option>
                         <option value="1">PHP</option>
                         <option value="2">HTML 5</option>
                     </select>
                 </div>
 
-
+                <div class="col-md-4">
+                    <label class="form-label"> Batch Time</label>
+                    <select required id="Type" name="batch_time" class="form-select">
+                        <option value="none">Choose Batch</option>
+                        <option value="7am - 9am">7am - 9am</option>
+                        <option value="9am - 11am">9am - 11am</option>
+                        <option value="11am - 1pm">11am - 1pm</option>
+                        <option value="1pm - 3pm">1pm - 3pm</option>
+                        <option value="3pm - 5pm">3pm - 5pm</option>
+                    </select>
+                </div>
 
                 <div class="col-md-4">
                     <label class="form-label"> Batch Semester </label>
@@ -126,13 +106,34 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <option value="">Choose Semester</option>
                         <option value="Semester 1">Semester 1</option>
                         <option value="Semester 2">Semester 2</option>
+                        <option value="Semester 3">Semester 3</option>
+                        <option value="Semester 4">Semester 4</option>
                     </select>
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label"> Lab </label>
+                    <label class="form-label"> Session</label>
+                    <select required id="Type" name="session" class="form-select">
+                        <option value="none">Choose Session</option>
+                        <option value="weekday">Weekday</option>
+                        <option value="weekend">Weekend</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Start Time </label>
+                    <input type="time" name="start_time" id="start_time" class="form-control" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Date Booked </label>
+                    <input required type="date" name="date_booked" value="" class="form-control">
+                </div>                              
+
+                <div class="col-md-4">
+                    <label class="form-label"> Exam Lab </label>
                     <select required id="Type" name="lab_id" class="form-select">
-                        <option value="">Choose Lab</option>
+                        <option value="none">Choose Lab</option>
                         <option value="1">Lab 1</option>
                         <option value="2">Lab 2</option>
                     </select>
@@ -150,14 +151,21 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             <div class="col">
                 <div class="card shadow">
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
-                        <h5 class="mb-0" style="color: maroon;">List of Examination Booked </h5>
+                        <h5 class="mb-0" style="color: maroon;">List of Exams </h5>
                         <form id="filterForm" class="d-flex gap-2">
                             <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search ..">
 
                             <select name="reporttype" id="reporttype" class="form-select">
-                                <option value="">All</option>
+                                <option value="">Filter Batch</option>
                                 <option value=""></option>
-
+                            </select>
+                            <select name="reporttype" id="reporttype" class="form-select">
+                                <option value="">Filter Course</option>
+                                <option value=""></option>
+                            </select>
+                            <select name="reporttype" id="reporttype" class="form-select">
+                                <option value="">Filter Module</option>
+                                <option value=""></option>
                             </select>
                         </form>
                     </div>
@@ -166,14 +174,14 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Examination Date </th>
-                                    <th>Batch Time </th>
+                                    <th>ExaminationDate </th>
+                                    <th>Batch </th>
                                     <th>Session </th>
                                     <th>Course </th>
-                                    <th>Date Booked </th>
-                                    <th>Start Time </th>
-                                    <th>Course Model </th>
-                                    <th>Batch Semester </th>
+                                    <th>DateBooked </th>
+                                    <th>StartTime </th>
+                                    <th>Module </th>
+                                    <th>Semester </th>
                                     <th>Lab</th>
                                 </tr>
                             </thead>
