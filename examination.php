@@ -60,10 +60,15 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <ion-icon name="book-outline"></ion-icon>
                 Examinations
             </h3>
-            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Examination </button>
+            <div>
+                <a href="approvedexams.php"><button class="btn text-white px-2" style="background-color:green;">Approved</button></a>
+                <a href="pendingexams.php"><button class="btn text-white px-2" style="background-color:gold;">Pending</button></a>
+                <a href="cancelledexams.php"><button class="btn text-white px-2" style="background-color:red;">Cancelled</button></a>
+            </div>
+            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Exams </button>
         </div>
         <hr style="margin-bottom: 3rem;">
-        <div class="g-3" style="margin-bottom: 7rem">
+        <div class="g-3" style="margin-bottom: 5rem">
             <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/examination_action.php">
                 <div class="col-md-4">
                     <label class="form-label">Examination Date </label>
@@ -137,18 +142,16 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 </div>                          
 
                 <div class="col-md-4">
-                    <label class="form-label"> Exam Lab </label>
+                    <label class="form-label"> Status </label>
                     <select required id="Type" name="lab_id" class="form-select">
-                        <option value="">Choose Lab</option>
-                        <option value="1">Lab 1</option>
-                        <option value="2">Lab 2</option>
+                        <option value="">Choose Option</option>
+                        <option value="approve">Approve</option>
+                        <option value="pending">Pending</option>
+                        <option value="cancelled">Cancelled</option>
                     </select>
                 </div>
-
-
-
-
             </form>
+            <hr style="margin-bottom: 3rem;">
         </div>
     </div>
 
@@ -214,6 +217,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script src="assets/js/jquery.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    
     <script>
         $(document).ready(function() {
             function load_examination(search = '') {
@@ -246,5 +250,4 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     successAlert($title);
     ?>
 </body>
-
 </html>
