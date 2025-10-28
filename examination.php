@@ -3,28 +3,33 @@
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 
-
-// initialize variables used in the form when edit btn is called
-
+// Initialize variables used in the form when the Edit button is clicked
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, examination _name, brand, serial_number, memory_size, hard_drive_size, lab 
-                            FROM examination s WHERE id = ?");
+
+    $stmt = $conn->prepare("SELECT id, examination_date, batch_time, `session`, course_id, date_booked, start_time, course_model, batch_semester, lab_id 
+                            FROM examination 
+                            WHERE id = ?");
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
+
     if ($row) {
-        $id = $row['id'];
-        $examination_name = $row['examination _name'];
-        $brand  = $row['brand'];
-        $serial_number = $row['serial_number'];
-        $memory_size = $row['memory_size'];
-        $hard_drive_size = $row['hard_drive_size'];
-        $lab = $row['lab'];
+        $id              = $row['id'];
+        $examination_date = $row['examination_date'];
+        $batch_time      = $row['batch_time'];
+        $session         = $row['session'];
+        $course_id       = $row['course_id'];
+        $date_booked     = $row['date_booked'];
+        $start_time      = $row['start_time'];
+        $course_model    = $row['course_model'];
+        $batch_semester  = $row['batch_semester'];
+        $lab_id          = $row['lab_id'];
     }
     $stmt->close();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,10 +66,11 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         <div class="g-3" style="margin-bottom: 7rem">
             <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/examination_action.php">
                 <div class="col-md-4">
-                    <label class="form-label">Examination Date </label> 
-                    <input type="hidden" value="" name="id">
-                    <input required type="date" name="examination_date" value="" class="form-control">
+                    <label class="form-label">Examination Date </label>
+                    <input type="hidden" value="<?php echo isset($id) ? $id : '' ?>" name="id">
+                    <input required type="date" name="examination_date" value="<?php echo isset($examination_date) ? $examination_date : '' ?>" class="form-control">
                 </div>
+<<<<<<< Updated upstream
                 
                 <div class="col-md-4">
                     <label class="form-label"> Course</label>
@@ -77,15 +83,67 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <option value="systemengineer">System Engineering</option>
                         <option value="hardware_network">Hardware & Networking</option>
                         <option value="cyber">Cyber Security</option>
+=======
+                <div class="col-md-4">
+                    <label class="form-label"> Batch Time</label>
+                    <select required id="Type" name="batch_time" class="form-select">
+                        <option value="">Choose Batch</option>
+                        <option value="7am - 9am" <?php echo (isset($batch_time) && $batch_time ==  $row['batch_time']) ? 'selected' : '' ?>>7am - 9am</option>
+                        <option value="9am - 11am" <?php echo (isset($batch_time) && $batch_time ==  $row['batch_time']) ? 'selected' : '' ?>>9am - 11am</option>
+                        <option value="11am - 1pm" <?php echo (isset($batch_time) && $batch_time ==  $row['batch_time']) ? 'selected' : '' ?>>11am - 1pm</option>
+                        <option value="1pm - 3pm" <?php echo (isset($batch_time) && $batch_time ==  $row['batch_time']) ? 'selected' : '' ?>>1pm - 3pm</option>
+                        <option value="3pm - 5pm" <?php echo (isset($batch_time) && $batch_time ==  $row['batch_time']) ? 'selected' : '' ?>>3pm - 5pm</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label"> Session</label>
+                    <select required id="Type" name="session" class="form-select">
+                        <option value="">Choose Session</option>
+                        <option value="Weekend" <?php echo (isset($session) && $session ==  $row['session']) ? 'selected' : '' ?>>Weekend </option>
+                        <option value="Weekday" <?php echo (isset($session) && $session ==  $row['session']) ? 'selected' : '' ?>>Weekday</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label"> Course</label>
+                    <select required id="Type" name="course_id" class="form-select">
+                        <option value="">Choose Course</option>
+                        <option value="1" <?php echo (isset($course_id) && $course_id ==  $row['course_id']) ? 'selected' : '' ?>>Software</option>
+                        <option value="2" <?php echo (isset($course_id) && $course_id ==  $row['course_id']) ? 'selected' : '' ?>>Cyber Security</option>
+>>>>>>> Stashed changes
                     </select>
                 </div>
 
                 <div class="col-md-4">
+<<<<<<< Updated upstream
                     <label class="form-label"> Course Module</label>
                     <select required id="Type" name="course_model" class="form-select">
                         <option value="">Choose Module</option>
                         <option value="1">PHP</option>
                         <option value="2">HTML 5</option>
+=======
+                    <label class="form-label">Date Booked </label>
+                    <input required type="date" name="date_booked" value="<?php echo isset($date_booked) ? $date_booked : '' ?>" class="form-control">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Start Time </label>
+                    <select required id="Type" name="start_time" class="form-select">
+                        <option value="">Choose Batch</option>
+                        <option value="7am - 9am" <?php echo (isset($start_time) && $start_time ==  $row['start_time']) ? 'selected' : '' ?>>7am - 9am</option>
+                        <option value="9am - 11am" <?php echo (isset($start_time) && $start_time ==  $row['start_time']) ? 'selected' : '' ?>>9am - 11am</option>
+                        <option value="11am - 1pm" <?php echo (isset($start_time) && $start_time ==  $row['start_time']) ? 'selected' : '' ?>>11am - 1pm</option>
+                        <option value="1pm - 3pm" <?php echo (isset($start_time) && $start_time ==  $row['start_time']) ? 'selected' : '' ?>>1pm - 3pm</option>
+                        <option value="3pm - 5pm" <?php echo (isset($start_time) && $start_time ==  $row['start_time']) ? 'selected' : '' ?>>3pm - 5pm</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label"> Course Model</label>
+                    <select required id="Type" name="course_model" class="form-select">
+                        <option value="">Choose Model</option>
+                        <option value="1" <?php echo (isset($course_model) && $course_model ==  $row['course_model']) ? 'selected' : '' ?>>PHP</option>
+                        <option value="2" <?php echo (isset($course_model) && $course_model ==  $row['course_model']) ? 'selected' : '' ?>>HTML 5</option>
+>>>>>>> Stashed changes
                     </select>
                 </div>
 
@@ -105,10 +163,15 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <label class="form-label"> Batch Semester </label>
                     <select required id="Type" name="batch_semester" class="form-select">
                         <option value="">Choose Semester</option>
+<<<<<<< Updated upstream
                         <option value="Semester 1">Semester 1</option>
                         <option value="Semester 2">Semester 2</option>
                         <option value="Semester 3">Semester 3</option>
                         <option value="Semester 4">Semester 4</option>
+=======
+                        <option value="Semester 1" <?php echo (isset($batch_semester) && $batch_semester ==  $row['batch_semester']) ? 'selected' : '' ?>>Semester 1</option>
+                        <option value="Semester 2" <?php echo (isset($batch_semester) && $batch_semester ==  $row['batch_semester']) ? 'selected' : '' ?>>Semester 2</option>
+>>>>>>> Stashed changes
                     </select>
                 </div>
 
@@ -134,9 +197,15 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <div class="col-md-4">
                     <label class="form-label"> Exam Lab </label>
                     <select required id="Type" name="lab_id" class="form-select">
+<<<<<<< Updated upstream
                         <option value="none">Choose Lab</option>
                         <option value="1">Lab 1</option>
                         <option value="2">Lab 2</option>
+=======
+                        <option value="">Choose Lab</option>
+                        <option value="1" <?php echo (isset($lab_id) && $lab_id ==  $row['lab_id']) ? 'selected' : '' ?>>Lab 1</option>
+                        <option value="2" <?php echo (isset($lab_id) && $lab_id ==  $row['lab_id']) ? 'selected' : '' ?>>Lab 2</option>
+>>>>>>> Stashed changes
                     </select>
                 </div>
 
@@ -184,6 +253,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                     <th>Module </th>
                                     <th>Semester </th>
                                     <th>Lab</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="examination_table">

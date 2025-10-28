@@ -133,7 +133,6 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                     <th>Full Name</th>
                                     <th>Phone</th>
                                     <th>Email</th>
-
                                     <th>Course</th>
                                     <th>Date Added</th>
                                     <th>Action</th>

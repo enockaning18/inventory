@@ -22,10 +22,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($id)) {
 
         // update the record
-        $stmt = $conn->prepare("UPDATE examination SET examination_date = ?, batch_time = ?, `session` = ?, course_id = ?, date_booked = ?, start_time = ?, course_model = ?, batch_semester = ?,  lab_id = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE examination SET examination_date = ?, batch_time = ?, session = ?, course_id = ?, date_booked = ?, start_time = ?, course_model = ?, batch_semester = ?,  lab_id = ? WHERE id = ?");
 
         if ($stmt) {
-            $stmt->bind_param("ssississi", $examination_date, $batch_time, $session, $course_id, $date_booked, $start_time, $course_model, $batch_semester, $lab_id, $id);
+            $stmt->bind_param("sssissssii", $examination_date, $batch_time, $session, $course_id, $date_booked, $start_time, $course_model, $batch_semester, $lab_id, $id);
 
             if ($stmt->execute()) {
                 header("Location: ../examination.php?status=update");
@@ -44,11 +44,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
 
         // insert a new record
-        $stmt = $conn->prepare("INSERT INTO examination (examination_date, batch_time, `session`, course_id, date_booked, start_time, course_model, batch_semester, lab_id) 
+        $stmt = $conn->prepare("INSERT INTO examination (examination_date, batch_time, session, course_id, date_booked, start_time, course_model, batch_semester, lab_id) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         if ($stmt) {
-            $stmt->bind_param("ssississi", $examination_date, $batch_time, $session, $course_id, $date_booked, $start_time, $course_model, $batch_semester, $lab_id);
+            $stmt->bind_param("sssissssi", $examination_date, $batch_time, $session, $course_id, $date_booked, $start_time, $course_model, $batch_semester, $lab_id);
 
             if ($stmt->execute()) {
                 header("Location: ../examination.php?status=save");
