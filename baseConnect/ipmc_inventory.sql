@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 28, 2025 at 10:13 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Oct 28, 2025 at 01:51 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,7 +38,8 @@ CREATE TABLE `brand` (
 --
 
 INSERT INTO `brand` (`id`, `brand_name`, `date_added`) VALUES
-(1, 'Lenovo ', '2025-10-27');
+(1, 'Lenovo ', '2025-10-27'),
+(2, 'HP', '2025-10-28');
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,7 @@ CREATE TABLE `computers` (
 --
 
 INSERT INTO `computers` (`id`, `computer_name`, `brand`, `serial_number`, `memory_size`, `hard_drive_size`, `lab`, `date_added`) VALUES
-(2, 'DESKTOP-N9R4ILO', 1, '26100.6899', '5gig', '500gig ', 1, '2025-10-27');
+(2, 'DESKTOP-N9R4ILO', 1, '26100.6899', '16', '500', 1, '2025-10-27');
 
 -- --------------------------------------------------------
 
@@ -80,7 +81,37 @@ CREATE TABLE `course` (
 --
 
 INSERT INTO `course` (`id`, `course_name`) VALUES
-(4, 'Software En5');
+(4, 'Software En'),
+(5, 'Database');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `examination`
+--
+
+CREATE TABLE `examination` (
+  `id` int(11) NOT NULL,
+  `examination_date` date NOT NULL,
+  `batch_time` varchar(100) NOT NULL,
+  `session` varchar(100) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `date_booked` date NOT NULL,
+  `start_time` varchar(100) NOT NULL,
+  `course_model` varchar(100) NOT NULL,
+  `batch_semester` varchar(100) NOT NULL,
+  `lab_id` int(11) NOT NULL,
+  `date_added` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `examination`
+--
+
+INSERT INTO `examination` (`id`, `examination_date`, `batch_time`, `session`, `course_id`, `date_booked`, `start_time`, `course_model`, `batch_semester`, `lab_id`, `date_added`) VALUES
+(1, '2025-10-14', '', '0', 0, '2025-10-15', '7', '', '', 0, '2025-10-28'),
+(2, '2025-10-15', '', '0', 0, '2025-10-16', '7', '1', 'Semester 2', 1, '2025-10-28'),
+(3, '2025-10-15', '', '0', 0, '2025-10-16', '7', '1', 'Semester 2', 1, '2025-10-28');
 
 -- --------------------------------------------------------
 
@@ -104,7 +135,7 @@ CREATE TABLE `instructors` (
 --
 
 INSERT INTO `instructors` (`id`, `first_name`, `last_name`, `lab_id`, `phone`, `email`, `course_id`, `date_added`) VALUES
-(4, 'Okyere', 'Enock', 1, '0556061647', 'okyere@gmail.com', 4, '2025-10-27');
+(5, 'Okyere', 'Enock', 1, '05560616477', 'okyere@gmail.com', 4, '2025-10-28');
 
 -- --------------------------------------------------------
 
@@ -175,6 +206,12 @@ ALTER TABLE `course`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `examination`
+--
+ALTER TABLE `examination`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `instructors`
 --
 ALTER TABLE `instructors`
@@ -205,7 +242,7 @@ ALTER TABLE `lab`
 -- AUTO_INCREMENT for table `brand`
 --
 ALTER TABLE `brand`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `computers`
@@ -217,13 +254,19 @@ ALTER TABLE `computers`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `examination`
+--
+ALTER TABLE `examination`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `instructors`
 --
 ALTER TABLE `instructors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `issues`
