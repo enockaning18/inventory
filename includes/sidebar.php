@@ -1,11 +1,11 @@
-    <div class="navigation">
+    <div class="navigation" style="overflow-y: scroll;">
         <ul class="m-0 p-0">
             <li>
                 <a href="nav_link.php" class="">
                     <span class="icon">
                         <img src="assets/imgs/inventory_logo.png" class="img-fluid" width="100px"  alt="">
                     </span>
-                    <span class="title" style="font-size: 22px; color: yellow;">Inventory</span>
+                    <span class="title" style="font-size: 22px; color: yellow;">Inventory Manager</span>
                 </a>
             </li>
 
@@ -19,11 +19,11 @@
             </li>
 
             <li>
-                <a href="computers.php">
+                <a href="examination.php">
                     <span class="icon">
-                        <ion-icon name="laptop-outline"></ion-icon>
+                        <ion-icon name="book-outline"></ion-icon>
                     </span>
-                    <span class="title">Computers </span>
+                    <span class="title">Examination</span>
                 </a>
             </li>
 
@@ -37,11 +37,29 @@
             </li>
 
             <li>
+                <a href="modules.php">
+                    <span class="icon">
+                        <ion-icon name="document-outline"></ion-icon>
+                    </span>
+                    <span class="title">Course Modules </span>
+                </a>
+            </li>
+
+            <li>
                 <a href="instructors.php">
                     <span class="icon">
                         <ion-icon name="school-outline"></ion-icon>
                     </span>
                     <span class="title">Instructors</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="computers.php">
+                    <span class="icon">
+                        <ion-icon name="laptop-outline"></ion-icon>
+                    </span>
+                    <span class="title">Computers </span>
                 </a>
             </li>
 

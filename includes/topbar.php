@@ -17,7 +17,7 @@
         <div class="d-flex align-items-center ">
             <div><a class="text-decoration-none me-3" href="#">Change Password</a></div>
             <div class="user">
-                <img src="assets/imgs/userCircle.png" alt="User-Profile">
+                <a href="users.php"><img src="assets/imgs/userCircle.png" alt="User-Profile"></a>
             </div>
         </div>
 
