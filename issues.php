@@ -28,8 +28,9 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
 <head>
     <meta charset="UTF-8">
-    <title> Issues </title>
-    <link rel="shortcut icon" href="../assets/imgs/icons/frhab-favlogo.ico" type="image/x-icon">
+    <title>Issues - IPMC INVENTORY MANAGER</title>
+    <link rel="icon" type="image/ico" href="assets/imgs/inventory_logo.png" />
+
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-icons.min.css" />

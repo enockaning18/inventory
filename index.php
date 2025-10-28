@@ -11,11 +11,10 @@ require_once('alert.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
     <title>Login</title>
-
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="" href="" />
+    <link rel="icon" type="image/ico" href="assets/imgs/inventory_logo.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
