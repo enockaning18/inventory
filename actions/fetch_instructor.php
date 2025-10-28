@@ -11,18 +11,19 @@ if (!$conn) {
 // Collect filters
 $search     = isset($_POST['search']) ? trim($_POST['search']) : '';
 
-$sql = "SELECT * FROM instructors  WHERE 1";
+$sql = "SELECT instructors.id, course.id, email, first_name, last_name, phone, course.course_name, instructors.date_added FROM instructors
+        INNER JOIN course ON instructors.id = course.id  WHERE 1";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
     $sql .= " AND (first_name LIKE '%$search%' 
               OR last_name LIKE '%$search%' 
               OR phone LIKE '%$search%' 
-              OR course LIKE '%$search%' 
+              OR course_name LIKE '%$search%' 
               OR email LIKE '%$search%')";
 }
 
-$sql .= " ORDER BY id DESC";
+$sql .= " ORDER BY instructors.id DESC";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
@@ -33,7 +34,7 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['first_name']) . ' ' . $row['last_name']. "</td>
                 <td>" . htmlspecialchars($row['phone']) . "</td>
                 <td>" . htmlspecialchars($row['email']) . "</td>
-                <td>" . htmlspecialchars($row['course_id']) . "</td>
+                <td>" . htmlspecialchars($row['course_name']) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
                 <a class='text-decoration-none'href='actions/edit_instructor.php?id=" . $row['id'] . "'>

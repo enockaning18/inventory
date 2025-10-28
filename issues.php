@@ -127,6 +127,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                     <th>Lab</th>
                                     <th>Issue Date </th>
                                     <th>Issue Description</th>
+                                    <th>Issue Date</th>
                                     <th>Date Added</th>
                                     <th>Action</th>
                                 </tr>

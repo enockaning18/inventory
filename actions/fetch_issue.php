@@ -11,18 +11,20 @@ if (!$conn) {
 // Collect filters
 $search     = isset($_POST['search']) ? trim($_POST['search']) : '';
 
-$sql = "SELECT * FROM issues WHERE 1";
+$sql = "SELECT issues.id, computers.computer_name, issue_type, lab.lab_name, issue_date, issue_description, issues.date_added FROM issues
+        INNER JOIN computers ON issues.id = issues.id
+        INNER JOIN lab ON issues.id = issues.id  WHERE 1 ";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
-    $sql .= " AND (computer LIKE '%$search%' 
+    $sql .= " AND (computer_name LIKE '%$search%' 
               OR issue_type LIKE '%$search%' 
               OR lab LIKE '%$search%' 
               OR issue_date LIKE '%$search%' 
               OR issue_description LIKE '%$search%'";
 }
 
-$sql .= " ORDER BY id DESC";
+$sql .= " ORDER BY issues.id DESC";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
@@ -30,11 +32,12 @@ if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
-                <td>" . htmlspecialchars($row['computer']) .  "</td>
+                <td>" . htmlspecialchars($row['computer_name']) .  "</td>
                 <td>" . htmlspecialchars($row['issue_type']) . "</td>
-                <td>" . htmlspecialchars($row['lab']) . "</td>
+                <td>" . htmlspecialchars($row['lab_name']) . "</td>
                 <td>" . htmlspecialchars($row['issue_date']) . "</td>
                 <td>" . htmlspecialchars($row['issue_description']) . "</td>
+                <td>" . htmlspecialchars($row['issue_date']) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
                 <a class='text-decoration-none'href='actions/edit_issue.php?id=" . $row['id'] . "'>
