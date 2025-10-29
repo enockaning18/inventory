@@ -123,30 +123,15 @@ function successAlert($title)
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
-            <?php elseif ($_GET['status'] == 'instructor_exist'): ?>
+            <?php elseif ($_GET['status'] == 'exists'): ?>
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Instructor already exist, try again!',
+                    text: '<?php echo $title; ?> already exist, try again',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
-            <?php elseif ($_GET['status'] == 'pc_exist'): ?>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Computer already exist, check again!',
-                    confirmButtonColor: '#d33',
-                    confirmButtonText: 'Retry'
-                });
-            <?php elseif ($_GET['status'] == 'duplicate'): ?>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'This Lab already exist, avoid duplicates',
-                    confirmButtonColor: '#d33',
-                    confirmButtonText: 'Retry'
-                });
+            
             <?php elseif ($_GET['status'] == 'lab_fk_error'): ?>
                 Swal.fire({
                     icon: 'error',

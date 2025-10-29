@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($duplicate_found) {
         // Duplicate lab name and course combination found
-        header("Location: ../labs.php?status=duplicate");
+        header("Location: ../labs.php?status=exists");
         exit();
     }
 

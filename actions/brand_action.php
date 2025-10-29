@@ -1,58 +1,66 @@
 <?php
-
-// require your database connection
 require_once('../baseConnect/dbConnect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $id  = mysqli_real_escape_string($conn, $_POST['id']);
-    $brand_name = mysqli_real_escape_string($conn, $_POST['brand_name']);
+    $id          = mysqli_real_escape_string($conn, $_POST['id']);
+    $brand_name  = mysqli_real_escape_string($conn, trim($_POST['brand_name']));
 
-    // check whether brand id exists
     if (!empty($id)) {
 
-        // update the record
-        $stmt = $conn->prepare("UPDATE brand SET brand_name = ? WHERE id = ?");
+        // Check if another brand already has the same name
+        $check = $conn->prepare("SELECT id FROM brand WHERE brand_name = ? AND id != ?");
+        $check->bind_param("si", $brand_name, $id);
+        $check->execute();
+        $check->store_result();
 
+        if ($check->num_rows > 0) {
+            header("Location: ../brands.php?status=exists");
+            exit();
+        }
+        $check->close();
+
+        
+        $stmt = $conn->prepare("UPDATE brand SET brand_name = ? WHERE id = ?");
         if ($stmt) {
             $stmt->bind_param("si", $brand_name, $id);
-
             if ($stmt->execute()) {
                 header("Location: ../brands.php?status=update");
-                exit();
             } else {
                 header("Location: ../brands.php?status=error");
-                exit();
             }
-
             $stmt->close();
         } else {
-            // SQL error (wrong table/columns)
             header("Location: ../brands.php?status=error");
+        }
+
+    } else {
+        
+        $check = $conn->prepare("SELECT id FROM brand WHERE brand_name = ?");
+        $check->bind_param("s", $brand_name);
+        $check->execute();
+        $check->store_result();
+
+        if ($check->num_rows > 0) {
+            header("Location: ../brands.php?status=exists");
             exit();
         }
-    } else {
+        $check->close();
 
-        // insert a new record
-        $stmt = $conn->prepare("INSERT INTO brand (brand_name) 
-                VALUES (?)");
-
+        $stmt = $conn->prepare("INSERT INTO brand (brand_name) VALUES (?)");
         if ($stmt) {
             $stmt->bind_param("s", $brand_name);
-
             if ($stmt->execute()) {
                 header("Location: ../brands.php?status=save");
-                exit();
             } else {
                 header("Location: ../brands.php?status=error");
-                exit();
             }
-
             $stmt->close();
         } else {
-            // SQL error (wrong table/columns)
             header("Location: ../brands.php?status=error");
-            exit();
         }
     }
+
+    exit();
 }
+?>

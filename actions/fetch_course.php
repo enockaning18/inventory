@@ -1,4 +1,3 @@
-
 <?php
 require_once('../baseConnect/dbConnect.php');
 
@@ -12,20 +11,36 @@ if (!$conn) {
 $search     = isset($_POST['search']) ? trim($_POST['search']) : '';
 $reporttype = isset($_POST['reporttype']) ? trim($_POST['reporttype']) : '';
 
-$sql = " SELECT course.*, users.email AS email FROM course 
-         INNER JOIN users ON `course`.`createdby` = `users`.`id`
-         WHERE 1";
+// Base query
+$sql = "SELECT c.*, u.email, c.datecreated 
+        AS coursedate FROM course AS c 
+        INNER JOIN users AS u ON c.createdby = u.id 
+        WHERE 1";
+
+// Add search filter (safely)
+$params = [];
+$types  = '';
 
 if (!empty($search)) {
-    $search = $conn->real_escape_string($search);
-    $sql .= " AND (course_name LIKE '%$search%' 
-              OR id LIKE '%$search%' 
-              OR createdby LIKE '%$search%')";
+    $sql .= " AND (c.course_name LIKE ? OR c.id LIKE ?)";
+    $searchTerm = "%$search%";
+    $params[] = &$searchTerm;
+    $params[] = &$searchTerm;
+    $types .= 'ss';
 }
 
+$sql .= " ORDER BY c.id DESC";
 
-$sql .= " ORDER BY id DESC ";
-$result = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+
+// Bind parameters dynamically if search was used
+if (!empty($params)) {
+    array_unshift($params, $types);
+    call_user_func_array([$stmt, 'bind_param'], $params);
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result && $result->num_rows > 0) {
     $counter = 1;
@@ -34,19 +49,22 @@ if ($result && $result->num_rows > 0) {
                 <th scope='row'>" . $counter++ . "</th>
                 <td>" . htmlspecialchars($row['course_name']) . "</td>
                 <td>" . htmlspecialchars($row['email']) . "</td>
-                <td>" . htmlspecialchars($row['datecreated'] ?? '') . "</td>
+                <td>" . htmlspecialchars($row['coursedate'] ?? '') . "</td>
                 <td>
-                    <a class='text-decoration-none 'href='actions/edit_course.php?id_course=" . $row['id'] . "'>
+                    <a class='text-decoration-none' href='actions/edit_course.php?id_course=" . intval($row['id']) . "'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>
-                    <a class='text-decoration-none'href='actions/delete_course.php?id=" . $row['id'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE COURSE?');\">
+                    <a class='text-decoration-none' href='actions/delete_course.php?id=" . intval($row['id']) . "' 
+                       onclick=\"return confirm('Do you want to delete this course?');\">
                         <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                     </a>
                 </td>
             </tr>";
     }
 } else {
-    echo "<tr><td colspan='7' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No Lab Record(s) Found</td></tr>";
+    echo "<tr><td colspan='7' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Course Record(s) Found</td></tr>";
 }
 
+$stmt->close();
 $conn->close();
+?>

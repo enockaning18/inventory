@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check->store_result();
 
         if ($check->num_rows > 0) {
-            header("Location: ../computers.php?status=pc_exist");
+            header("Location: ../computers.php?status=exists");
             exit();
         }
         $check->close();
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check->store_result();
 
         if ($check->num_rows > 0) {
-            header("Location: ../computers.php?status=pc_exist");
+            header("Location: ../computers.php?status=exists");
             exit();
         }
         $check->close();
