@@ -60,7 +60,7 @@
             <div class="cardName">Computers</div>
         </div>
         <div class="iconBx">
-            <ion-icon name="cart-outline"></ion-icon>
+            <ion-icon name="laptop-outline"></ion-icon>
         </div>
     </div>
 
@@ -70,7 +70,7 @@
             <div class="cardName">Replacements</div>
         </div>
         <div class="iconBx">
-            <ion-icon name="chatbubbles-outline"></ion-icon>
+            <ion-icon name="refresh-outline"></ion-icon>
         </div>
     </div>
 
@@ -81,7 +81,7 @@
             <div class="cardName">Issues</div>
         </div>
         <div class="iconBx">
-            <ion-icon name="cash-outline"></ion-icon>
+            <ion-icon name="alert-circle-outline"></ion-icon>
         </div>
     </div>
 </div>

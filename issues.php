@@ -48,7 +48,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     ?>
     <div class=" mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
-            <h3><ion-icon name="cash-outline"></ion-icon> Issues </h3>
+            <h3><ion-icon name="alert-circle-outline"></ion-icon> Issues </h3>
             <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Issue </button>
         </div>
         <hr style="margin-bottom: 3rem;">
@@ -75,7 +75,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <select required id="Type" name="issue_type" class="form-select">
                         <option value="">Select</option>
                         <option value="Software" <?php echo (isset($issue_type) && $issue_type == 'Software') ? 'selected' : '' ?>>Software</option>
-                        <option value="Hardware" <?php echo (isset($issue_type) && $issue_type == 'Hardware') ? 'selected' : '' ?>>Software</option>
+                        <option value="Hardware" <?php echo (isset($issue_type) && $issue_type == 'Hardware') ? 'selected' : '' ?>>Hardware</option>
                     </select>
                 </div>
 
@@ -100,7 +100,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="date" name="issue_date" value="<?php echo isset($issue_date) ? $issue_date  : '' ?>" class="form-control">
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <label class="form-label">Issue Description</label>
                     <textarea class="form-control" name="issue_description" id=""><?php echo isset($issue_description) ? $issue_description  : '' ?></textarea>
                 </div>
@@ -114,15 +114,16 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             <div class="col">
                 <div class="card shadow">
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
-                        <h5 class="mb-0" style="color: maroon;">List </h5>
+                        <h5 class="mb-0" style="color: maroon;">List of Issues </h5>
                         <form id="filterForm" class="d-flex gap-2">
-                            <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search ..">
+                            <input type="search" class="form-control px-4" id="searchBox" name="search" placeholder="Search..">
 
                             <select name="reporttype" id="reporttype" class="form-select">
-                                <option value="">All</option>
+                                <option value="">All Labs</option>
                                 <option value=""> </option>
-                                <option value=""> </option>
-                                <option value=""> </option>
+                            </select>
+                            <select name="reporttype" id="reporttype" class="form-select">
+                                <option value="">Issue Type </option>
                                 <option value=""> </option>
                             </select>
                         </form>

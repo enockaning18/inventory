@@ -8,12 +8,8 @@ require_once('baseConnect/dbConnect.php');
 
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT lab_name, course.course_name, CONCAT(first_name, ' ', last_name) AS full_name, lab.number_computers, lab.date_added, lab.id, lab.course_id, course.course_name FROM instructors
-    INNER JOIN course ON course.id = instructors.id
-    LEFT JOIN lab ON lab.id = instructors.lab_id WHERE  lab.id = ?");
-
-
-
+    $stmt = $conn->prepare("SELECT lab_name, course.course_name, lab.number_computers, lab.date_added, lab.id, lab.course_id, course.course_name FROM lab
+    INNER JOIN course ON course.id = lab.course_id WHERE  lab.id = ?");
 
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
@@ -22,13 +18,14 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         $id = $row['id'];
         $lab_name = $row['lab_name'];
         $course_id  = $row['course_id'];
-        // $instructor = $row['instructor'];
         $number_computers = $row['number_computers'];
         $course_name = $row['course_name'];
     }
     $stmt->close();
 
-} else if (isset($_GET['edit_course_id']) && is_numeric($_GET['edit_course_id'])) {
+} 
+// edit course
+else if (isset($_GET['edit_course_id']) && is_numeric($_GET['edit_course_id'])) {
     $edit_course_id = intval($_GET['edit_course_id']);
     $stmt = $conn->prepare("SELECT * FROM course WHERE id = ?");
 
@@ -68,8 +65,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     ?>
     <div class=" mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
-            <h3><ion-icon name="home-outline"></ion-icon> Lab & Couse</h3>
-            <!-- <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)"></button> -->
+            <h3><ion-icon name="home-outline"></ion-icon> Lab & Course</h3>
+            <a href="viewcourse.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">View Courses</button></a>
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 7rem">
@@ -150,12 +147,12 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
                         <h5 class="mb-0" style="color: maroon;">List of Labs</h5>
                         <form id="filterForm" class="d-flex gap-2">
-                            <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search ..">
+                            <input type="search" class="form-control px-4" id="searchBox" name="search" placeholder="Search..">
 
                             <select name="reporttype" id="reporttype" class="form-select">
                                 <option value="">All</option>
-                                <option value="">Lab</option>
-                                <option value="">Course</option>
+                                <option value="">Labs</option>
+                                <option value="">Courses</option>
                             </select>
                         </form>
                     </div>
@@ -164,11 +161,10 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Lab Name</th>
-                                    <th>Lab Course</th>
-                                    <th>Instructor</th>
+                                    <th>Name</th>
+                                    <th>Course</th>
                                     <th>Number of Computer</th>
-                                    <th>Date Added</th>
+                                    <th>DateCreated</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -219,8 +215,6 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             });
         });
     </script>
-
-
 
 
     <?php

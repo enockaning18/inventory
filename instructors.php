@@ -8,10 +8,11 @@ require_once('baseConnect/dbConnect.php');
 
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, first_name, last_name, phone, email, lab_id, course  FROM instructors WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, first_name, last_name, phone, email, lab_id, course_id FROM instructors WHERE id = ?");
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
+
     if ($row) {
         $id = $row['id'];
         $first_name = $row['first_name'];
@@ -50,7 +51,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     ?>
     <div class=" mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
-            <h3><ion-icon name="school-outline"></ion-icon> Instructor </h3>
+            <h3><ion-icon name="school-outline"></ion-icon> Instructors </h3>
             <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save / Update Instructor</button>
         </div>
         <hr style="margin-bottom: 3rem;">
@@ -59,35 +60,20 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <div class="col-md-4">
                     <label class="form-label">First Name</label>
                     <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
-                    <input required type="text" name="first_name" value="<?php echo isset($first_name) ? $first_name : '' ?>" class="form-control">
+                    <input required type="text" name="first_name" placeholder="Alpha" value="<?php echo isset($first_name) ? $first_name : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Last Name</label>
-                    <input required type="text" name="last_name" value="<?php echo isset($last_name) ? $last_name : '' ?>" class="form-control">
+                    <input required type="text" name="last_name" placeholder="Test" value="<?php echo isset($last_name) ? $last_name : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Phone</label>
-                    <input required type="number" name="phone" value="<?php echo isset($phone) ? $phone : '' ?>" class="form-control">
+                    <input required type="number" name="phone" placeholder="0244 111 222" value="<?php echo isset($phone) ? $phone : '' ?>" class="form-control">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Email</label>
-                    <input required type="email" name="email" value="<?php echo isset($email) ? $email : '' ?>" class="form-control">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label"> Course</label>
-                    <?php
-                    $query_command = "SELECT * FROM course ";
-                    $result = $conn->query($query_command);
-                    ?>
-                    <select required id="Type" name="course_id" class="form-select">
-                        <option value="">Select Course</option>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($course_id) && $course_id ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['course_name']?></option>
-                        <?php } ?>
-
-                    </select>
+                    <input required type="email" name="email" placeholder="instructor@gmail.com" value="<?php echo isset($email) ? $email : '' ?>" class="form-control">
                 </div>
 
                 <div class="col-md-4">
@@ -105,6 +91,19 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     </select>
                 </div>
 
+                <div class="col-md-4">
+                    <label class="form-label"> Course</label>
+                    <?php
+                    $query_command = "SELECT * FROM course ";
+                    $result = $conn->query($query_command);
+                    ?>
+                    <select required id="Type" name="course_id" class="form-select">
+                        <option value="">Select Course</option>
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($course_id) && $course_id ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['course_name']?></option>
+                        <?php } ?>
+                    </select>
+                </div>
             </form>
         </div>
     </div>
@@ -116,13 +115,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
                         <h5 class="mb-0" style="color: maroon;">List of Instructors</h5>
                         <form id="filterForm" class="d-flex gap-2">
-                            <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search ..">
-
-                            <select name="reporttype" id="reporttype" class="form-select">
-                                <option value="">All</option>
-                                <option value=""> </option>
-
-                            </select>
+                            <input type="search" class="form-control px-4" id="searchBox" name="search" placeholder="Search..">
                         </form>
                     </div>
                     <div class="table-responsive" style="height: 300px">
@@ -130,11 +123,12 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Full Name</th>
+                                    <th>Fullname</th>
                                     <th>Phone</th>
                                     <th>Email</th>
+                                    <th>Lab</th>
                                     <th>Course</th>
-                                    <th>Date Added</th>
+                                    <th>DateCreated</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

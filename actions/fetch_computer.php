@@ -38,8 +38,8 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['computer_name']) . "</td>
                 <td>" . htmlspecialchars($row['brand_name']) . "</td>
                 <td>" . htmlspecialchars($row['serial_number']) . "</td>
-                <td>" . htmlspecialchars($row['memory_size']) . '(gig)'. "</td>
-                <td>" . htmlspecialchars($row['hard_drive_size']) . '(gig)'. "</td>
+                <td>" . htmlspecialchars($row['memory_size']) . 'GB'. "</td>
+                <td>" . htmlspecialchars($row['hard_drive_size']) . 'GB'. "</td>
                 <td>" . htmlspecialchars($row['lab_name']) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
@@ -53,7 +53,7 @@ if ($result && $result->num_rows > 0) {
             </tr>";
     }
 } else {
-    echo "<tr><td colspan='10' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No computers Record(s) Found</td></tr>";
+    echo "<tr><td colspan='10' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No computer Record(s) Found</td></tr>";
 }
 
 $conn->close();

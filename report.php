@@ -52,50 +52,8 @@ require_once('alert.php');
                     <input required type="date" name="" value="" class="form-control">
                 </div>
                 
-                <button type="submit" form="Form" class="btn btn-primary text-white mt-4 ms-2 px-4 col-2" >Generate Report</button>
+                <button type="submit" form="Form" class="btn btn-primary text-white mt-4 ms-2 px-4 col-4" >Generate Report</button>
             </form>
-        </div>
-    </div>
-
-    <div class=" mt-5 mx-auto" style="width: 95%">
-        <div class="row">
-            <div class="col">
-                <div class="card shadow">
-                    <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
-                        <h5 class="mb-0" style="color: maroon;">Report </h5>
-                        <form id="filterForm" class="d-flex gap-2">
-                            <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search ..">
-
-                            <select name="reporttype" id="reporttype" class="form-select">
-                                <option value="">All</option>
-                                <option value=""> </option>
-                                <option value=""> </option>
-                                <option value=""> </option>
-                                <option value=""> </option>
-                            </select>
-                        </form>
-                    </div>
-                    <div class="table-responsive" style="height: 300px">
-                        <table class="table table-striped align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="Table">
-                                <!-- fetch the data using the ajax -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-footer">
-                        <nav>
-                            <ul class="pagination justify-content-center mb-0">
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

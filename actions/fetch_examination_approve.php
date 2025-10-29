@@ -16,7 +16,7 @@ $sql = "SELECT examination.*, course.course_name AS course, module.name
         INNER JOIN course ON examination.course_id = course.id
         INNER JOIN module ON examination.module_id = module.id
         -- INNER JOIN instructor ON examination.instructor_id = instructors.id
-        WHERE 1";
+        WHERE status = 'approved'";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
@@ -66,7 +66,7 @@ if ($result && $result->num_rows > 0) {
             </tr>";
     }
 } else {
-    echo "<tr><td colspan='11' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Examination Record(s) Found</td></tr>";
+    echo "<tr><td colspan='11' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Approved Exam(s) Found</td></tr>";
 }
 
 $conn->close();

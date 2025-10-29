@@ -12,9 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $course_id      = mysqli_real_escape_string($conn, $_POST['course_id']);
     $date_booked       = mysqli_real_escape_string($conn, $_POST['date_booked']);
     $start_time      = mysqli_real_escape_string($conn, $_POST['start_time']);
-    $course_model      = mysqli_real_escape_string($conn, $_POST['course_model']);
+    $module_id      = mysqli_real_escape_string($conn, $_POST['module_id']);
+    $instructor_id      = mysqli_real_escape_string($conn, $_POST['instructor_id']);
     $batch_semester      = mysqli_real_escape_string($conn, $_POST['batch_semester']);
-    $lab_id      = mysqli_real_escape_string($conn, $_POST['lab_id']);
+    $status      = mysqli_real_escape_string($conn, $_POST['status']);
     // $      = mysqli_real_escape_string($conn, $_POST['']);
 
 
@@ -22,10 +23,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($id)) {
 
         // update the record
-        $stmt = $conn->prepare("UPDATE examination SET examination_date = ?, batch_time = ?, session = ?, course_id = ?, date_booked = ?, start_time = ?, course_model = ?, batch_semester = ?,  lab_id = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE examination SET examination_date = ?, batch_time = ?, session = ?, course_id = ?, date_booked = ?, start_time = ?, module_id = ?, batch_semester = ?,  status = ? WHERE id = ?");
 
         if ($stmt) {
-            $stmt->bind_param("sssissssii", $examination_date, $batch_time, $session, $course_id, $date_booked, $start_time, $course_model, $batch_semester, $lab_id, $id);
+            $stmt->bind_param("sssissssii", $examination_date, $batch_time, $session, $course_id, $date_booked, $start_time, $module_id, $batch_semester, $status, $id);
 
             if ($stmt->execute()) {
                 header("Location: ../examination.php?status=update");
@@ -44,11 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
 
         // insert a new record
-        $stmt = $conn->prepare("INSERT INTO examination (examination_date, batch_time, session, course_id, date_booked, start_time, course_model, batch_semester, lab_id) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO examination (examination_date, batch_time, session, course_id, date_booked, start_time, module_id, instructor_id, batch_semester, status) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
 
         if ($stmt) {
-            $stmt->bind_param("sssissssi", $examination_date, $batch_time, $session, $course_id, $date_booked, $start_time, $course_model, $batch_semester, $lab_id);
+            $stmt->bind_param("sssisssisi", $examination_date, $batch_time, $session, $course_id, $date_booked, $start_time, $module_id, $instructor_id, $batch_semester, $status);
 
             if ($stmt->execute()) {
                 header("Location: ../examination.php?status=save");

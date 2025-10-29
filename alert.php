@@ -107,11 +107,19 @@ function successAlert($title)
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
-            <?php elseif ($_GET['status'] == 'fk_error'): ?>
+            <?php elseif ($_GET['status'] == 'lab_fk_error'): ?>
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops... can\'t delete',
-                    text: 'Lab / Course has been assigned to an instructor ',
+                    text: 'Lab has been assigned to an instructor ',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
+            <?php elseif ($_GET['status'] == 'course_fk_error'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops... can\'t delete',
+                    text: 'Course has been assigned to an instructor ',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });

@@ -61,9 +61,9 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 Examinations
             </h3>
             <div>
-                <a href="approvedexams.php"><button class="btn text-white px-2" style="background-color:green;">Approved</button></a>
-                <a href="pendingexams.php"><button class="btn text-white px-2" style="background-color:gold;">Pending</button></a>
-                <a href="cancelledexams.php"><button class="btn text-white px-2" style="background-color:red;">Cancelled</button></a>
+                <a href="approved_exams.php"><button class="btn text-white px-2" style="background-color:green;">Approved</button></a>
+                <a href="pending_exams.php"><button class="btn text-white px-2" style="background-color:gold;">Pending</button></a>
+                <a href="cancelled_exams.php"><button class="btn text-white px-2" style="background-color:red;">Cancelled</button></a>
             </div>
             <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Exams </button>
         </div>
@@ -77,25 +77,34 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 </div>
                 
                 <div class="col-md-4">
-                    <label class="form-label"> Course</label>
-                    <select required id="Type" name="course_id" class="form-select">
-                        <option value="none">Choose Course</option>
-                        <option value="software">Software</option>
-                        <option value="database">Database</option>
-                        <option value="graphics">Graphics & Web</option>
-                        <option value="workplace">IT @ Workplace</option>
-                        <option value="systemengineer">System Engineering</option>
-                        <option value="hardware_network">Hardware & Networking</option>
-                        <option value="cyber">Cyber Security</option>
+                    <label class="form-label">Course</label>
+                    <?php
+                    $query_command = "SELECT * FROM course";
+                    $result = $conn->query($query_command);
+                    ?>
+                    <select required name="course_id" class="form-select">
+                        <option value="">Select Course</option>
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($course_id) && $course_id ==  $row['id']) ? 'selected' : '' ?>>
+                                <?php echo $row['course_name']  ?>
+                            </option>
+                        <?php } ?>
                     </select>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label"> Module</label>
-                    <select required id="Type" name="course_model" class="form-select">
-                        <option value="">Choose Module</option>
-                        <option value="1">PHP</option>
-                        <option value="2">HTML 5</option>
+                    <?php
+                    $query_command = "SELECT * FROM module";
+                    $result = $conn->query($query_command);
+                    ?>
+                    <select required name="module_id" class="form-select">
+                        <option value="">Select Module</option>
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($module_id) && $module_id ==  $row['id']) ? 'selected' : '' ?>>
+                                <?php echo $row['name']  ?>
+                            </option>
+                        <?php } ?>
                     </select>
                 </div>
 
@@ -115,10 +124,10 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <label class="form-label"> Batch Semester </label>
                     <select required id="Type" name="batch_semester" class="form-select">
                         <option value="">Choose Semester</option>
-                        <option value="Semester 1">Semester 1</option>
-                        <option value="Semester 2">Semester 2</option>
-                        <option value="Semester 3">Semester 3</option>
-                        <option value="Semester 4">Semester 4</option>
+                        <option value="Sem-1">Semester 1</option>
+                        <option value="Sem-2">Semester 2</option>
+                        <option value="Sem-3">Semester 3</option>
+                        <option value="Sem-4">Semester 4</option>
                     </select>
                 </div>
 
@@ -139,17 +148,9 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <div class="col-md-4">
                     <label class="form-label">Start Time </label>
                     <input type="time" name="start_time" id="start_time" class="form-control" required>
+                    <input type="hidden" name="status" id="status" class="form-control" value="2">
+                    <input type="hidden" name="instructor" id="instructor" class="form-control" value="<?php echo isset($instructorid) ? $instructorid : '' ?>">
                 </div>                          
-
-                <div class="col-md-4">
-                    <label class="form-label"> Status </label>
-                    <select required id="Type" name="lab_id" class="form-select">
-                        <option value="">Choose Option</option>
-                        <option value="approve">Approve</option>
-                        <option value="pending">Pending</option>
-                        <option value="cancelled">Cancelled</option>
-                    </select>
-                </div>
             </form>
             <hr style="margin-bottom: 3rem;">
         </div>
@@ -183,16 +184,17 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>ExaminationDate </th>
-                                    <th>Batch </th>
-                                    <th>Session </th>
+                                    <th>ExamsDate </th>
                                     <th>Course </th>
-                                    <th>DateBooked </th>
-                                    <th>StartTime </th>
                                     <th>Module </th>
+                                    <th>BatchTime </th>
+                                    <th>Session </th>
+                                    <th>StartTime </th>
                                     <th>Semester </th>
-                                    <th>Lab</th>
-                                    <th>Action</th>
+                                    <th>Status</th>
+                                    <th>Instructor</th>
+                                    <th>DateBooked</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="examination_table">

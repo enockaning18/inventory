@@ -11,8 +11,10 @@ if (!$conn) {
 // Collect filters
 $search     = isset($_POST['search']) ? trim($_POST['search']) : '';
 
-$sql = "SELECT instructors.id, course.id, email, first_name, last_name, phone, course.course_name, instructors.date_added FROM instructors
-        INNER JOIN course ON instructors.id = course.id  WHERE 1";
+$sql = "SELECT instructors.*, instructors.id AS instructid, CONCAT(first_name,' ',last_name) AS instructname, 
+        course_name, lab_name, instructors.date_added FROM instructors
+        INNER JOIN course ON instructors.course_id = course.id  
+        INNER JOIN lab ON course.id = lab.course_id WHERE 1";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
@@ -31,9 +33,10 @@ if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
-                <td>" . htmlspecialchars($row['first_name']) . ' ' . $row['last_name']. "</td>
+                <td>" . htmlspecialchars($row['instructname']) . "</td>
                 <td>" . htmlspecialchars($row['phone']) . "</td>
                 <td>" . htmlspecialchars($row['email']) . "</td>
+                <td>" . htmlspecialchars($row['lab_name']) . "</td>
                 <td>" . htmlspecialchars($row['course_name']) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
@@ -47,7 +50,7 @@ if ($result && $result->num_rows > 0) {
             </tr>";
         }
 } else {
-    echo "<tr><td colspan='7' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No Lab Record(s) Found</td></tr>";
+    echo "<tr><td colspan='8' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No Instructor Record(s) Found</td></tr>";
 }
 
 $conn->close();
