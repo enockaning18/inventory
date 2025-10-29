@@ -82,7 +82,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     $query_command = "SELECT * FROM lab ";
                     $result = $conn->query($query_command);
                     ?>
-                    <select required id="Type" name="lab_id" class="form-select">
+                    <select required id="lab_id" name="lab_id" class="form-select">
                         <option value="">Select Lab</option>
                         <?php while ($row = $result->fetch_assoc()) { ?>
                             <option value="<?php echo $row['id'] ?>" <?php echo (isset($lab_id) && $lab_id ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['lab_name']?></option>

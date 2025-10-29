@@ -19,10 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($id)) {
 
         // update the record
-        $stmt = $conn->prepare("UPDATE instructors SET first_name = ?, last_name = ?, phone = ?, email = ?,  course_id = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE instructors SET first_name = ?, last_name = ?, lab_id = ?, phone = ?, email = ?,  course_id = ? WHERE id = ?");
 
         if ($stmt) {
-            $stmt->bind_param("sssssi", $first_name, $last_name, $phone, $email, $course_id, $id);
+            $stmt->bind_param("ssisssi", $first_name, $last_name, $lab_id, $phone, $email, $course_id, $id);
 
             if ($stmt->execute()) {
                 header("Location: ../instructors.php?status=update");

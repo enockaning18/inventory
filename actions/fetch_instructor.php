@@ -11,22 +11,37 @@ if (!$conn) {
 // Collect filters
 $search     = isset($_POST['search']) ? trim($_POST['search']) : '';
 
-$sql = "SELECT instructors.*, instructors.id AS instructid, CONCAT(first_name,' ',last_name) AS instructname, 
-        course_name, lab_name, instructors.date_added FROM instructors
-        INNER JOIN course ON instructors.course_id = course.id  
-        INNER JOIN lab ON course.id = lab.course_id WHERE 1";
+$sql = "
+    SELECT 
+        instructors.id AS instructid,
+        CONCAT(instructors.first_name, ' ', instructors.last_name) AS instructname,
+        instructors.email,
+        instructors.phone,
+        instructors.date_added,
+        course.course_name,
+        lab.lab_name
+    FROM instructors
+    INNER JOIN course ON instructors.course_id = course.id
+    LEFT JOIN lab ON instructors.lab_id = lab.id
+    WHERE 1
+";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
-    $sql .= " AND (first_name LIKE '%$search%' 
-              OR last_name LIKE '%$search%' 
-              OR phone LIKE '%$search%' 
-              OR course_name LIKE '%$search%' 
-              OR email LIKE '%$search%')";
+    $sql .= " AND (
+        instructors.first_name LIKE '%$search%' 
+        OR instructors.last_name LIKE '%$search%' 
+        OR instructors.phone LIKE '%$search%' 
+        OR instructors.email LIKE '%$search%'
+        OR course.course_name LIKE '%$search%' 
+        OR lab.lab_name LIKE '%$search%'
+    )";
 }
 
 $sql .= " ORDER BY instructors.id DESC";
+
 $result = $conn->query($sql);
+
 
 if ($result && $result->num_rows > 0) {
     $counter = 1;
@@ -40,10 +55,10 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['course_name']) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
-                <a class='text-decoration-none'href='actions/edit_instructor.php?id=" . $row['id'] . "'>
+                <a class='text-decoration-none'href='actions/edit_instructor.php?id=" . $row['instructid'] . "'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>
-                    <a class='text-decoration-none'href='actions/delete_instructor.php?id=" . $row['id'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS DATA?');\">
+                    <a class='text-decoration-none'href='actions/delete_instructor.php?id=" . $row['instructid'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS INSTRUCTOR?');\">
                         <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                     </a>
                 </td>

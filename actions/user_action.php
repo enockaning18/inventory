@@ -7,15 +7,14 @@ if (!$conn) {
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // Sanitize input
+    // Sanitize inputs
     $id            = mysqli_real_escape_string($conn, $_POST['id'] ?? '');
     $email         = mysqli_real_escape_string($conn, $_POST['email'] ?? '');
     $user_key      = mysqli_real_escape_string($conn, $_POST['userkey'] ?? '');
     $user_type     = mysqli_real_escape_string($conn, $_POST['usertype'] ?? '');
     $instructor_id = !empty($_POST['instructor_id']) ? intval($_POST['instructor_id']) : null;
-    
 
     // Validate required fields
     if (empty($email) || empty($user_type)) {
@@ -23,12 +22,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+    // validating duplicate email
+    $emailCheck = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
+    $emailCheck->bind_param("si", $email, $id);
+    $emailCheck->execute();
+    $emailResult = $emailCheck->get_result();
+    if ($emailResult->num_rows > 0) {
+        header("Location: ../users.php?status=emailexists");
+        exit();
+    }
+    $emailCheck->close();
+
+    // validating duplicate user assignment
+    if (!empty($instructor_id)) {
+        $checkQuery = $conn->prepare("SELECT id FROM users WHERE instructor_id = ? AND id != ?");
+        $checkQuery->bind_param("ii", $instructor_id, $id);
+        $checkQuery->execute();
+        $checkResult = $checkQuery->get_result();
+
+        if ($checkResult->num_rows > 0) {
+            header("Location: ../users.php?status=assigned");
+            exit();
+        }
+        $checkQuery->close();
+    }
+
     try {
         if (!empty($id)) {
-            // === UPDATE EXISTING USER ===
-            $stmt = $conn->prepare("UPDATE users 
-                                    SET email = ?, user_type = ?, instructor_id = ?, user_key = ? 
-                                    WHERE id = ?");
+            
+            $stmt = $conn->prepare("
+                UPDATE users 
+                SET email = ?, user_type = ?, instructor_id = ?, user_key = ?
+                WHERE id = ?
+            ");
+
             if (!$stmt) {
                 throw new Exception("prepare_failed");
             }
@@ -42,9 +69,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
         } else {
-            // === INSERT NEW USER ===
-            $stmt = $conn->prepare("INSERT INTO users (email, user_type, instructor_id, user_key)
-                                    VALUES (?, ?, ?, ?)");
+            
+            $stmt = $conn->prepare("
+                INSERT INTO users (email, user_type, instructor_id, user_key, date_created)
+                VALUES (?, ?, ?, ?, NOW())
+            ");
+
             if (!$stmt) {
                 throw new Exception("prepare_failed");
             }
@@ -59,14 +89,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $stmt->close();
-
     } catch (Exception $e) {
-        // Handle any unexpected errors
         header("Location: ../users.php?status=error");
+        exit();
     }
-
-    exit();
 }
 
 $conn->close();
+exit();
 ?>

@@ -3,15 +3,16 @@ require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 
 // Initialize form variables
-$id = $email = $password = $user_type = $instructor_id = "";
+$id = $email = $userkey = $usertype = $instructor_id = "";
 
-// Load existing user when editing
+// Load existing user for editing
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
     $stmt = $conn->prepare("SELECT id, email, user_type, user_key, instructor_id FROM users WHERE id = ?");
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $result = $stmt->get_result();
+
     if ($row = $result->fetch_assoc()) {
         $id = $row['id'];
         $email = $row['email'];
@@ -19,6 +20,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         $usertype = $row['user_type'];
         $instructor_id = $row['instructor_id'];
     }
+
     $stmt->close();
 }
 ?>
@@ -37,54 +39,55 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="assets/js/sweetalert.min.js"></script>
 </head>
+
 <body>
     <?php
     require("includes/sidebar.php");
     require("includes/topbar.php");
     ?>
-    
+
     <div class="mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
             <h3><ion-icon name="people-circle-outline"></ion-icon> System Users</h3>
-            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update User</button>
+            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save / Update User</button>
         </div>
         <hr style="margin-bottom: 3rem;">
 
         <div class="g-3" style="margin-bottom: 5rem">
             <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/user_action.php">
-                <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
+                <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
 
                 <div class="col-md-4">
                     <label class="form-label">Email</label>
-                    <input required type="email" name="email" value="<?php echo isset($email) ? $email : '' ?>" class="form-control">
+                    <input required type="email" name="email" value="<?php echo htmlspecialchars($email); ?>" class="form-control">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Password</label>
-                    <input required type="password" name="userkey" value="<?php echo isset($userkey) ? $userkey : '' ?>" class="form-control">
+                    <input required type="password" name="userkey" value="<?php echo htmlspecialchars($userkey); ?>" class="form-control">
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label"> Usertype</label>
-                    <select required id="Type" name="usertype" class="form-select">
-                        <option value="">Choose usertype</option>
-                        <option value="admin" <?php echo (isset($usertype) && $usertype ==  $row['user_type']) ? 'selected' : '' ?>>Admin</option>
-                        <option value="instructor" <?php echo (isset($usertype) && $usertype ==  $row['user_type']) ? 'selected' : '' ?>>Instructor </option>
-                        <option value="student" <?php echo (isset($usertype) && $usertype ==  $row['user_type']) ? 'selected' : '' ?>>Student </option>
+                    <label class="form-label">Usertype</label>
+                    <select required name="usertype" class="form-select">
+                        <option value="">Choose Usertype</option>
+                        <option value="admin" <?php echo ($usertype == 'admin') ? 'selected' : ''; ?>>Admin</option>
+                        <option value="instructor" <?php echo ($usertype == 'instructor') ? 'selected' : ''; ?>>Instructor</option>
+                        <option value="student" <?php echo ($usertype == 'student') ? 'selected' : ''; ?>>Student</option>
                     </select>
                 </div>
 
                 <div class="col-md-4">
-                <label class="form-label"> Assign Instructor</label>
+                    <label class="form-label">Assign User</label>
                     <?php
-                    $query_command = "SELECT * FROM instructors";
+                    $query_command = "SELECT id, CONCAT(first_name, ' ', last_name) AS instructor_name FROM instructors";
                     $result = $conn->query($query_command);
                     ?>
-                    <select required id="Type" name="instructor_id" class="form-select">
-                        <option value="">Select instructor</option>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($instructor_id) && $instructor_id ==  $row['id']) ? 'selected' : '' ?>>
-                                <?php echo $row['first_name'].' '.$row['last_name'];?>
+                    <select required name="instructor_id" class="form-select">
+                        <option value="">Choose Option</option>
+                        <?php while ($inst = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $inst['id']; ?>" <?php echo ($instructor_id == $inst['id']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($inst['instructor_name']); ?>
                             </option>
                         <?php } ?>
                     </select>
@@ -101,9 +104,6 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <h5 class="mb-0" style="color: maroon;">List of System Users</h5>
                         <form id="filterForm" class="d-flex gap-2">
                             <input type="search" class="form-control px-4" id="searchBox" name="search" placeholder="Search..">
-                            <select name="reporttype" id="reporttype" class="form-select">
-                                <option value="">All Users</option>
-                            </select>
                         </form>
                     </div>
 
@@ -115,7 +115,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                     <th>Email</th>
                                     <th>Usertype</th>
                                     <th>Assigned Instructor</th>
-                                    <th>Date Created</th>
+                                    <th>DateCreated</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

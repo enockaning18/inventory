@@ -107,6 +107,22 @@ function successAlert($title)
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
+            <?php elseif ($_GET['status'] == 'assigned'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Instructor already has an account!',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
+            <?php elseif ($_GET['status'] == 'emailexists'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Email already been used by another user!',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
             <?php elseif ($_GET['status'] == 'lab_fk_error'): ?>
                 Swal.fire({
                     icon: 'error',

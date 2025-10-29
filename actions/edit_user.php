@@ -1,21 +1,35 @@
 <?php
 require_once('../baseConnect/dbConnect.php');
 
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    die("Invalid request");
+// Validate the user ID parameter
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header("Location: ../users.php?status=invalid");
+    exit();
 }
+
 $user_id = intval($_GET['id']);
 
-// verify record exists (optional)
+// Check if the user exists
 $stmt = $conn->prepare("SELECT id FROM users WHERE id = ?");
+if (!$stmt) {
+    header("Location: ../users.php?status=error");
+    exit();
+}
+
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
-$res = $stmt->get_result();
-if ($res->num_rows !== 1) {
-    die("User not found");
+$result = $stmt->get_result();
+
+// If user not found
+if ($result->num_rows === 0) {
+    $stmt->close();
+    header("Location: ../users.php?status=notfound");
+    exit();
 }
+
 $stmt->close();
 
-// redirect to the main page with edit id
+// Redirect back to users page with edit_id param
 header("Location: ../users.php?edit_id=" . $user_id);
-exit;
+exit();
+?>
