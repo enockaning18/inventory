@@ -123,6 +123,14 @@ function successAlert($title)
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
+            <?php elseif ($_GET['status'] == 'duplicate'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'This Lab already exist, avoid duplicates',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
             <?php elseif ($_GET['status'] == 'lab_fk_error'): ?>
                 Swal.fire({
                     icon: 'error',

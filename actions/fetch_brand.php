@@ -7,39 +7,43 @@ if (!$conn) {
     exit;
 }
 
-// Collect filters
-$search     = isset($_POST['search']) ? trim($_POST['search']) : '';
+// Collect search filter
+$search = isset($_POST['search']) ? trim($_POST['search']) : '';
 
 $sql = "SELECT * FROM brand WHERE 1";
 
+// Apply search condition
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
-    $sql .= " AND (brand LIKE '%$search%' ";
+    $sql .= " AND (brand_name LIKE '%$search%')";
 }
 
-
+// Order by latest added
 $sql .= " ORDER BY id DESC";
+
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
     $counter = 1;
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
-                <th scope='row'>" . $counter++ . "</th>
+                <th scope='row'>{$counter}</th>
                 <td>" . htmlspecialchars($row['brand_name']) . "</td>
-                <td>" . htmlspecialchars($row['date_added']) . "</td>
+                <td>" . htmlspecialchars($row['date_added'] ?? 'N/A') . "</td>
                 <td>
-                <a class='text-decoration-none'href='actions/edit_brand.php?id=" . $row['id'] . "'>
+                    <a class='text-decoration-none' href='actions/edit_brand.php?id=" . $row['id'] . "'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>
-                    <a class='text-decoration-none'href='actions/delete_brand.php?id=" . $row['id'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS DATA?');\">
+                    <a class='text-decoration-none' href='actions/delete_brand.php?id=" . $row['id'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS BRAND?');\">
                         <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                     </a>
                 </td>
             </tr>";
+        $counter++;
     }
 } else {
-    echo "<tr><td colspan='10' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No computers Record(s) Found</td></tr>";
+    echo "<tr><td colspan='10' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Brand Record(s) Found</td></tr>";
 }
 
 $conn->close();
+?>

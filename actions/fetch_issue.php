@@ -49,7 +49,7 @@ if ($result && $result->num_rows > 0) {
                     <a class='text-decoration-none' href='actions/edit_issue.php?id=" . $row['id'] . "'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>
-                    <a class='text-decoration-none' href='actions/delete_issue.php?id=" . $row['id'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS DATA?');\">
+                    <a class='text-decoration-none' href='actions/delete_issue.php?id=" . $row['id'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS ISSUE?');\">
                         <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                     </a>
                 </td>

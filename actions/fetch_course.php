@@ -12,7 +12,9 @@ if (!$conn) {
 $search     = isset($_POST['search']) ? trim($_POST['search']) : '';
 $reporttype = isset($_POST['reporttype']) ? trim($_POST['reporttype']) : '';
 
-$sql = " SELECT * FROM course WHERE 1";
+$sql = " SELECT course.*, users.email AS email FROM course 
+         INNER JOIN users ON `course`.`createdby` = `users`.`id`
+         WHERE 1";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
@@ -31,7 +33,7 @@ if ($result && $result->num_rows > 0) {
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
                 <td>" . htmlspecialchars($row['course_name']) . "</td>
-                <td>" . htmlspecialchars($row['createdby']) . "</td>
+                <td>" . htmlspecialchars($row['email']) . "</td>
                 <td>" . htmlspecialchars($row['datecreated'] ?? '') . "</td>
                 <td>
                     <a class='text-decoration-none 'href='actions/edit_course.php?id_course=" . $row['id'] . "'>
