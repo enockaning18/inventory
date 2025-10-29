@@ -12,10 +12,11 @@ $search = isset($_POST['search']) ? trim($_POST['search']) : '';
 
 // Correct SQL query
 $sql = "SELECT examination.*, course.course_name AS course, module.name
-        AS module FROM examination
+        AS module, CONCAT(first_name,' ',last_name) AS instructor_name 
+        FROM examination
         INNER JOIN course ON examination.course_id = course.id
         INNER JOIN module ON examination.module_id = module.id
-        -- INNER JOIN instructor ON examination.instructor_id = instructors.id
+        INNER JOIN instructors ON examination.instructor_id = instructors.id
         WHERE status = 'approved'";
 
 if (!empty($search)) {
@@ -43,7 +44,7 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['session']) . "</td>            
                 <td>" . htmlspecialchars($row['start_time']) . "</td>
                 <td>" . htmlspecialchars($row['batch_semester']) . "</td>
-                <td>" . htmlspecialchars($row['status']) . "</td>
+                <td>" . htmlspecialchars($row['instructor_name']) . "</td>
                 <td>" . htmlspecialchars($row['status']) . "</td>
                 <td>" . htmlspecialchars($row['date_booked']) . "</td>
                 <td>
@@ -66,7 +67,7 @@ if ($result && $result->num_rows > 0) {
             </tr>";
     }
 } else {
-    echo "<tr><td colspan='11' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Approved Exam(s) Found</td></tr>";
+    echo "<tr><td colspan='12' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Approved Exam(s) Found</td></tr>";
 }
 
 $conn->close();

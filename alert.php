@@ -131,6 +131,14 @@ function successAlert($title)
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
+            <?php elseif ($_GET['status'] == 'not_allowed'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No, <?php echo $title; ?> can be scheduled on thursdays, try again',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
             
             <?php elseif ($_GET['status'] == 'lab_fk_error'): ?>
                 Swal.fire({

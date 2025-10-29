@@ -191,8 +191,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                     <th>Session </th>
                                     <th>StartTime </th>
                                     <th>Semester </th>
-                                    <th>Status</th>
                                     <th>Instructor</th>
+                                    <th>Status</th>
                                     <th>DateBooked</th>
                                     <th>Actions</th>
                                 </tr>
@@ -224,7 +224,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         $(document).ready(function() {
             function load_examination(search = '') {
                 $.ajax({
-                    url: "actions/fetch_examination.php",
+                    url: "actions/fetch_examination_pending.php",
                     type: "POST",
                     data: {
                         search: search
