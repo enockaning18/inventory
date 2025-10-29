@@ -123,6 +123,22 @@ function successAlert($title)
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
+            <?php elseif ($_GET['status'] == 'instructor_exist'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Instructor already exist, try again!',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
+            <?php elseif ($_GET['status'] == 'pc_exist'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Computer already exist, check again!',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
             <?php elseif ($_GET['status'] == 'duplicate'): ?>
                 Swal.fire({
                     icon: 'error',
@@ -139,11 +155,19 @@ function successAlert($title)
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
+            <?php elseif ($_GET['status'] == 'module_fk_error'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops... can\'t delete',
+                    text: 'Module has been assigned to a course ',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
             <?php elseif ($_GET['status'] == 'course_fk_error'): ?>
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops... can\'t delete',
-                    text: 'Course has been assigned to an instructor ',
+                    text: 'Course has been assigned to a lab ',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
