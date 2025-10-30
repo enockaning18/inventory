@@ -1,5 +1,4 @@
 <?php 
-    require_once('baseConnect/dbConnect.php');
 
     // Count approved exams
     $statusApproved = 'approve';
@@ -75,7 +74,7 @@
     $totalReplacements = $row['total_replacement'] ?? 0;
 
     $stmt->close();
-    $conn->close();
+    // $conn->close();
 
 ?>
 
