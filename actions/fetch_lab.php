@@ -12,38 +12,37 @@ $search = isset($_POST['search']) ? trim($_POST['search']) : '';
 $reporttype = isset($_POST['reporttype']) ? trim($_POST['reporttype']) : '';
 
 // Base query with join
-$sql = "SELECT lab.*, lab.id AS labid, course.course_name, course.id AS courseid 
-        FROM lab 
-        INNER JOIN course ON course.id = lab.course_id 
-        WHERE 1";
+$sql = "
+    SELECT 
+        lab.*, 
+        lab.id AS labid, 
+        course.course_name, 
+        course.id AS courseid 
+    FROM lab 
+    INNER JOIN course ON course.id = lab.course_id 
+    WHERE 1
+";
 
-// Apply search filter
+// Apply search filter if provided
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
-<<<<<<< Updated upstream
     $sql .= " AND (
-                lab.lab_name LIKE '%$search%' 
-                OR course.course_name LIKE '%$search%' 
-                OR lab.number_computers LIKE '%$search%' 
-                OR lab.date_added LIKE '%$search%'
-            )";
+        lab.lab_name LIKE '%$search%' 
+        OR course.course_name LIKE '%$search%' 
+        OR lab.number_computers LIKE '%$search%' 
+        OR lab.date_added LIKE '%$search%'
+    )";
+}
+
+// Apply report type filter if provided
+if (!empty($reporttype)) {
+    $reporttype = $conn->real_escape_string($reporttype);
+    $sql .= " AND lab.memory_size = '$reporttype'";
 }
 
 // Order by newest first
 $sql .= " ORDER BY lab.id DESC";
 
-=======
-    $sql .= " AND lab_name LIKE '%$search%' 
-              OR course.id LIKE '%$search%' 
-              OR number_computers LIKE '%$search%'";
-}
-
-if (!empty($reporttype)) {
-    $reporttype = $conn->real_escape_string($reporttype);
-    $sql .= " AND memory_size = '$reporttype' ";
-}
-
-$sql .= " ORDER BY labid DESC ";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
@@ -56,10 +55,11 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['number_computers']) . " pcs</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
-                    <a class='text-decoration-none' href='actions/edit_lab.php?id=" . $row['labid'] . "'>
+                    <a class='text-decoration-none' href='actions/edit_lab.php?id=" . $row['labid'] . "' title='Edit'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>
-                    <a class='text-decoration-none' href='actions/delete_lab.php?id=" . $row['labid'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS LAB?');\">
+                    <a class='text-decoration-none' href='actions/delete_lab.php?id=" . $row['labid'] . "' 
+                       onclick=\"return confirm('DO YOU WANT TO DELETE THIS LAB?');\" title='Delete'>
                         <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                     </a>
                 </td>

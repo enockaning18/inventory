@@ -66,16 +66,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
                         <h5 class="mb-0" style="color: maroon;">Brand List </h5>
                         <form id="filterForm" class="d-flex gap-2">
-<<<<<<< Updated upstream
                             <input type="search" class="form-control px-4" id="searchBox" name="search" placeholder="Search ..">
-=======
-                            <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search ..">
-
-                            <!-- <select name="reporttype" id="reporttype" class="form-select">
-                                <option value="">All</option>
-                                <option value=""></option>
-
-                            </select> -->
                         </form>
                     </div>
                     <div class="table-responsive" style="height: 300px">
@@ -83,8 +74,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Brand Name</th>
-                                    <th>Date Added</th>
+                                    <th>Name</th>
+                                    <th>DateCreated</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>

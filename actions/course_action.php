@@ -5,6 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $id           = mysqli_real_escape_string($conn, $_POST['id']);
     $course_name  = mysqli_real_escape_string($conn, trim($_POST['course_name']));
+    $userid       = trim($_POST['userid']);
 
     if (!empty($id)) {
 
@@ -20,9 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $check->close();
 
-        $stmt = $conn->prepare("UPDATE course SET course_name = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE course SET course_name = ?, createdby = ? WHERE id = ?");
         if ($stmt) {
-            $stmt->bind_param("si", $course_name, $id);
+            $stmt->bind_param("sii", $course_name, $userid, $id);
             if ($stmt->execute()) {
                 header("Location: ../labs.php?status=update_course");
             } else {
@@ -47,9 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $check->close();
 
-        $stmt = $conn->prepare("INSERT INTO course (course_name) VALUES (?)");
+        $stmt = $conn->prepare("INSERT INTO course (course_name, createdby) VALUES (?,?)");
         if ($stmt) {
-            $stmt->bind_param("s", $course_name);
+            $stmt->bind_param("si", $course_name, $userid);
             if ($stmt->execute()) {
                 header("Location: ../labs.php?status=save_course");
             } else {
