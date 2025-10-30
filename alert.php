@@ -155,6 +155,14 @@ function successAlert($title)
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
+            <?php elseif ($_GET['status'] == 'user_not_found'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops... ',
+                    text: ' User not found',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
             <?php elseif ($_GET['status'] == 'module_fk_error'): ?>
                 Swal.fire({
                     icon: 'error',

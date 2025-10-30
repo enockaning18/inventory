@@ -219,7 +219,7 @@ body {
 
 .log-body {
   background-color: #9f2039;
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   align-items: center;
   justify-content: center;
