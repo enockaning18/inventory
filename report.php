@@ -34,17 +34,16 @@ require_once('baseConnect/dbConnect.php');
         <hr style="margin-bottom: 3rem;">
 
         <div class="g-3 mb-5">
-            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="ReportForm" method="POST" action="actions/generate_report.php">
+            <form class="row g-3 border bg-light shadow-sm p-3 pb-5" id="ReportForm" method="POST" action="actions/generate_report.php">
                 <div class="col-md-4">
                     <label class="form-label">Report Type</label>
                     <select id="reportType" name="report_type" class="form-select" required>
                         <option value="">Select Report Type</option>
-                        <option value="computers">Computers</option>
-                        <option value="lab">Labs</option>
-                        <option value="issues">Issues</option>
-                        <option value="instructors">Instructors</option>
-                        <option value="users">Users</option>
                         <option value="examination">Examinations</option>
+                        <option value="computers">Computers</option>
+                        <option value="instructors">Instructors</option>
+                        <option value="issues">Issues</option>
+                        <option value="lab">Labs</option>                      
                     </select>
                 </div>
 
@@ -59,12 +58,16 @@ require_once('baseConnect/dbConnect.php');
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="my-2">
-                        <button type="submit" name="generate_report" class="btn btn-primary px-4">Generate Report</button>
+                        <button type="submit" name="generate_report" class="btn btn-danger px-4">Generate Report</button>
                     </div>
                     <div class="my-2">
-                        <button class="btn text-white btn-success px-4" id="printReport">
-                            <ion-icon name="print-outline" class="me-2 fs-4"></ion-icon>
-                        </button>
+                        <a href="#" id="exportExcel" class="text-decoration-none">
+                            <i class="bi bi-file-earmark-spreadsheet-fill fs-3 text-success" title="Export to Excel"></i>
+                            Export Report | &nbsp;
+                        </a>
+                        <a href="#" id="printReport" class="text-decoration-none">
+                            <i class="bi bi-printer-fill fs-3 btn-print" title="Print Generated Report  "></i>
+                        </a>
                     </div>
                 </div>
             </form>
@@ -72,9 +75,11 @@ require_once('baseConnect/dbConnect.php');
 
         <div class="card shadow">
             <div class="card-body">
-                <h5 class="text-center text-secondary">Generated Report</h5>
+                <h5 class="text-center text-secondary">Generated Report Print Preview</h5>
+                <hr>
                 <div class="table-responsive">
-                    <table class="table table-striped align-middle">
+                    <table class="table table-striped align-middle reportTable">
+                        <caption id="reportCaption"></caption>
                         <thead id="reportHead"></thead>
                         <tbody id="reportTable"></tbody>
                     </table>
@@ -86,6 +91,9 @@ require_once('baseConnect/dbConnect.php');
     <script src="assets/js/main.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- export report to excel -->
+    <?php   include('actions/export_xslx.php'); ?>
 
     <script>
         $(document).ready(function() {
@@ -101,9 +109,11 @@ require_once('baseConnect/dbConnect.php');
                     data: formData,
                     success: function(response) {
                         const parts = response.split('<!--SPLIT-->');
-                        $('#reportHead').html(parts[0]);
-                        $('#reportTable').html(parts[1]);
+                        $('#reportCaption').html(parts[0]);
+                        $('#reportHead').html(parts[1]);
+                        $('#reportTable').html(parts[2]);
                     },
+
                     error: function(xhr, status, error) {
                         console.error("Error:", status, error, xhr.responseText);
                         alert('Error generating report. Check console for details.');
@@ -115,6 +125,8 @@ require_once('baseConnect/dbConnect.php');
 
     <script>
         document.getElementById('printReport').addEventListener('click', function() {
+            let printCaption = document.getElementById('reportCaption').innerHTML;
+            let printHead = document.getElementById('reportHead').innerHTML;
             let printContent = document.getElementById('reportTable').innerHTML;
             let originalContent = document.body.innerHTML;
 
@@ -125,9 +137,10 @@ require_once('baseConnect/dbConnect.php');
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         </head>
         <body class="p-4 mt-5">
-            <h3 class="text-center mb-4">System Generated Report</h3>
+            <h3 class="text-center mb-4">${printCaption}</h3>
             <table class="table  table-striped">
-                ${printContent}
+                <thead> ${printHead} </thead>
+                <tbody> ${printContent} </tbody>
             </table>
         </body>
         </html>
