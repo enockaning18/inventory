@@ -10,6 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $memory_size     = mysqli_real_escape_string($conn, $_POST['memory_size']);
     $hard_drive_size = mysqli_real_escape_string($conn, $_POST['hard_drive_size']);
     $lab             = mysqli_real_escape_string($conn, $_POST['lab']);
+    $monitor         = mysqli_real_escape_string($conn, $_POST['monitor']);
+    $size            = mysqli_real_escape_string($conn, $_POST['size']);
+    $monitor_serial  = mysqli_real_escape_string($conn, $_POST['monitor_serial']);
     $date_added      = mysqli_real_escape_string($conn, $_POST['date_added']);
 
     if (!empty($id)) {
@@ -27,10 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check->close();
 
         $stmt = $conn->prepare("UPDATE computers 
-                                SET computer_name = ?, brand = ?, serial_number = ?, memory_size = ?, hard_drive_size = ?, lab = ? 
-                                WHERE id = ?");
+                                SET computer_name = ?, brand = ?, serial_number = ?, memory_size = ?, hard_drive_size = ?, lab = ?, 
+                                monitor_name = ?, size = ?, monitor_serial = ?WHERE id = ?");
         if ($stmt) {
-            $stmt->bind_param("ssssssi", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $id);
+            $stmt->bind_param("sssssssssi", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial, $id);
             if ($stmt->execute()) {
                 header("Location: ../computers.php?status=update");
             } else {
@@ -54,10 +57,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $check->close();
 
-        $stmt = $conn->prepare("INSERT INTO computers (computer_name, brand, serial_number, memory_size, hard_drive_size, lab)
-                                VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO computers (computer_name, brand, serial_number, memory_size, hard_drive_size, lab, monitor_name, size, monitor_serial)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         if ($stmt) {
-            $stmt->bind_param("ssssss", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab);
+            $stmt->bind_param("sssssssss", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial);
             if ($stmt->execute()) {
                 header("Location: ../computers.php?status=save");
             } else {

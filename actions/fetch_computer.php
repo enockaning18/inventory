@@ -14,8 +14,8 @@ $memory_type = isset($_POST['memory_type']) ? trim($_POST['memory_type']) : '';
 $drive_type = isset($_POST['drive_type']) ? trim($_POST['drive_type']) : '';
 $brand_type = isset($_POST['brand_type']) ? trim($_POST['brand_type']) : '';
 
-$sql = " SELECT computers.id, computer_name, serial_number, memory_size, lab.lab_name, brand.brand_name, computers.date_added, hard_drive_size
-         FROM computers 
+$sql = " SELECT computers.id, computer_name, serial_number, memory_size, lab.lab_name, brand.brand_name, computers.date_added, hard_drive_size,
+         monitor_name, size, monitor_serial FROM computers 
          INNER JOIN lab  ON computers.lab = lab.id
          INNER JOIN brand  ON computers.brand = brand.id ";
 
@@ -25,6 +25,8 @@ if (!empty($search)) {
               OR brand.brand_name LIKE '%$search%' 
               OR serial_number LIKE '%$search%' 
               OR memory_size LIKE '%$search%' 
+              OR monitor_serial LIKE '%$search%' 
+              OR size LIKE '%$search%' 
               OR lab.lab_name LIKE '%$search%')";
 }
 
@@ -46,8 +48,6 @@ if (!empty($brand_type)) {
     $sql .= " AND brand.brand_name = '$brand_type' ";
 }
 
-
-
 $sql .= " ORDER BY computers.id DESC ";
 $result = $conn->query($sql);
 
@@ -61,6 +61,9 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['serial_number']) . "</td>
                 <td>" . htmlspecialchars($row['memory_size']) . 'GB'. "</td>
                 <td>" . htmlspecialchars($row['hard_drive_size']) . 'GB'. "</td>
+                <td>" . htmlspecialchars($row['monitor_name']) . "</td>
+                <td>" . htmlspecialchars($row['size']) . "</td>
+                <td>" . htmlspecialchars($row['monitor_serial']) . "</td>
                 <td>" . htmlspecialchars($row['lab_name']) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>

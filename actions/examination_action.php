@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // ---- New validation: prevent same date + batch time ----
+    // validation: prevent same date + batch time ----
     if (!empty($id)) {
         $checkDateBatch = $conn->prepare("SELECT id FROM examination WHERE examination_date = ? AND batch_time = ? AND id != ?");
         $checkDateBatch->bind_param("ssi", $examination_date, $batch_time, $id);

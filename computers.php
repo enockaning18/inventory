@@ -58,10 +58,15 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Computer</button>
         </div>
         <hr style="margin-bottom: 3rem;">
-        <div class="g-3" style="margin-bottom: 7rem">
+        <div class="g-3" style="margin-bottom: 4rem">
             <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/computer_action.php">
+                <!-- system info -->
+                <div style="display: flex; align-items: center;">
+                    <span style="margin-right: 10px; color: maroon;">System Information</span>
+                    <hr style="flex: 1; border: 1px solid #000;">
+                </div>
                 <div class="col-md-4">
-                    <label class="form-label">Computer Name</label>
+                    <label class="form-label">Device Name</label>
                     <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
                     <input required type="text" name="computer_name" value="<?php echo isset($computer_name) ? $computer_name : '' ?>" class="form-control">
                 </div>
@@ -106,6 +111,24 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     </select>
                 </div>
 
+                <!-- monitor info -->
+                <div style="display: flex; align-items: center;">
+                    <span style="margin-right: 10px; color: maroon;">Monitor Information</span>
+                    <hr style="flex: 1; border: 1px solid #000;">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Device Name</label>
+                    <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
+                    <input required type="text" name="monitor" value="<?php echo isset($monitor) ? $monitor : '' ?>" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Size</label>
+                    <input required type="text" name="size" value="<?php echo isset($size) ? $size : '' ?>" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Serial Number</label>
+                    <input required type="text" name="monitor_serial" value="<?php echo isset($monitor_serial) ? $monitor_serial : '' ?>" class="form-control">
+                </div>
             </form>
         </div>
     </div>
@@ -147,7 +170,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                 $query_command = "SELECT DISTINCT memory_size  FROM computers ";
                                 $result = $conn->query($query_command);
                                 while ($memory = $result->fetch_assoc()) {
-                                    echo '<option value="' . $memory['memory_size'] . '">' . $memory['memory_size'] . '</option>';
+                                    echo '<option value="' . $memory['memory_size'] . '">' . $memory['memory_size']."GB" . '</option>';
                                 }
                                 ?>
                             </select>
@@ -158,7 +181,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                 $query_command = "SELECT DISTINCT hard_drive_size FROM computers ";
                                 $result = $conn->query($query_command);
                                 while ($drive = $result->fetch_assoc()) {
-                                    echo '<option value="' . $drive['hard_drive_size'] . '">' . $drive['hard_drive_size'] . '</option>';
+                                    echo '<option value="' . $drive['hard_drive_size'] . '">' . $drive['hard_drive_size']."GB" . '</option>';
                                 }
                                 ?>
                             </select>
@@ -169,11 +192,14 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Computer Name</th>
+                                    <th>SystemInfo</th>
                                     <th>Brand</th>
-                                    <th>Serial Number</th>
-                                    <th>Memory Size</th>
-                                    <th>HDD/SSD Size</th>
+                                    <th>Serial_No1</th>
+                                    <th>Memory</th>
+                                    <th>HDD/SSD</th>
+                                    <th>MonitorInfo</th>
+                                    <th>Size</th>
+                                    <th>Serial_No2</th>
                                     <th>Lab</th>
                                     <th>DateAdded</th>
                                     <th>Action</th>

@@ -120,13 +120,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
                             <select name="issue_type" id="issue_type" class="form-select">
                                 <option value="">All Issues </option>
-                                <?php
-                                $query_command = "SELECT * FROM issues ";
-                                $result = $conn->query($query_command);
-                                ?>
-                                <?php while ($row = $result->fetch_assoc()) { ?>
-                                    <option value="<?php echo $row['issue_type'] ?>"><?php echo $row['issue_type'] ?></option>
-                                <?php } ?>
+                                <option value="Software">Software </option>
+                                <option value="Hardware">Hardware </option>
                             </select>
 
                             <select name="lab_type" id="lab_type" class="form-select">
