@@ -1,55 +1,93 @@
-<!-- ================ Order Details List ================= -->
+<?php 
 
+    if (!$conn || $conn->connect_error) {
+        die("Database connection failed: " . $conn->connect_error);
+    }
+    
+    // computers info
+    $sql = "SELECT * FROM computers ORDER BY id DESC";
+    $result = $conn->query($sql);
+
+    // upcoming exams
+    $e_sql = "SELECT examination.*, 
+                course.course_name AS course, 
+                module.name AS module, 
+                CONCAT(first_name,' ',last_name) AS instructor_name 
+            FROM examination
+            INNER JOIN course ON examination.course_id = course.id
+            INNER JOIN module ON examination.module_id = module.id
+            INNER JOIN instructors ON examination.instructor_id = instructors.id 
+            ORDER BY id DESC";
+    $e_result = $conn->query($e_sql);
+?>
+
+<!-- ================ Order Details List ================= -->
 <div class="details">
-    <adiv class="recentOrders">
+    <div class="recentOrders" style="overflow-x: auto;">
         <div class="cardHeader">
-            <h2>Header</h2>
-            <a href="#" class="btn">View All</a>
+            <h2>Upcoming Exams</h2>
+            <a href="approved_exams.php" class="btn">View All</a>
         </div>
 
-        <table>
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <td>Donor's Name</td>
-                    <td>Item</td>
-                    <td>Description</td>
+                    <td>Course</td>
+                    <td>Module</td>
+                    <td>Instructor</td>
+                    <td>DateTime</td>
                     <td>Status</td>
                 </tr>
             </thead>
-            <tbody>
+        <tbody>
+        <?php
+            if ($e_result && $result->num_rows > 0) {
+                while ($row = $e_result->fetch_assoc()) {
+                    ?>
                 <tr>
-                    <td class="text-capitalize"> Item</td>
-                    <td class="text-capitalize">Item</td>
-                    <td class="text-capitalize">Item</td>
-                    <td><span class="status delivered">Recieved</span></td>
+                    <td class="text-capitalize"> <?php echo $row['course']; ?></td>
+                    <td class="text-capitalize"><?php echo $row['module']; ?></td>
+                    <td class="text-capitalize"><?php echo $row['instructor_name']; ?></td>
+                    <td class="text-capitalize"><?php echo $row['examination_date'].' '.$row['batch_time']; ?></td>
+                    <td><span class="status delivered"><?php echo $row['status']; ?></span></td>
                 </tr>
-                <tr>
-                    <td class="text-capitalize"> Item</td>
-                    <td class="text-capitalize">Item</td>
-                    <td class="text-capitalize">Item</td>
-                    <td><span class="status delivered">Recieved</span></td>
-                </tr>
+            <?php
+                }
+            }
+            ?>
             </tbody>
         </table>
-    </adiv>
+    </div>
 
-    <!-- ================= New Customers ================ -->
+    <!-- ================= computer ================ -->
     <div class="recentCustomers">
         <div class="cardHeader">
-            <h2>Header</h2>
+            <h2>Computers Info</h2>
         </div>
 
         <table>
+        <?php
+            if ($result && $result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    ?>
             <tr>
                 <td width="60px">
                     <ion-icon name="desktop-outline" class="fs-3"></ion-icon>
                 </td>
                 <td>
-                    <h4>David <br> <span>Italy</span></h4>
-                </td>
-            </tr>
-        </table>
-    </div>
+                    <h4 class="text-primary"><?php echo $row['computer_name']; ?> <span><?php echo 'RAM:'.$row['memory_size'].'GB'; ?></span></h4>
+                    <h4><span><?php echo 'HDD: '.$row['hard_drive_size'].'GB  | '; ?></span><span class="text-danger"> <?php echo $row['serial_number']; ?></span></h4>
+                <?php
+                    }
+                } 
+                else {
+                    echo "No Computer Info";
+                }
+                ?>
+            </td>
+        </tr>
+    </table>
+</div>
 </div>
 </div>
 </div>
