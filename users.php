@@ -60,35 +60,35 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
                 <div class="col-md-4">
                     <label class="form-label">Email</label>
-                    <input required type="email" name="email" value="<?php echo isset($email) ? $email : '' ?>" class="form-control">
+                    <input required type="email" name="email" value="<?php echo htmlspecialchars($email); ?>" class="form-control" autocomplete="off">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Password</label>
-                    <input required type="password" name="userkey" value="<?php echo isset($userkey) ? $userkey : '' ?>" class="form-control">
+                    <input required type="password" name="userkey" value="<?php echo htmlspecialchars($userkey); ?>" class="form-control" autocomplete="off">
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label"> Usertype</label>
-                    <select required id="Type" name="usertype" class="form-select">
+                    <label class="form-label">Usertype</label>
+                    <select required name="usertype" class="form-select">
                         <option value="">Choose usertype</option>
-                        <option value="admin" <?php echo (isset($usertype) && $usertype ==  $row['user_type']) ? 'selected' : '' ?>>Admin</option>
-                        <option value="instructor" <?php echo (isset($usertype) && $usertype ==  $row['user_type']) ? 'selected' : '' ?>>Instructor </option>
-                        <option value="student" <?php echo (isset($usertype) && $usertype ==  $row['user_type']) ? 'selected' : '' ?>>Student </option>
+                        <option value="admin" <?php echo ($usertype == "admin") ? 'selected' : ''; ?>>Admin</option>
+                        <option value="instructor" <?php echo ($usertype == "instructor") ? 'selected' : ''; ?>>Instructor</option>
+                        <option value="student" <?php echo ($usertype == "student") ? 'selected' : ''; ?>>Student</option>
                     </select>
                 </div>
 
                 <div class="col-md-4">
-                <label class="form-label"> Assign Instructor</label>
+                    <label class="form-label">Assign Instructor</label>
                     <?php
                     $query_command = "SELECT id, first_name, last_name FROM instructors";
                     $result = $conn->query($query_command);
                     ?>
                     <select required name="instructor_id" class="form-select">
                         <option value="">Select instructor</option>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($instructor_id) && $instructor_id ==  $row['id']) ? 'selected' : '' ?>>
-                                <?php echo $row['first_name'].' '.$row['last_name'];?>
+                        <?php while ($inst = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $inst['id']; ?>" <?php echo ($instructor_id == $inst['id']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($inst['first_name'] . ' ' . $inst['last_name']); ?>
                             </option>
                         <?php } ?>
                     </select>

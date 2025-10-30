@@ -27,7 +27,7 @@ $sql = "
 =======
 // Base query
 $sql = "SELECT users.*, users.id AS userid, CONCAT(first_name,' ',last_name) 
-AS inst_name FROM users WHERE 1";
+AS inst_name FROM users INNER JOIN instructors ON users.instructor_id = instructors.id WHERE 1";
 
 // Apply search filter if not empty
 if (!empty($search)) {
@@ -49,7 +49,8 @@ if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
-                <td>" . htmlspecialchars($row['modname']) . "</td>
+                <td>" . htmlspecialchars($row['inst_name']) . "</td>
+                <td>" . htmlspecialchars($row['user_type']) . "</td>
                 <td>" . htmlspecialchars($row['date_created']) . "</td>
                 <td>
                     <a class='text-decoration-none' href='users.php?edit_id=" . $row['userid'] . "' title='Edit'>

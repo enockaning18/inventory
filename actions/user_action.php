@@ -12,11 +12,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Sanitize inputs
     $id            = mysqli_real_escape_string($conn, $_POST['id'] ?? '');
     $email         = mysqli_real_escape_string($conn, $_POST['email'] ?? '');
-    $user_key      = mysqli_real_escape_string($conn, $_POST['userkey'] ?? '');
+    $userkey         = mysqli_real_escape_string($conn, $_POST['userkey'] ?? '');
     $user_type     = mysqli_real_escape_string($conn, $_POST['usertype'] ?? '');
     $instructor_id = !empty($_POST['instructor_id']) ? intval($_POST['instructor_id']) : null;
-    
 
+    sha1(md5($_POST['userkey']));
     // Validate required fields
     if (empty($email) || empty($user_type)) {
         header("Location: ../users.php?status=missing");
@@ -96,4 +96,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 $conn->close();
-?>
