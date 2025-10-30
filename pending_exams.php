@@ -103,7 +103,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="issues_table">
+                            <tbody id="pending_exams_table">
                                 <!-- fetch the data using the ajax -->
                             </tbody>
                         </table>
@@ -126,7 +126,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script>
         $(document).ready(function() {
-            function load_issues(search = '') {
+            function load_pending_examination(search = '') {
                 $.ajax({
                     url: "actions/fetch_examination_pending.php",
                     type: "POST",
@@ -134,25 +134,25 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         search: search
                     },
                     success: function(data) {
-                        $("#issues_table").html(data);
+                        $("#pending_exams_table").html(data);
                     }
                 });
             }
 
             // Load on page start
-            load_issues();
+            load_pending_examination();
 
             // Search computer
             $("#searchBox").on("keyup", function() {
                 let search = $(this).val();
-                load_issues(search);
+                load_pending_examination(search);
             });
         });
     </script>
 
 
     <?php
-    $title = "Issue ";
+    $title = "Examination ";
     successAlert($title);
     ?>
 </body>

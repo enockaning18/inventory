@@ -36,7 +36,25 @@ $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
     $counter = 1;
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) 
+    {
+        // setting bg color based on status
+        $status = htmlspecialchars($row['status']);
+        $badgeClass = '';
+
+        switch (ucfirst($status)) {
+            case 'Approve':
+                $badgeClass = 'bg-success'; 
+                break;
+            case 'Pending':
+                $badgeClass = 'bg-warning text-dark'; 
+                break;
+            case 'Cancelled':
+                $badgeClass = 'bg-danger'; 
+                break;
+            default:
+                $badgeClass = 'bg-secondary'; 
+        }
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
                 <td>" . htmlspecialchars($row['examination_date']) . "</td>
@@ -47,7 +65,7 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['start_time']) . "</td>
                 <td>" . htmlspecialchars($row['batch_semester']) . "</td>
                 <td>" . htmlspecialchars($row['instructor_name']) . "</td>
-                <td>" . htmlspecialchars($row['status']) . "</td>
+                <td><span class='badge $badgeClass'>" . htmlspecialchars($status) . "</span></td>
                 <td>" . htmlspecialchars($row['date_booked']) . "</td>
                 <td>
                     <a href='actions/edit_examination.php?id={$row['id']}' class='text-decoration-none'>
@@ -56,7 +74,7 @@ if ($result && $result->num_rows > 0) {
                     <a href='actions/delete_examination.php?id={$row['id']}' onclick=\"return confirm('Delete this record?');\" class='text-decoration-none'>
                         <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                     </a>
-                    <a href='actions/update_exam_status.php?id={$row['id']}&status=confirmed' class='text-decoration-none'>
+                    <a href='actions/update_exam_status.php?id={$row['id']}&status=approve' class='text-decoration-none'>
                         <i class='bi bi-check-circle-fill text-success fs-5 ms-1'></i>
                     </a>
                     <a href='actions/update_exam_status.php?id={$row['id']}&status=pending' class='text-decoration-none'>

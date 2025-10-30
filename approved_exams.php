@@ -153,7 +153,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
 
     <?php
-    $title = "Issue ";
+    $title = "Examination ";
     successAlert($title);
     ?>
 </body>

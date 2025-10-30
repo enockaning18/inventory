@@ -62,15 +62,6 @@ function successAlert($title)
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Okay'
                 });
-
-            <?php elseif ($_GET['status'] == 'payment_success'): ?>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Donation',
-                    text: "Payment Successfully",
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Okay'
-                });
             <?php elseif ($_GET['status'] == 'incorrect_password'): ?>
                 Swal.fire({
                     icon: 'error',
@@ -106,6 +97,14 @@ function successAlert($title)
                     text: 'Error Occured with <?php echo $title; ?>, try again',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
+                });
+            <?php elseif ($_GET['status'] == 'exam_status'): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '<?php echo $title; ?> status updated successfully!',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Done'
                 });
             <?php elseif ($_GET['status'] == 'assigned'): ?>
                 Swal.fire({
