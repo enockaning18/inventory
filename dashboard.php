@@ -4,8 +4,9 @@ require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 require_once('actions/start_session.php');
 
-
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 

@@ -1,17 +1,13 @@
 <?php
 require_once('../baseConnect/dbConnect.php');
 
-// Ensure DB connection is valid
 if (!$conn) {
     echo "<tr><td colspan='7' class='text-center text-danger'>Database connection failed</td></tr>";
     exit;
 }
 
-// Collect search input
 $search = isset($_POST['search']) ? trim($_POST['search']) : '';
 
-<<<<<<< Updated upstream
-// Base query with LEFT JOIN to instructors
 $sql = "
     SELECT 
         u.id AS userid,
@@ -24,10 +20,6 @@ $sql = "
     LEFT JOIN instructors i ON u.instructor_id = i.id
     WHERE 1
 ";
-=======
-// Base query
-$sql = "SELECT users.*, users.id AS userid, CONCAT(first_name,' ',last_name) 
-AS inst_name FROM users INNER JOIN instructors ON users.instructor_id = instructors.id WHERE 1";
 
 // Apply search filter if not empty
 if (!empty($search)) {
@@ -49,8 +41,9 @@ if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
-                <td>" . htmlspecialchars($row['inst_name']) . "</td>
+                <td>" . htmlspecialchars($row['email']) . "</td>
                 <td>" . htmlspecialchars($row['user_type']) . "</td>
+                <td>" . htmlspecialchars($row['inst_name']) . "</td>
                 <td>" . htmlspecialchars($row['date_created']) . "</td>
                 <td>
                     <a class='text-decoration-none' href='users.php?edit_id=" . $row['userid'] . "' title='Edit'>

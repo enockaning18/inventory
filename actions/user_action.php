@@ -1,7 +1,6 @@
 <?php
 require_once('../baseConnect/dbConnect.php');
 
-// Ensure DB connection is valid
 if (!$conn) {
     header("Location: ../users.php?status=dberror");
     exit();
@@ -9,10 +8,11 @@ if (!$conn) {
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // Sanitize inputs
     $id            = mysqli_real_escape_string($conn, $_POST['id'] ?? '');
     $email         = mysqli_real_escape_string($conn, $_POST['email'] ?? '');
-    $userkey         = mysqli_real_escape_string($conn, $_POST['userkey'] ?? '');
+    $userkey       = mysqli_real_escape_string($conn, $_POST['userkey'] ?? '');
+    $userkey       = trim($conn, $_POST['userkey'] ?? '');
+    $userkey       = password_hash($userkey, PASSWORD_BCRYPT);
     $user_type     = mysqli_real_escape_string($conn, $_POST['usertype'] ?? '');
     $instructor_id = !empty($_POST['instructor_id']) ? intval($_POST['instructor_id']) : null;
 
