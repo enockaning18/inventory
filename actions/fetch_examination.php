@@ -8,12 +8,18 @@ if (!$conn) {
 }
 
 // Collect filters
-$search = isset($_POST['search']) ? trim($_POST['search']) : '';
+$search   = isset($_POST['search']) ? trim($_POST['search']) : '';
+$module   = isset($_POST['module']) ? trim($_POST['module']) : '';
+$course   = isset($_POST['course']) ? trim($_POST['course']) : '';
+$semester = isset($_POST['semester']) ? trim($_POST['semester']) : '';
+$status   = isset($_POST['status']) ? trim($_POST['status']) : '';
 
 $sql = "SELECT examination.*, 
                course.course_name AS course, 
                module.name AS module, 
-               CONCAT(first_name,' ',last_name) AS instructor_name 
+               CONCAT(instructors.first_name,' ',instructors.last_name) AS instructor_name, 
+               course.id AS course_id, 
+               module.id AS module_id
         FROM examination
         INNER JOIN course ON examination.course_id = course.id
         INNER JOIN module ON examination.module_id = module.id
@@ -25,10 +31,26 @@ if (!empty($search)) {
     $sql .= " AND (
         course.course_name LIKE '%$search%' 
         OR module.name LIKE '%$search%' 
-        OR CONCAT(first_name,' ',last_name) LIKE '%$search%' 
+        OR CONCAT(instructors.first_name,' ',instructors.last_name) LIKE '%$search%' 
         OR examination.batch_time LIKE '%$search%' 
         OR examination.session LIKE '%$search%'
     )";
+}
+
+if (!empty($module)) {
+    $sql .= " AND examination.module_id = '" . $conn->real_escape_string($module) . "'";
+}
+
+if (!empty($course)) {
+    $sql .= " AND examination.course_id = '" . $conn->real_escape_string($course) . "'";
+}
+
+if (!empty($semester)) {
+    $sql .= " AND examination.batch_semester = '" . $conn->real_escape_string($semester) . "'";
+}
+
+if (!empty($status)) {
+    $sql .= " AND examination.status = '" . $conn->real_escape_string($status) . "'";
 }
 
 $sql .= " ORDER BY examination.id DESC";
@@ -36,24 +58,23 @@ $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
     $counter = 1;
-    while ($row = $result->fetch_assoc()) 
-    {
+    while ($row = $result->fetch_assoc()) {
         // setting bg color based on status
         $status = htmlspecialchars($row['status']);
         $badgeClass = '';
 
         switch (ucfirst($status)) {
             case 'Approve':
-                $badgeClass = 'bg-success'; 
+                $badgeClass = 'bg-success';
                 break;
             case 'Pending':
-                $badgeClass = 'bg-warning text-dark'; 
+                $badgeClass = 'bg-warning text-dark';
                 break;
             case 'Cancelled':
-                $badgeClass = 'bg-danger'; 
+                $badgeClass = 'bg-danger';
                 break;
             default:
-                $badgeClass = 'bg-secondary'; 
+                $badgeClass = 'bg-secondary';
         }
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
@@ -91,4 +112,3 @@ if ($result && $result->num_rows > 0) {
 }
 
 $conn->close();
-?>

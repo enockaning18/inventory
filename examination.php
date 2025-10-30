@@ -18,9 +18,8 @@ $result = $stmt->get_result();
 if ($result && $result->num_rows > 0) {
     $instructor = $result->fetch_assoc();
 
-   $inst_name = $instructor['first_name'] . " " .$instructor['last_name'];
-} 
-else {
+    $inst_name = $instructor['first_name'] . " " . $instructor['last_name'];
+} else {
     echo "Instructor not found.";
 }
 
@@ -31,7 +30,7 @@ $id = $examination_date = $batch_time = $session = $course_id = $date_booked = $
 // Edit mode - fetch exam details
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    
+
     $query = "
         SELECT 
             e.id, e.examination_date, e.batch_time, e.session,
@@ -76,6 +75,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Examination - IPMC INVENTORY MANAGER</title>
@@ -88,217 +88,256 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="assets/js/sweetalert.min.js"></script>
 </head>
+
 <body>
 
-<?php
-require("includes/sidebar.php");
-require("includes/topbar.php");
-?>
+    <?php
+    require("includes/sidebar.php");
+    require("includes/topbar.php");
+    ?>
 
-<div class="mx-auto" style="margin-top: 4rem; width:85%">
-    <div class="d-flex justify-content-between align-items-center">
-        <h3 class="my-auto">
-            <ion-icon name="book-outline"></ion-icon>
-            Examinations
-        </h3>
-        <div>
-            <a href="approved_exams.php"><button class="btn text-white px-2" style="background-color:green;">Approved</button></a>
-            <a href="pending_exams.php"><button class="btn text-white px-2" style="background-color:gold;">Pending</button></a>
-            <a href="cancelled_exams.php"><button class="btn text-white px-2" style="background-color:red;">Cancelled</button></a>
+    <div class="mx-auto" style="margin-top: 4rem; width:85%">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="my-auto">
+                <ion-icon name="book-outline"></ion-icon>
+                Examinations
+            </h3>
+            <div>
+                <a href="approved_exams.php"><button class="btn text-white px-2" style="background-color:green;">Approved</button></a>
+                <a href="pending_exams.php"><button class="btn text-white px-2" style="background-color:gold;">Pending</button></a>
+                <a href="cancelled_exams.php"><button class="btn text-white px-2" style="background-color:red;">Cancelled</button></a>
+            </div>
+            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Exams</button>
         </div>
-        <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Exams</button>
+        <hr class="mb-4">
+
+        <!-- Exam Form -->
+        <form class="row g-3 border rounded bg-light shadow-sm p-4" id="Form" method="POST" action="actions/examination_action.php">
+            <input type="hidden" name="id" value="<?= $id ?>">
+
+            <div class="col-md-4">
+                <label class="form-label">Examination Date</label>
+                <input required type="date" name="examination_date" value="<?php echo isset($examination_date) ? $examination_date : '' ?>" class="form-control">
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Course</label>
+                <select required id="course" name="course_id" class="form-select">
+                    <option value="">Select Course</option>
+                    <?php
+                    $courses = $conn->query("SELECT * FROM course");
+                    while ($course = $courses->fetch_assoc()) {
+                        $selected = ($course_id == $course['id']) ? 'selected' : '';
+                        echo "<option value='{$course['id']}' $selected>{$course['course_name']}</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Batch Semester</label>
+                <select required id="batch_semester" name="batch_semester" class="form-select">
+                    <option value="">Choose Semester</option>
+                    <?php
+                    $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4"];
+                    foreach ($semesters as $key => $val) {
+                        $selected = ($batch_semester == $key) ? 'selected' : '';
+                        echo "<option value='$key' $selected>$val</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Module</label>
+                <select required id="module" name="module_id" class="form-select" data-selected="<?= isset($module_id) ? $module_id : '' ?>">
+                    <option value="">Select Module</option>
+                    <?php
+                    $modules = $conn->query("SELECT * FROM module");
+                    while ($module = $modules->fetch_assoc()) {
+                        $selected = ($module_id == $module['id']) ? 'selected' : '';
+                        echo "<option value='{$module['id']}' $selected>{$module['name']}</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Batch Time</label>
+                <select required name="batch_time" class="form-select">
+                    <option value="">Choose Batch</option>
+                    <?php
+                    $batches = ["7am - 9am", "9am - 11am", "11am - 1pm", "1pm - 3pm", "3pm - 5pm"];
+                    foreach ($batches as $batch) {
+                        $selected = ($batch_time == $batch) ? 'selected' : '';
+                        echo "<option value='$batch' $selected>$batch</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Session</label>
+                <select required name="session" class="form-select">
+                    <option value="">Choose Session</option>
+                    <option value="Weekday" <?= ($session == "Weekday") ? 'selected' : '' ?>>Weekday</option>
+                    <option value="Weekend" <?= ($session == "Weekend") ? 'selected' : '' ?>>Weekend</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Date Booked</label>
+                <input required type="date" name="date_booked" value="<?php echo isset($date_booked) ? $date_booked : '' ?>" class="form-control">
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Start Time</label>
+                <input required type="time" name="start_time" value="<?php echo isset($start_time) ? $start_time : '' ?>" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Booking By</label>
+                <input type="text" name="instructor" class="form-control" value="<?php echo isset($instructor_name) ? $instructor_name : $inst_name ?>" readonly>
+                <input type="hidden" name="instructor_id" class="form-control" value="<?php echo isset($instructor_id) ? $instructor_id : '' ?>">
+            </div>
+
+            <input type="hidden" name="status" value="2">
+        </form>
+        <hr class="mb-5">
     </div>
-    <hr class="mb-4">
 
-    <!-- Exam Form -->
-    <form class="row g-3 border rounded bg-light shadow-sm p-4" id="Form" method="POST" action="actions/examination_action.php">
-        <input type="hidden" name="id" value="<?= $id ?>">
+    <!-- Exams Table (unchanged) -->
+    <div class="mt-5 mx-auto" style="width: 95%">
+        <div class="row">
+            <div class="col">
+                <div class="card shadow">
+                    <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
+                        <h5 class="mb-0" style="color: maroon;">List of Exams</h5>
+                        <form id="filterForm" class="d-flex gap-2">
+                            <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search..">
 
-        <div class="col-md-4">
-            <label class="form-label">Examination Date</label>
-            <input required type="date" name="examination_date" value="<?php echo isset($examination_date) ? $examination_date : '' ?>" class="form-control">
-        </div>
+                            <select required id="module" name="module" class="form-select" data-selected="<?= isset($module_id) ? $module_id : '' ?>">
+                                <option value="">Select Module</option>
+                                <?php
+                                $modules = $conn->query("SELECT * FROM module");
+                                while ($module = $modules->fetch_assoc()) {
+                                    $selected = ($module_id == $module['id']) ? 'selected' : '';
+                                    echo "<option value='{$module['id']}' $selected>{$module['name']}</option>";
+                                }
+                                ?>
+                            </select>
 
-        <div class="col-md-4">
-            <label class="form-label">Course</label>
-            <select required id="course" name="course_id" class="form-select">
-                <option value="">Select Course</option>
-                <?php
-                $courses = $conn->query("SELECT * FROM course");
-                while ($course = $courses->fetch_assoc()) {
-                    $selected = ($course_id == $course['id']) ? 'selected' : '';
-                    echo "<option value='{$course['id']}' $selected>{$course['course_name']}</option>";
-                }
-                ?>
-            </select>
-        </div>
+                            <?php
+                            $query_command = "SELECT * FROM course ";
+                            $result = $conn->query($query_command);
+                            ?>
+                            <select required id="Type" name="course" class="form-select">
+                                <option value="">All Course</option>
+                                <?php while ($row = $result->fetch_assoc()) { ?>
+                                    <option value="<?php echo $row['id'] ?>" <?php echo (isset($course_id) && $course_id ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['course_name'] ?></option>
+                                <?php } ?>
+                            </select>
 
-        <div class="col-md-4">
-            <label class="form-label">Batch Semester</label>
-            <select required id="batch_semester" name="batch_semester" class="form-select">
-                <option value="">Choose Semester</option>
-                <?php
-                $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4"];
-                foreach ($semesters as $key => $val) {
-                    $selected = ($batch_semester == $key) ? 'selected' : '';
-                    echo "<option value='$key' $selected>$val</option>";
-                }
-                ?>
-            </select>
-        </div>
+                            <select name="semester" id="semester" class="form-select">
+                                <option value="">All Semesters</option>
+                                <?php
+                                $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4"];
+                                foreach ($semesters as $key => $val) {
+                                    $selected = ($batch_semester == $key) ? 'selected' : '';
+                                    echo "<option value='$key' $selected>$val</option>";
+                                }
+                                ?>
 
-        <div class="col-md-4">
-            <label class="form-label">Module</label>
-            <select required id="module" name="module_id" class="form-select" data-selected="<?= isset($module_id) ? $module_id : '' ?>">
-                <option value="">Select Module</option>
-                <?php
-                $modules = $conn->query("SELECT * FROM module");
-                while ($module = $modules->fetch_assoc()) {
-                    $selected = ($module_id == $module['id']) ? 'selected' : '';
-                    echo "<option value='{$module['id']}' $selected>{$module['name']}</option>";
-                }
-                ?>
-            </select>
-        </div>
+                            </select>
 
-        <div class="col-md-4">
-            <label class="form-label">Batch Time</label>
-            <select required name="batch_time" class="form-select">
-                <option value="">Choose Batch</option>
-                <?php
-                $batches = ["7am - 9am", "9am - 11am", "11am - 1pm", "1pm - 3pm", "3pm - 5pm"];
-                foreach ($batches as $batch) {
-                    $selected = ($batch_time == $batch) ? 'selected' : '';
-                    echo "<option value='$batch' $selected>$batch</option>";
-                }
-                ?>
-            </select>
-        </div>
+                            <select name="status" id="status" class="form-select">
+                                <option value="">All Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approve">Approve</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </form>
 
-        <div class="col-md-4">
-            <label class="form-label">Session</label>
-            <select required name="session" class="form-select">
-                <option value="">Choose Session</option>
-                <option value="Weekday" <?= ($session == "Weekday") ? 'selected' : '' ?>>Weekday</option>
-                <option value="Weekend" <?= ($session == "Weekend") ? 'selected' : '' ?>>Weekend</option>
-            </select>
-        </div>
+                    </div>
+                    <div class="table-responsive" style="height: 300px;">
+                        <table class="table table-striped align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>ExamsDate</th>
+                                    <th>Course</th>
+                                    <th>Module</th>
+                                    <th>BatchTime</th>
+                                    <th>Session</th>
+                                    <th>StartTime</th>
+                                    <th>Semester</th>
+                                    <th>Instructor</th>
+                                    <th>Status</th>
+                                    <th>DateBooked</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="examination_table">
+                                <!-- fetch the data using the ajax -->
+                            </tbody>
+                        </table>
+                    </div>
 
-        <div class="col-md-4">
-            <label class="form-label">Date Booked</label>
-            <input required type="date" name="date_booked" value="<?php echo isset($date_booked) ? $date_booked : '' ?>" class="form-control">
-        </div>
-
-        <div class="col-md-4">
-            <label class="form-label">Start Time</label>
-            <input required type="time" name="start_time" value="<?php echo isset($start_time) ? $start_time : '' ?>" class="form-control">
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">Booking By</label>
-            <input type="text" name="instructor" class="form-control" value="<?php echo isset($instructor_name) ? $instructor_name : $inst_name ?>" readonly>
-            <input type="hidden" name="instructor_id" class="form-control" value="<?php echo isset($instructor_id) ? $instructor_id : '' ?>">
-        </div>
-
-        <input type="hidden" name="status" value="2">
-    </form>
-    <hr class="mb-5">
-</div>
-
-<!-- Exams Table (unchanged) -->
-<div class="mt-5 mx-auto" style="width: 95%">
-    <div class="row">
-        <div class="col">
-            <div class="card shadow">
-                <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
-                    <h5 class="mb-0" style="color: maroon;">List of Exams</h5>
-                    <form id="filterForm" class="d-flex gap-2">
-                        <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search..">
-
-                        <select name="reporttype" id="reporttype" class="form-select">
-                            <option value="">All Module</option>
-                            <option value=""></option>
-                        </select>
-                        <select name="reporttype" id="reporttype" class="form-select">
-                            <option value="">All Course</option>
-                            <option value=""></option>
-                        </select>
-                        <select name="reporttype" id="reporttype" class="form-select">
-                            <option value="">All Semester</option>
-                            <option value=""></option>
-                        </select>
-                        <select name="reporttype" id="reporttype" class="form-select">
-                            <option value="">All Status</option>
-                            <option value=""></option>
-                        </select>
-                    </form>
-                </div>
-                <div class="table-responsive" style="height: 300px;">
-                    <table class="table table-striped align-middle">
-                        <thead class="table-light">
-                        <tr>
-                            <th>#</th>
-                            <th>ExamsDate</th>
-                            <th>Course</th>
-                            <th>Module</th>
-                            <th>BatchTime</th>
-                            <th>Session</th>
-                            <th>StartTime</th>
-                            <th>Semester</th>
-                            <th>Instructor</th>
-                            <th>Status</th>
-                            <th>DateBooked</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody id="examination_table">
-                        <!-- fetch the data using the ajax -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="card-footer">
-                    <nav>
-                        <ul class="pagination justify-content-center mb-0">
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        </ul>
-                    </nav>
+                    <div class="card-footer">
+                        <nav>
+                            <ul class="pagination justify-content-center mb-0">
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="assets/js/fetch_data_helper.js"></script>
+    <script src="assets/js/fetch_data_helper.js"></script>
 
-<!-- JS -->
-<script>
-$(document).ready(function() {
-    function load_examination(search = '') {
-        $.ajax({
-            url: "actions/fetch_examination.php",
-            type: "POST",
-            data: { search: search },
-            success: function(data) {
-                $("#examination_table").html(data);
+    <!-- JS -->
+    <script>
+        $(document).ready(function() {
+            function load_examination() {
+                const filters = {
+                    search: $("#searchBox").val(),
+                    module: $("#module").val(),
+                    course: $("#course").val(),
+                    semester: $("#semester").val(),
+                    status: $("#status").val()
+                };
+
+                $.ajax({
+                    url: "actions/fetch_examination.php",
+                    type: "POST",
+                    data: filters,
+                    success: function(data) {
+                        $("#examination_table").html(data);
+                    },
+                    error: function() {
+                        $("#examination_table").html("<tr><td colspan='12' class='text-center text-danger'>Error loading data</td></tr>");
+                    }
+                });
             }
+
+            // Initial load
+            load_examination();
+
+            // Reload on any change
+            $("#filterForm select, #searchBox").on("change keyup", load_examination);
         });
-    }
+    </script>
 
-    load_examination();
 
-    $("#searchBox").on("keyup", function() {
-        load_examination($(this).val());
-    });
-});
-</script>
+    <script src="assets/js/main.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-<script src="assets/js/main.js"></script>
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
-<?php
-$title = "Examination";
-successAlert($title);
-?>
+    <?php
+    $title = "Examination";
+    successAlert($title);
+    ?>
 </body>
+
 </html>
