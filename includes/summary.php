@@ -39,35 +39,13 @@
             <h2>Header</h2>
         </div>
 
-        <!-- <table>
-            <tr>
-                <td width="60px">
-                    <div class="imgBx"><img src="assets/imgs/userCircle.png" alt=""></div>
-                </td>
-                <td>
-                    <h4 class="text-capitalize">Item<br>
-                        <span class="align-items-center">
-                            Item</span>
-                    </h4>
-                </td>
-            </tr>
-        </table> -->
         <table>
             <tr>
                 <td width="60px">
-                    <div class="imgBx"><img src="assets/imgs/userCircle.png" alt=""></div>
+                    <ion-icon name="desktop-outline" class="fs-3"></ion-icon>
                 </td>
                 <td>
                     <h4>David <br> <span>Italy</span></h4>
-                </td>
-            </tr>
-
-            <tr>
-                <td width="60px">
-                    <div class="imgBx"><img src="assets/imgs/userCircle.png" alt=""></div>
-                </td>
-                <td>
-                    <h4>Amit <br> <span>India</span></h4>
                 </td>
             </tr>
         </table>
