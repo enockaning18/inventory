@@ -14,67 +14,34 @@
     <script src="assets/js/sweetalert.min.js"></script>
 </head>
 
-<style>
-        body {
-            background-color: #f6f7fb;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .card {
-            border-radius: 15px;
-            /* box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); */
-        }
-
-        .app-brand img {
-            width: 140px;
-            display: block;
-            margin: 0 auto 1rem;
-        }
-    </style>
-
-<body>
-
-    <div class="card" style="width: 700px;">
+<body class="log-body">
+    <div class="log-card">
         <div class="card-body px-5 py-4">
             <div class="app-brand justify-content-center">
                 <a href="index.html" class="app-brand-link gap-2">
-                    <img src="assets/imgs/inventory_logo.png" alt="Logo">
+                    <img src="assets/imgs/inventory_logo.png" class="log-logo" alt="Logo">
                 </a>
             </div>
 
             <form action="actions/login_action.php" method="POST">
                 <div class="mb-3">
-                    <label for="email" class="form-label">Username</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email or username" autofocus />
+                    <label for="email" class="form-label">Enter Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" autofocus />
                     <input type="hidden" class="form-control" id="id" name="id" />
                 </div>
 
                 <div class="mb-3 form-password-toggle">
                     <div class="d-flex justify-content-between">
-                        <label class="form-label" for="password">Password</label>
+                        <label class="form-label" for="password">Enter Password</label> 
                         <a href="forgot_password.php"><small>Forgot Password?</small></a>
                     </div>
                     <div class="input-group input-group-merge">
                         <input type="password" id="password" class="form-control" name="userkey" placeholder="Enter your password" />
-                        <span class="input-group-text cursor-pointer" id="togglePassword"><i class="bx bx-hide"></i></span>
+                        <span class="input-group-text cursor-pointer" id="togglePassword"><i class="bx bx-hide"><i class="bi bi-eye"></i></i></span>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Usertype</label>
-                    <select name='usertype' class="form-select" required>
-                        <option value="">Choose usertype</option>
-                        <option value="admin">Admin</option>
-                        <option value="instructor">Instructor</option>
-                        <option value="student">Student</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
+                <div class="mb-5">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="remember-me" />
                         <label class="form-check-label" for="remember-me"> Remember Me </label>
@@ -82,7 +49,10 @@
                 </div>
 
                 <div class="mb-3">
-                    <button class="btn btn-primary d-grid w-100" name="auth_login" type="submit">Sign in</button>
+                    <button class="btn btn-primary d-flex align-items-center justify-content-center w-100" name="auth_login" type="submit">
+                        Sign In <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+
                 </div>
             </form>
 

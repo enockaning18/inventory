@@ -217,6 +217,45 @@ body {
   color: rgb(63, 9, 224) !important;
 }
 
+.log-body {
+  background-color: #9f2039;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.log-card {
+  width: 35%;
+  height: 70%;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid #f00 ;
+  background: linear-gradient(45deg, darkred, white);
+  color: #fff;
+  font-size: 18px;
+}
+
+.log-card a {
+  text-decoration: none;
+  color: #000;
+}
+
+.log-card button {
+  background-color: darkred;
+  color: #fff;
+  border: 2px solid #fff;
+  box-shadow: 2px 2px 2px 2px solid rgb(113, 107, 107);
+
+}
+
+.log-logo {
+  width: 140px;
+  display: block;
+  margin: 0 auto 1rem;
+}
+
 /* ======================= Cards ====================== */
 
 .cardBox {
