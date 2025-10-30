@@ -1,11 +1,8 @@
     <div class="navigation" style="overflow-y: scroll;">
         <ul class="m-0 p-0">
-            <li>
-                <a href="nav_link.php" class="">
-                    <span class="icon">
-                        <img src="assets/imgs/inventory_logo.png" class="img-fluid" width="100px"  alt="">
-                    </span>
-                    <span class="title" style="font-size: 22px; color: yellow;">Inventory Manager</span>
+            <li style="margin-bottom: 0px;">
+                <a href="nav_link.php">
+                    <img src="assets/imgs/inventory_logo.png" width="100%"  alt="logo">
                 </a>
             </li>
 

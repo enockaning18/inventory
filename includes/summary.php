@@ -9,15 +9,18 @@
     $result = $conn->query($sql);
 
     // upcoming exams
-    $e_sql = "SELECT examination.*, 
+    $e_sql = "SELECT 
+                examination.*, 
                 course.course_name AS course, 
                 module.name AS module, 
-                CONCAT(first_name,' ',last_name) AS instructor_name 
+                CONCAT(instructors.first_name, ' ', instructors.last_name) AS instructor_name
             FROM examination
             INNER JOIN course ON examination.course_id = course.id
             INNER JOIN module ON examination.module_id = module.id
-            INNER JOIN instructors ON examination.instructor_id = instructors.id 
-            ORDER BY id DESC";
+            INNER JOIN instructors ON examination.instructor_id = instructors.id
+            WHERE examination.examination_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+            ORDER BY examination.examination_date ASC";
+
     $e_result = $conn->query($e_sql);
 ?>
 
