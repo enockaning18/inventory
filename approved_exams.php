@@ -85,7 +85,14 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                 <option value=""> </option>
                             </select>
                         </form>
+                        <!-- print approved exams btn -->
+                        <span>
+                            <a href="#" onclick="window.print();" class="text-decoration-none">
+                                <i class="bi bi-printer-fill fs-3 btn-print" title="Print this Exams"></i>
+                            </a>
+                        </span>
                     </div>
+                    
                     <div class="table-responsive" style="height: 300px">
                         <table class="table table-striped align-middle">
                             <thead class="table-light">

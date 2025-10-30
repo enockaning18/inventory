@@ -212,6 +212,11 @@ body {
   object-fit: cover;
 }
 
+.btn-print {
+  float: right !important;
+  color: rgb(63, 9, 224) !important;
+}
+
 /* ======================= Cards ====================== */
 
 .cardBox {

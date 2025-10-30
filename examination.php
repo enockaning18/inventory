@@ -98,7 +98,7 @@ require("includes/topbar.php");
 
         <div class="col-md-4">
             <label class="form-label">Course</label>
-            <select required name="course_id" class="form-select">
+            <select required id="course" name="course_id" class="form-select">
                 <option value="">Select Course</option>
                 <?php
                 $courses = $conn->query("SELECT * FROM course");
@@ -112,7 +112,7 @@ require("includes/topbar.php");
 
         <div class="col-md-4">
             <label class="form-label">Batch Semester</label>
-            <select required name="batch_semester" class="form-select">
+            <select required id="batch_semester" name="batch_semester" class="form-select">
                 <option value="">Choose Semester</option>
                 <?php
                 $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4"];
@@ -126,7 +126,7 @@ require("includes/topbar.php");
 
         <div class="col-md-4">
             <label class="form-label">Module</label>
-            <select required name="module_id" class="form-select">
+            <select required id="module" name="module_id" class="form-select" data-selected="<?= isset($module_id) ? $module_id : '' ?>">
                 <option value="">Select Module</option>
                 <?php
                 $modules = $conn->query("SELECT * FROM module");
@@ -244,6 +244,8 @@ require("includes/topbar.php");
         </div>
     </div>
 </div>
+
+<script src="assets/js/fetch_data_helper.js"></script>
 
 <!-- JS -->
 <script>
