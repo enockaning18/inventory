@@ -232,7 +232,7 @@ body {
   border-radius: 15px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
   border: 2px solid #f00 ;
-  background: linear-gradient(45deg, darkred, white);
+  background: linear-gradient(45deg, white, rgba(139, 0, 0, 0.634), white);
   color: #fff;
   font-size: 18px;
 }
