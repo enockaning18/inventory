@@ -11,6 +11,7 @@ if (!$conn) {
 // Collect filters
 $search     = isset($_POST['search']) ? trim($_POST['search']) : '';
 
+<<<<<<< Updated upstream
 $sql = "
     SELECT 
         instructors.id AS instructid,
@@ -25,6 +26,11 @@ $sql = "
     LEFT JOIN lab ON instructors.lab_id = lab.id
     WHERE 1
 ";
+=======
+$sql = "SELECT instructors.*, instructors.id AS instructid, CONCAT(first_name,' ',last_name) AS instructname, 
+course_name, lab_name, instructors.date_added FROM instructors
+INNER JOIN course ON instructors.course_id = course.id  
+INNER JOIN lab ON instructors.lab_id = lab.id WHERE 1 ";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
@@ -63,7 +69,7 @@ if ($result && $result->num_rows > 0) {
                     </a>
                 </td>
             </tr>";
-        }
+    }
 } else {
     echo "<tr><td colspan='8' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No Instructor Record(s) Found</td></tr>";
 }
