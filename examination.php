@@ -3,6 +3,28 @@ require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 
+// fetch instructor name
+if (!isset($_SESSION['instructorid'])) {
+    die("Instructor not logged in.");
+}
+
+$instid = $_SESSION['instructorid'];
+
+$stmt = $conn->prepare("SELECT * FROM instructors WHERE id = ?");
+$stmt->bind_param("i", $instid);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result && $result->num_rows > 0) {
+    $instructor = $result->fetch_assoc();
+
+   $inst_name = $instructor['first_name'] . " " .$instructor['last_name'];
+} 
+else {
+    echo "Instructor not found.";
+}
+
+
 // Initialize form variables
 $id = $examination_date = $batch_time = $session = $course_id = $date_booked = $start_time = $module_id = $batch_semester = $instructor_id = "";
 
@@ -173,7 +195,7 @@ require("includes/topbar.php");
         </div>
         <div class="col-md-4">
             <label class="form-label">Booking By</label>
-            <input type="text" name="instructor" class="form-control" value="<?php echo isset($instructor_name) ? $instructor_name : '' ?>" readonly>
+            <input type="text" name="instructor" class="form-control" value="<?php echo isset($instructor_name) ? $instructor_name : $inst_name ?>" readonly>
             <input type="hidden" name="instructor_id" class="form-control" value="<?php echo isset($instructor_id) ? $instructor_id : '' ?>">
         </div>
 

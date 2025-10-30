@@ -12,31 +12,37 @@ $search     = isset($_POST['search']) ? trim($_POST['search']) : '';
 $reporttype = isset($_POST['reporttype']) ? trim($_POST['reporttype']) : '';
 
 // Base query
-$sql = "SELECT c.*, u.email, c.datecreated 
-        AS coursedate FROM course AS c 
+$sql = "SELECT c.*, u.email, c.datecreated AS coursedate 
+        FROM course AS c 
         INNER JOIN users AS u ON c.createdby = u.id 
         WHERE 1";
 
-// Add search filter (safely)
+// Add search filter
 $params = [];
 $types  = '';
 
 if (!empty($search)) {
     $sql .= " AND (c.course_name LIKE ? OR c.id LIKE ?)";
     $searchTerm = "%$search%";
-    $params[] = &$searchTerm;
-    $params[] = &$searchTerm;
+    $params[] = $searchTerm;
+    $params[] = $searchTerm;
     $types .= 'ss';
 }
 
+// Final order
 $sql .= " ORDER BY c.id DESC";
 
+// Prepare statement
 $stmt = $conn->prepare($sql);
 
-// Bind parameters dynamically if search was used
+if (!$stmt) {
+    echo "<tr><td colspan='7' class='text-center text-danger'>Failed to prepare query</td></tr>";
+    exit;
+}
+
+// Bind parameters if needed
 if (!empty($params)) {
-    array_unshift($params, $types);
-    call_user_func_array([$stmt, 'bind_param'], $params);
+    $stmt->bind_param($types, ...$params);
 }
 
 $stmt->execute();

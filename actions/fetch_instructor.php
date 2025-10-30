@@ -1,17 +1,14 @@
-
 <?php
 require_once('../baseConnect/dbConnect.php');
 
-// Ensure connection is valid
+
 if (!$conn) {
-    echo "<tr><td colspan='7' class='text-center text-danger'>Database connection failed</td></tr>";
+    echo "<tr><td colspan='8' class='text-center text-danger'>Database connection failed</td></tr>";
     exit;
 }
 
-// Collect filters
-$search     = isset($_POST['search']) ? trim($_POST['search']) : '';
+$search = isset($_POST['search']) ? trim($_POST['search']) : '';
 
-<<<<<<< Updated upstream
 $sql = "
     SELECT 
         instructors.id AS instructid,
@@ -26,29 +23,45 @@ $sql = "
     LEFT JOIN lab ON instructors.lab_id = lab.id
     WHERE 1
 ";
-=======
-$sql = "SELECT instructors.*, instructors.id AS instructid, CONCAT(first_name,' ',last_name) AS instructname, 
-course_name, lab_name, instructors.date_added FROM instructors
-INNER JOIN course ON instructors.course_id = course.id  
-INNER JOIN lab ON instructors.lab_id = lab.id WHERE 1 ";
+
+
+$params = [];
+$types  = '';
 
 if (!empty($search)) {
-    $search = $conn->real_escape_string($search);
     $sql .= " AND (
-        instructors.first_name LIKE '%$search%' 
-        OR instructors.last_name LIKE '%$search%' 
-        OR instructors.phone LIKE '%$search%' 
-        OR instructors.email LIKE '%$search%'
-        OR course.course_name LIKE '%$search%' 
-        OR lab.lab_name LIKE '%$search%'
+        instructors.first_name LIKE ? 
+        OR instructors.last_name LIKE ? 
+        OR instructors.phone LIKE ? 
+        OR instructors.email LIKE ? 
+        OR course.course_name LIKE ? 
+        OR lab.lab_name LIKE ?
     )";
+    $searchTerm = "%$search%";
+    // Add same param for all LIKE fields
+    for ($i = 0; $i < 6; $i++) {
+        $params[] = $searchTerm;
+        $types   .= 's';
+    }
 }
 
 $sql .= " ORDER BY instructors.id DESC";
 
-$result = $conn->query($sql);
+$stmt = $conn->prepare($sql);
 
+if (!$stmt) {
+    echo "<tr><td colspan='8' class='text-center text-danger'>Failed to prepare SQL query</td></tr>";
+    exit;
+}
 
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
+
+// ✅ Display records
 if ($result && $result->num_rows > 0) {
     $counter = 1;
     while ($row = $result->fetch_assoc()) {
@@ -61,17 +74,20 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['course_name']) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
-                <a class='text-decoration-none'href='actions/edit_instructor.php?id=" . $row['instructid'] . "'>
+                    <a class='text-decoration-none' href='actions/edit_instructor.php?id=" . intval($row['instructid']) . "'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>
-                    <a class='text-decoration-none'href='actions/delete_instructor.php?id=" . $row['instructid'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS INSTRUCTOR?');\">
+                    <a class='text-decoration-none' href='actions/delete_instructor.php?id=" . intval($row['instructid']) . "' 
+                       onclick=\"return confirm('Do you want to delete this instructor?');\">
                         <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                     </a>
                 </td>
             </tr>";
     }
 } else {
-    echo "<tr><td colspan='8' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No Instructor Record(s) Found</td></tr>";
+    echo "<tr><td colspan='8' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Instructor Record(s) Found</td></tr>";
 }
 
+$stmt->close();
 $conn->close();
+?>

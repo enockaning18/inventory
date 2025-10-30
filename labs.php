@@ -3,6 +3,12 @@ require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 
+// fetch userid
+if (!isset($_SESSION['id'])) {
+    die("Instructor not logged in.");
+}
+
+$userid = $_SESSION['id'];
 
 // initialize variables used in the form when edit btn is called
 
@@ -127,6 +133,7 @@ else if (isset($_GET['edit_course_id']) && is_numeric($_GET['edit_course_id'])) 
                             <div class="mb-3">
                                 <label class="form-label">Course Name</label>
                                 <input required type="text" name="course_name" value="<?php echo isset($course_name) ? $course_name : '' ?>" class="form-control">
+                                <input required type="hidden" name="userid" value="<?php echo isset($userid) ? $userid : $userid ?>" class="form-control">
                             </div>
 
 
