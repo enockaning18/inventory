@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Verify password
         if (password_verify($userkey, $user['user_key'])) {
             $_SESSION['id'] = $user['id'];
+            $_SESSION['instructorid'] = $user['instructor_id'];
             $_SESSION['logged_in'] = true;
 
             header("Location: ../dashboard.php?status=login");
