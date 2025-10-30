@@ -43,8 +43,7 @@ if (!empty($reporttype)) {
     $sql .= " AND memory_size = '$reporttype' ";
 }
 
-$sql .= " ORDER BY labid DESC ";
->>>>>>> Stashed changes
+$sql .= " ORDER BY id DESC ";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {

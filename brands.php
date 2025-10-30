@@ -75,8 +75,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                 <option value="">All</option>
                                 <option value=""></option>
 
-                            </select> -->
->>>>>>> Stashed changes
+                            </select>
                         </form>
                     </div>
                     <div class="table-responsive" style="height: 300px">

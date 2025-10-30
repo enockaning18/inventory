@@ -28,10 +28,9 @@ $sql = "
 ";
 =======
 $sql = "SELECT instructors.*, instructors.id AS instructid, CONCAT(first_name,' ',last_name) AS instructname, 
-course_name, lab_name, instructors.date_added FROM instructors
-INNER JOIN course ON instructors.course_id = course.id  
-INNER JOIN lab ON instructors.lab_id = lab.id WHERE 1 ";
->>>>>>> Stashed changes
+        course_name, lab_name, instructors.date_added FROM instructors
+        INNER JOIN course ON instructors.course_id = course.id  
+        INNER JOIN lab ON course.id = lab.course_id WHERE 1";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
