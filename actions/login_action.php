@@ -2,34 +2,38 @@
 require_once('../baseConnect/dbConnect.php');
 session_start();
 
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id         = mysqli_real_escape_string($conn, $_POST['id'] ?? '');
-    $email      = mysqli_real_escape_string($conn, $_POST['email'] ?? '');
-    $userkey    = trim($conn, $_POST['userkey'] ?? '');
-    $userkey    = password_hash($userkey, PASSWORD_BCRYPT);
+    
+    $email   = trim($_POST['email'] ?? '');
+    $userkey = trim($_POST['userkey'] ?? '');
 
+    if (empty($email) || empty($userkey)) {
+        header("Location: ../index.php?status=empty_fields");
+        exit();
+    }
 
-    $statement = $conn->prepare("SELECT  email, user_key FROM users WHERE (email =? AND user_key = ?)");
-    $statement->bind_param('ss',  $email, $userkey);
-    $statement->execute();
-    $statement->store_result();
+    $stmt = $conn->prepare("SELECT id, email, user_key FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if ($statement->num_rows > 0) {
-        $query = "SELECT * FROM users WHERE email = '" . $email . "'  ";
-        $result = $conn->query($query);
-        if ($result && $result->num_rows > 0) 
-            {
-                $row = $result->fetch_assoc();
-                $_SESSION['id'] = $row['id'];
-                $_SESSION['logged_in'] = true;
-            }
+    if ($result && $result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+
+        // Verify password
+        if (password_verify($userkey, $user['user_key'])) {
+            $_SESSION['id'] = $user['id'];
+            $_SESSION['logged_in'] = true;
+
             header("Location: ../dashboard.php?status=login");
             exit();
-            } 
-        else {
+        } else {
             header("Location: ../index.php?status=incorrect_password");
             exit();
         }
+    } else {
+        header("Location: ../index.php?status=user_not_found");
+        exit();
+    }
 }
+?>

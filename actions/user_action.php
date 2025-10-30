@@ -7,34 +7,34 @@ if (!$conn) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
     $id            = mysqli_real_escape_string($conn, $_POST['id'] ?? '');
-    $email         = mysqli_real_escape_string($conn, $_POST['email'] ?? '');
-    $userkey       = mysqli_real_escape_string($conn, $_POST['userkey'] ?? '');
-    $userkey       = trim($conn, $_POST['userkey'] ?? '');
-    $userkey       = password_hash($userkey, PASSWORD_BCRYPT);
+    $email         = trim(mysqli_real_escape_string($conn, $_POST['email'] ?? ''));
+    $userkey       = trim($_POST['userkey'] ?? '');
     $user_type     = mysqli_real_escape_string($conn, $_POST['usertype'] ?? '');
     $instructor_id = !empty($_POST['instructor_id']) ? intval($_POST['instructor_id']) : null;
 
-    sha1(md5($_POST['userkey']));
     // Validate required fields
     if (empty($email) || empty($user_type)) {
         header("Location: ../users.php?status=missing");
         exit();
     }
 
-    // validating duplicate email
+    // encrypt password
+    $hashedKey = password_hash($userkey, PASSWORD_BCRYPT);
+
+    // Check for duplicate email (excluding current ID)
     $emailCheck = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
     $emailCheck->bind_param("si", $email, $id);
     $emailCheck->execute();
     $emailResult = $emailCheck->get_result();
+
     if ($emailResult->num_rows > 0) {
         header("Location: ../users.php?status=emailexists");
         exit();
     }
     $emailCheck->close();
 
-    // validating duplicate user assignment
+    // Check if instructor already assigned
     if (!empty($instructor_id)) {
         $checkQuery = $conn->prepare("SELECT id FROM users WHERE instructor_id = ? AND id != ?");
         $checkQuery->bind_param("ii", $instructor_id, $id);
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 throw new Exception("prepare_failed");
             }
 
-            $stmt->bind_param("ssisi", $email, $user_type, $instructor_id, $userkey, $id);
+            $stmt->bind_param("ssisi", $email, $user_type, $instructor_id, $hashedKey, $id);
 
             if ($stmt->execute()) {
                 header("Location: ../users.php?status=update");
@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 throw new Exception("prepare_failed");
             }
 
-            $stmt->bind_param("ssis", $email, $user_type, $instructor_id, $userkey);
+            $stmt->bind_param("ssis", $email, $user_type, $instructor_id, $hashedKey);
 
             if ($stmt->execute()) {
                 header("Location: ../users.php?status=save");
@@ -96,3 +96,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 $conn->close();
+?>
