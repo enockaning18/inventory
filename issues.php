@@ -1,5 +1,5 @@
 <?php
-
+require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 
@@ -118,13 +118,26 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <form id="filterForm" class="d-flex gap-2">
                             <input type="search" class="form-control px-4" id="searchBox" name="search" placeholder="Search..">
 
-                            <select name="reporttype" id="reporttype" class="form-select">
-                                <option value="">All Labs</option>
-                                <option value=""> </option>
+                            <select name="issue_type" id="issue_type" class="form-select">
+                                <option value="">All Issues </option>
+                                <?php
+                                $query_command = "SELECT * FROM issues ";
+                                $result = $conn->query($query_command);
+                                ?>
+                                <?php while ($row = $result->fetch_assoc()) { ?>
+                                    <option value="<?php echo $row['issue_type'] ?>"><?php echo $row['issue_type'] ?></option>
+                                <?php } ?>
                             </select>
-                            <select name="reporttype" id="reporttype" class="form-select">
-                                <option value="">Issue Type </option>
-                                <option value=""> </option>
+
+                            <select name="lab_type" id="lab_type" class="form-select">
+                                <option value="">All Labs </option>
+                                <?php
+                                $query_command = "SELECT * FROM lab ";
+                                $result = $conn->query($query_command);
+                                ?>
+                                <?php while ($lab_result = $result->fetch_assoc()) { ?>
+                                    <option value="<?php echo $lab_result['lab_name'] ?>"><?php echo $lab_result['lab_name'] ?></option>
+                                <?php } ?>
                             </select>
                         </form>
                     </div>
@@ -166,12 +179,15 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script>
         $(document).ready(function() {
-            function load_issues(search = '') {
+            // Function to load issues
+            function load_issues(search = '', issue_type = '', lab_type = '') {
                 $.ajax({
                     url: "actions/fetch_issue.php",
                     type: "POST",
                     data: {
-                        search: search
+                        search: search,
+                        issue_type: issue_type,
+                        lab_type: lab_type
                     },
                     success: function(data) {
                         $("#issues_table").html(data);
@@ -179,13 +195,30 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 });
             }
 
-            // Load on page start
+            // Load all on start
             load_issues();
 
-            // Search computer
+            // Search input event by search type
             $("#searchBox").on("keyup", function() {
-                let search = $(this).val();
-                load_issues(search);
+                const search = $(this).val();
+                const issue_type = $("#issue_type").val();
+                const lab_type = $("#lab_type").val();
+                load_issues(search, issue_type, lab_type);
+            });
+
+            // Filter dropdown change event by issue_type
+            $("#issue_type").on("change", function() {
+                const issue_type = $(this).val();
+                const search = $("#searchBox").val();
+                const lab_type = $("#lab_type").val();
+                load_issues(search, issue_type, lab_type);
+            });
+            // Filter dropdown change event by lab type
+            $("#lab_type").on("change", function() {
+                const issue_type = $("#issue_type").val();
+                const search = $("#searchBox").val();
+                const lab_type = $(this).val();
+                load_issues(search, issue_type, lab_type);
             });
         });
     </script>

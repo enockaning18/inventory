@@ -66,7 +66,7 @@ function successAlert($title)
                 Swal.fire({
                     icon: 'error',
                     title: 'Login ',
-                    text: "Unable to login \n\ Check Username or Password",
+                    text: "Unable to login \n\ Check Email or Password",
 
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'

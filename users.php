@@ -1,4 +1,5 @@
 <?php
+require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 
@@ -59,25 +60,41 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
                 <div class="col-md-4">
                     <label class="form-label">Email</label>
+<<<<<<< Updated upstream
                     <input required type="email" name="email" value="<?php echo htmlspecialchars($email); ?>" class="form-control">
+=======
+                    <input required type="email" name="email" value="<?php echo htmlspecialchars($email); ?>" class="form-control" autocomplete="off">
+>>>>>>> Stashed changes
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Password</label>
+<<<<<<< Updated upstream
                     <input required type="password" name="userkey" value="<?php echo htmlspecialchars($userkey); ?>" class="form-control">
+=======
+                    <input required type="password" name="userkey" value="<?php echo htmlspecialchars($userkey); ?>" class="form-control" autocomplete="off">
+>>>>>>> Stashed changes
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Usertype</label>
                     <select required name="usertype" class="form-select">
+<<<<<<< Updated upstream
                         <option value="">Choose Usertype</option>
                         <option value="admin" <?php echo ($usertype == 'admin') ? 'selected' : ''; ?>>Admin</option>
                         <option value="instructor" <?php echo ($usertype == 'instructor') ? 'selected' : ''; ?>>Instructor</option>
                         <option value="student" <?php echo ($usertype == 'student') ? 'selected' : ''; ?>>Student</option>
+=======
+                        <option value="">Choose usertype</option>
+                        <option value="admin" <?php echo ($usertype == "admin") ? 'selected' : ''; ?>>Admin</option>
+                        <option value="instructor" <?php echo ($usertype == "instructor") ? 'selected' : ''; ?>>Instructor</option>
+                        <option value="student" <?php echo ($usertype == "student") ? 'selected' : ''; ?>>Student</option>
+>>>>>>> Stashed changes
                     </select>
                 </div>
 
                 <div class="col-md-4">
+<<<<<<< Updated upstream
                     <label class="form-label">Assign User</label>
                     <?php
                     $query_command = "SELECT id, CONCAT(first_name, ' ', last_name) AS instructor_name FROM instructors";
@@ -88,6 +105,18 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <?php while ($inst = $result->fetch_assoc()) { ?>
                             <option value="<?php echo $inst['id']; ?>" <?php echo ($instructor_id == $inst['id']) ? 'selected' : ''; ?>>
                                 <?php echo htmlspecialchars($inst['instructor_name']); ?>
+=======
+                    <label class="form-label">Assign Instructor</label>
+                    <?php
+                    $query_command = "SELECT id, first_name, last_name FROM instructors";
+                    $result = $conn->query($query_command);
+                    ?>
+                    <select required name="instructor_id" class="form-select">
+                        <option value="">Select instructor</option>
+                        <?php while ($inst = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $inst['id']; ?>" <?php echo ($instructor_id == $inst['id']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($inst['first_name'] . ' ' . $inst['last_name']); ?>
+>>>>>>> Stashed changes
                             </option>
                         <?php } ?>
                     </select>
@@ -152,6 +181,9 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     data: { search: search },
                     success: function(data) {
                         $("#users_table").html(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error: " + error);
                     }
                 });
             }

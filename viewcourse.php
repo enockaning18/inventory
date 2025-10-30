@@ -1,5 +1,5 @@
 <?php
-
+require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 

@@ -1,7 +1,8 @@
 <?php
 
 require_once('alert.php');
-// require_once('../baseConnect/dbConnect.php');
+require_once('baseConnect/dbConnect.php');
+require_once('actions/start_session.php');
 
 
 ?>
@@ -41,7 +42,10 @@ require_once('alert.php');
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="assets/js/sweetalert.min.js"></script>
-
+    <?php
+    $title = "Login";
+    successAlert($title);
+    ?>
 
 </body>
 

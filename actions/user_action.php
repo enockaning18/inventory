@@ -12,13 +12,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Sanitize inputs
     $id            = mysqli_real_escape_string($conn, $_POST['id'] ?? '');
     $email         = mysqli_real_escape_string($conn, $_POST['email'] ?? '');
+<<<<<<< Updated upstream
     $user_key_raw  = trim($_POST['userkey'] ?? '');
     $user_type     = mysqli_real_escape_string($conn, $_POST['usertype'] ?? '');
     $instructor_id = !empty($_POST['instructor_id']) ? intval($_POST['instructor_id']) : null;
 
     // encrypt user key for security
     $user_key = password_hash($user_key_raw, PASSWORD_DEFAULT);
+=======
+    $userkey         = mysqli_real_escape_string($conn, $_POST['userkey'] ?? '');
+    $user_type     = mysqli_real_escape_string($conn, $_POST['usertype'] ?? '');
+    $instructor_id = !empty($_POST['instructor_id']) ? intval($_POST['instructor_id']) : null;
+>>>>>>> Stashed changes
 
+    sha1(md5($_POST['userkey']));
     // Validate required fields
     if (empty($email) || empty($user_type)) {
         header("Location: ../users.php?status=missing");
@@ -63,14 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 throw new Exception("prepare_failed");
             }
 
-            $stmt->bind_param("ssisi", $email, $user_type, $instructor_id, $user_key, $id);
+            $stmt->bind_param("ssisi", $email, $user_type, $instructor_id, $userkey, $id);
 
             if ($stmt->execute()) {
                 header("Location: ../users.php?status=update");
             } else {
                 header("Location: ../users.php?status=error");
             }
-
         } else {
             
             $stmt = $conn->prepare("
@@ -82,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 throw new Exception("prepare_failed");
             }
 
-            $stmt->bind_param("ssis", $email, $user_type, $instructor_id, $user_key);
+            $stmt->bind_param("ssis", $email, $user_type, $instructor_id, $userkey);
 
             if ($stmt->execute()) {
                 header("Location: ../users.php?status=save");
@@ -99,5 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 $conn->close();
+<<<<<<< Updated upstream
 exit();
 ?>
+=======
+>>>>>>> Stashed changes

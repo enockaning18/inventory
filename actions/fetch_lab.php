@@ -20,6 +20,7 @@ $sql = "SELECT lab.*, lab.id AS labid, course.course_name, course.id AS courseid
 // Apply search filter
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
+<<<<<<< Updated upstream
     $sql .= " AND (
                 lab.lab_name LIKE '%$search%' 
                 OR course.course_name LIKE '%$search%' 
@@ -31,6 +32,19 @@ if (!empty($search)) {
 // Order by newest first
 $sql .= " ORDER BY lab.id DESC";
 
+=======
+    $sql .= " AND lab_name LIKE '%$search%' 
+              OR course.id LIKE '%$search%' 
+              OR number_computers LIKE '%$search%'";
+}
+
+if (!empty($reporttype)) {
+    $reporttype = $conn->real_escape_string($reporttype);
+    $sql .= " AND memory_size = '$reporttype' ";
+}
+
+$sql .= " ORDER BY labid DESC ";
+>>>>>>> Stashed changes
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {

@@ -1,5 +1,5 @@
 <?php
-
+require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 
@@ -119,21 +119,48 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <form id="filterForm" class="d-flex gap-2">
                             <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search..">
 
-                            <select name="reporttype" id="reporttype" class="form-select">
+                            <select name="lab_type" id="lab_type" class="form-select">
                                 <option value="">All Labs</option>
-                                <option value=""></option>
+                                <?php
+                                $query_command = "SELECT DISTINCT lab_name FROM lab";
+                                $result = $conn->query($query_command);
+                                while ($lab_result = $result->fetch_assoc()) {
+                                    echo '<option value="' . $lab_result['lab_name'] . '">' . $lab_result['lab_name'] . '</option>';
+                                }
+                                ?>
                             </select>
-                            <select name="reporttype" id="reporttype" class="form-select">
+
+                            <select name="brand_type" id="brand_type" class="form-select">
                                 <option value="">All Brands</option>
-                                <option value=""></option>
+                                <?php
+                                $query_command = "SELECT DISTINCT brand_name FROM brand";
+                                $result = $conn->query($query_command);
+                                while ($brand = $result->fetch_assoc()) {
+                                    echo '<option value="' . $brand['brand_name'] . '">' . $brand['brand_name'] . '</option>';
+                                }
+                                ?>
                             </select>
-                            <select name="reporttype" id="reporttype" class="form-select">
+
+                            <select name="memory_type" id="memory_type" class="form-select">
                                 <option value="">All Memory</option>
-                                <option value=""></option>
+                                <?php
+                                $query_command = "SELECT DISTINCT memory_size  FROM computers ";
+                                $result = $conn->query($query_command);
+                                while ($memory = $result->fetch_assoc()) {
+                                    echo '<option value="' . $memory['memory_size'] . '">' . $memory['memory_size'] . '</option>';
+                                }
+                                ?>
                             </select>
-                            <select name="reporttype" id="reporttype" class="form-select">
+
+                            <select name="drive_type" id="drive_type" class="form-select">
                                 <option value="">All HDD/SSD</option>
-                                <option value=""></option>
+                                <?php
+                                $query_command = "SELECT DISTINCT hard_drive_size FROM computers ";
+                                $result = $conn->query($query_command);
+                                while ($drive = $result->fetch_assoc()) {
+                                    echo '<option value="' . $drive['hard_drive_size'] . '">' . $drive['hard_drive_size'] . '</option>';
+                                }
+                                ?>
                             </select>
                         </form>
                     </div>
@@ -176,12 +203,17 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script>
         $(document).ready(function() {
-            function load_computer(search = '') {
+            // Function to load filtered results
+            function load_computers(search = '', lab_type = '', brand_type = '', memory_type = '', drive_type = '') {
                 $.ajax({
                     url: "actions/fetch_computer.php",
                     type: "POST",
                     data: {
-                        search: search
+                        search: search,
+                        lab_type: lab_type,
+                        brand_type: brand_type,
+                        memory_type: memory_type,
+                        drive_type: drive_type
                     },
                     success: function(data) {
                         $("#computer_table").html(data);
@@ -189,13 +221,29 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 });
             }
 
-            // Load on page start
-            load_computer();
+            // Load all on page start
+            load_computers();
 
-            // Search computer
+            // When typing in search box
             $("#searchBox").on("keyup", function() {
-                let search = $(this).val();
-                load_computer(search);
+                load_computers(
+                    $(this).val(),
+                    $("#lab_type").val(),
+                    $("#brand_type").val(),
+                    $("#memory_type").val(),
+                    $("#drive_type").val()
+                );
+            });
+
+            // When any filter changes
+            $("#lab_type, #brand_type, #memory_type, #drive_type").on("change", function() {
+                load_computers(
+                    $("#searchBox").val(),
+                    $("#lab_type").val(),
+                    $("#brand_type").val(),
+                    $("#memory_type").val(),
+                    $("#drive_type").val()
+                );
             });
         });
     </script>

@@ -1,4 +1,8 @@
 <?php
+<<<<<<< Updated upstream
+=======
+require_once('actions/start_session.php');
+>>>>>>> Stashed changes
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 

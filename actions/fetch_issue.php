@@ -8,7 +8,9 @@ if (!$conn) {
 }
 
 // Collect filters
-$search = isset($_POST['search']) ? trim($_POST['search']) : '';
+$search      = isset($_POST['search']) ? trim($_POST['search']) : '';
+$issue_type  = isset($_POST['issue_type']) ? trim($_POST['issue_type']) : '';
+$lab_type    = isset($_POST['lab_type']) ? trim($_POST['lab_type']) : '';
 
 $sql = "SELECT 
             issues.*, 
@@ -19,6 +21,7 @@ $sql = "SELECT
         INNER JOIN lab ON issues.lab = lab.id
         WHERE 1";
 
+//  Filter by search
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
     $sql .= " AND (
@@ -28,6 +31,19 @@ if (!empty($search)) {
                 OR issues.issue_date LIKE '%$search%' 
                 OR issues.issue_description LIKE '%$search%'
             )";
+}
+
+//  Filter by lab
+if (!empty($lab_type)) {
+    $lab_type = $conn->real_escape_string($lab_type);
+    $sql .= " AND lab.lab_name = '$lab_type' ";
+}
+
+
+// Filter by issue type
+if (!empty($issue_type)) {
+    $issue_type = $conn->real_escape_string($issue_type);
+    $sql .= " AND issues.issue_type = '$issue_type' ";
 }
 
 $sql .= " ORDER BY issues.id DESC";
@@ -60,4 +76,3 @@ if ($result && $result->num_rows > 0) {
 }
 
 $conn->close();
-?>

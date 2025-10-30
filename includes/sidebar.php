@@ -89,7 +89,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="logout.php">
                     <span class="icon">
                         <ion-icon name="exit-outline"></ion-icon>
                     </span>

@@ -9,7 +9,10 @@ if (!$conn) {
 
 // Collect filters
 $search     = isset($_POST['search']) ? trim($_POST['search']) : '';
-$reporttype = isset($_POST['reporttype']) ? trim($_POST['reporttype']) : '';
+$lab_type = isset($_POST['lab_type']) ? trim($_POST['lab_type']) : '';
+$memory_type = isset($_POST['memory_type']) ? trim($_POST['memory_type']) : '';
+$drive_type = isset($_POST['drive_type']) ? trim($_POST['drive_type']) : '';
+$brand_type = isset($_POST['brand_type']) ? trim($_POST['brand_type']) : '';
 
 $sql = " SELECT computers.id, computer_name, serial_number, memory_size, lab.lab_name, brand.brand_name, computers.date_added, hard_drive_size
          FROM computers 
@@ -23,6 +26,24 @@ if (!empty($search)) {
               OR serial_number LIKE '%$search%' 
               OR memory_size LIKE '%$search%' 
               OR lab.lab_name LIKE '%$search%')";
+}
+
+//  Filter by lab
+if (!empty($memory_type)) {
+    $memory_type = $conn->real_escape_string($memory_type);
+    $sql .= " AND memory_size = '$memory_type' ";
+}
+if (!empty($lab_type)) {
+    $lab_type = $conn->real_escape_string($lab_type);
+    $sql .= " AND lab.lab_name = '$lab_type' ";
+}
+if (!empty($drive_type)) {
+    $drive_type = $conn->real_escape_string($drive_type);
+    $sql .= " AND hard_drive_size = '$drive_type' ";
+}
+if (!empty($brand_type)) {
+    $brand_type = $conn->real_escape_string($brand_type);
+    $sql .= " AND brand.brand_name = '$brand_type' ";
 }
 
 
