@@ -44,6 +44,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         $module_id       = $row['module_id'];
         $batch_semester  = $row['batch_semester'];
         $instructor_id   = $row['instructor_id'];
+        $instructor_name = $row['instructor_name'];
     }
 
     $stmt->close();
@@ -92,7 +93,7 @@ require("includes/topbar.php");
 
         <div class="col-md-4">
             <label class="form-label">Examination Date</label>
-            <input required type="date" name="examination_date" value="<?= $examination_date ?>" class="form-control">
+            <input required type="date" name="examination_date" value="<?php echo isset($examination_date) ? $examination_date : '' ?>" class="form-control">
         </div>
 
         <div class="col-md-4">
@@ -104,6 +105,20 @@ require("includes/topbar.php");
                 while ($course = $courses->fetch_assoc()) {
                     $selected = ($course_id == $course['id']) ? 'selected' : '';
                     echo "<option value='{$course['id']}' $selected>{$course['course_name']}</option>";
+                }
+                ?>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Batch Semester</label>
+            <select required name="batch_semester" class="form-select">
+                <option value="">Choose Semester</option>
+                <?php
+                $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4"];
+                foreach ($semesters as $key => $val) {
+                    $selected = ($batch_semester == $key) ? 'selected' : '';
+                    echo "<option value='$key' $selected>$val</option>";
                 }
                 ?>
             </select>
@@ -138,20 +153,6 @@ require("includes/topbar.php");
         </div>
 
         <div class="col-md-4">
-            <label class="form-label">Batch Semester</label>
-            <select required name="batch_semester" class="form-select">
-                <option value="">Choose Semester</option>
-                <?php
-                $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4"];
-                foreach ($semesters as $key => $val) {
-                    $selected = ($batch_semester == $key) ? 'selected' : '';
-                    echo "<option value='$key' $selected>$val</option>";
-                }
-                ?>
-            </select>
-        </div>
-
-        <div class="col-md-4">
             <label class="form-label">Session</label>
             <select required name="session" class="form-select">
                 <option value="">Choose Session</option>
@@ -162,16 +163,20 @@ require("includes/topbar.php");
 
         <div class="col-md-4">
             <label class="form-label">Date Booked</label>
-            <input required type="date" name="date_booked" value="<?= $date_booked ?>" class="form-control">
+            <input required type="date" name="date_booked" value="<?php echo isset($date_booked) ? $date_booked : '' ?>" class="form-control">
         </div>
 
         <div class="col-md-4">
             <label class="form-label">Start Time</label>
-            <input required type="time" name="start_time" value="<?= $start_time ?>" class="form-control">
+            <input required type="time" name="start_time" value="<?php echo isset($start_time) ? $start_time : '' ?>" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Booking By</label>
+            <input type="text" name="instructor" class="form-control" value="<?php echo isset($instructor_name) ? $instructor_name : '' ?>" readonly>
+            <input type="hidden" name="instructor_id" class="form-control" value="<?php echo isset($instructor_id) ? $instructor_id : '' ?>">
         </div>
 
         <input type="hidden" name="status" value="2">
-        <input type="hidden" name="instructor_id" value="<?= $instructor_id ?>">
     </form>
     <hr class="mb-5">
 </div>
@@ -184,7 +189,24 @@ require("includes/topbar.php");
                 <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
                     <h5 class="mb-0" style="color: maroon;">List of Exams</h5>
                     <form id="filterForm" class="d-flex gap-2">
-                        <input type="search" class="form-control px-4" id="searchBox" name="search" placeholder="Search..">
+                        <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search..">
+
+                        <select name="reporttype" id="reporttype" class="form-select">
+                            <option value="">All Module</option>
+                            <option value=""></option>
+                        </select>
+                        <select name="reporttype" id="reporttype" class="form-select">
+                            <option value="">All Course</option>
+                            <option value=""></option>
+                        </select>
+                        <select name="reporttype" id="reporttype" class="form-select">
+                            <option value="">All Semester</option>
+                            <option value=""></option>
+                        </select>
+                        <select name="reporttype" id="reporttype" class="form-select">
+                            <option value="">All Status</option>
+                            <option value=""></option>
+                        </select>
                     </form>
                 </div>
                 <div class="table-responsive" style="height: 300px;">
@@ -228,7 +250,7 @@ require("includes/topbar.php");
 $(document).ready(function() {
     function load_examination(search = '') {
         $.ajax({
-            url: "actions/fetch_examination_pending.php",
+            url: "actions/fetch_examination.php",
             type: "POST",
             data: { search: search },
             success: function(data) {

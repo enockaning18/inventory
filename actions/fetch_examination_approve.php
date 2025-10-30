@@ -10,20 +10,22 @@ if (!$conn) {
 // Collect filters
 $search = isset($_POST['search']) ? trim($_POST['search']) : '';
 
-// Correct SQL query
-$sql = "SELECT examination.*, course.course_name AS course, module.name
-        AS module, CONCAT(first_name,' ',last_name) AS instructor_name 
+$sql = "SELECT examination.*, 
+               course.course_name AS course, 
+               module.name AS module, 
+               CONCAT(first_name,' ',last_name) AS instructor_name 
         FROM examination
         INNER JOIN course ON examination.course_id = course.id
         INNER JOIN module ON examination.module_id = module.id
         INNER JOIN instructors ON examination.instructor_id = instructors.id
-        WHERE status = 'approved'";
+        WHERE status = 'approve'";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
     $sql .= " AND (
-        course LIKE '%$search%' 
-        OR module LIKE '%$search%' 
+        course.course_name LIKE '%$search%' 
+        OR module.name LIKE '%$search%' 
+        OR CONCAT(first_name,' ',last_name) LIKE '%$search%' 
         OR examination.batch_time LIKE '%$search%' 
         OR examination.session LIKE '%$search%'
     )";
@@ -48,20 +50,8 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['status']) . "</td>
                 <td>" . htmlspecialchars($row['date_booked']) . "</td>
                 <td>
-                    <a href='actions/edit_examination.php?id={$row['id']}' class='text-decoration-none'>
-                        <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
-                    </a>
-                    <a href='actions/delete_examination.php?id={$row['id']}' onclick=\"return confirm('Delete this record?');\" class='text-decoration-none'>
-                        <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
-                    </a>
-                    <a href='actions/update_exam_status.php?id={$row['id']}&status=confirmed' class='text-decoration-none'>
-                        <i class='bi bi-check-circle-fill text-success fs-5 ms-1'></i>
-                    </a>
-                    <a href='actions/update_exam_status.php?id={$row['id']}&status=pending' class='text-decoration-none'>
-                        <i class='bi bi-hourglass-split text-warning fs-5 ms-1'></i>
-                    </a>
-                    <a href='actions/update_exam_status.php?id={$row['id']}&status=cancelled' class='text-decoration-none'>
-                        <i class='bi bi-x-circle-fill text-danger fs-5 ms-1'></i>
+                    <a href='examination.php' class='text-decoration-none'>
+                        <i class='bi bi-eye text-primary fs-5 me-2'></i>
                     </a>
                 </td>
             </tr>";

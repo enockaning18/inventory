@@ -1,28 +1,34 @@
 <?php
 require_once('../baseConnect/dbConnect.php');
 
-// Ensure connection is valid
 if (!$conn) {
-    echo "<tr><td colspan='7' class='text-center text-danger'>Database connection failed</td></tr>";
+    echo "<tr><td colspan='5' class='text-center text-danger'>Database connection failed</td></tr>";
     exit;
 }
 
-// Collect search input
 $search = isset($_POST['search']) ? trim($_POST['search']) : '';
 
-// Base query
-$sql = "SELECT id, name AS modname, date_created FROM module WHERE 1";
+$sql = "SELECT module.id AS modid, module.name AS modname, course.course_name AS coursename, 
+        module.date_created AS datecreated, semester 
+        FROM module INNER JOIN course ON module.course_id = course.id";
 
-// Apply search filter if not empty
+$params = [];
+$types = "";
 if (!empty($search)) {
-    $search = $conn->real_escape_string($search);
-    $sql .= " AND (name LIKE '%$search%' OR date_created LIKE '%$search%')";
+    $sql .= " WHERE module.name LIKE ? OR semester LIKE ? OR course.course_name LIKE ? OR module.date_created LIKE ?";
+    $searchParam = "%$search%";
+    $params = [$searchParam, $searchParam, $searchParam, $searchParam];
+    $types = "ssss";
 }
 
-// Order by newest first
-$sql .= " ORDER BY id DESC";
+$sql .= " ORDER BY modid DESC";
 
-$result = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result && $result->num_rows > 0) {
     $counter = 1;
@@ -30,20 +36,23 @@ if ($result && $result->num_rows > 0) {
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
                 <td>" . htmlspecialchars($row['modname']) . "</td>
-                <td>" . htmlspecialchars($row['date_created']) . "</td>
+                <td>" . htmlspecialchars($row['semester']) . "</td>
+                <td>" . htmlspecialchars($row['coursename']) . "</td>
+                <td>" . htmlspecialchars($row['datecreated']) . "</td>
                 <td>
-                    <a class='text-decoration-none' href='actions/edit_module.php?id=" . $row['id'] . "'>
+                    <a class='text-decoration-none' href='actions/edit_module.php?id=" . $row['modid'] . "'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>
-                    <a class='text-decoration-none' href='actions/delete_module.php?id=" . $row['id'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS MODULE?');\">
+                    <a class='text-decoration-none' href='actions/delete_module.php?id=" . $row['modid'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS MODULE?');\">
                         <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                     </a>
                 </td>
             </tr>";
     }
 } else {
-    echo "<tr><td colspan='10' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Module Record(s) Found</td></tr>";
+    echo "<tr><td colspan='5' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Module Record(s) Found</td></tr>";
 }
 
+$stmt->close();
 $conn->close();
 ?>

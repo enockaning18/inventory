@@ -8,16 +8,35 @@ require_once('baseConnect/dbConnect.php');
 
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, name FROM module WHERE id = ?");
+
+    $stmt = $conn->prepare("
+        SELECT module.id AS modid, module.name AS modname, 
+        module.course_id AS courseid, semester
+        FROM module 
+        INNER JOIN course ON course.id = module.course_id
+        WHERE module.id = ?
+    ");
+
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
+
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
-    $row = $stmt->get_result()->fetch_assoc();
+
+    $result = $stmt->get_result();
+    $row = $result ? $row = $result->fetch_assoc() : null;
+
     if ($row) {
-        $id = $row['id'];
-        $module_name = $row['name'];
+        $id = $row['modid'];
+        $module_name = $row['modname'];
+        $semester = $row['semester'];
+        $course_id = $row['courseid'];
     }
+
     $stmt->close();
-} ?>
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,12 +67,43 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Module</button>
         </div>
         <hr style="margin-bottom: 3rem;">
-        <div class="g-3" style="margin-bottom: 4rem">
-            <form class=" border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/module_action.php" class="row g-3 p-3 border rounded bg-light shadow-sm">
+        <div class="g-3" style="margin-bottom: 7rem">
+            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/module_action.php">
+                
                 <div class="col-md-4">
                     <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
                     <label class="form-label">Module Name</label>
                     <input required type="text" name="module_name" value="<?php echo isset($module_name) ? $module_name : '' ?>" class="form-control">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Semester</label>
+                    <select required name="batch_semester" class="form-select">
+                        <option value="">Choose Semester</option>
+                        <?php
+                        $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4"];
+                        foreach ($semesters as $key => $val) {
+                            $selected = ($semester == $key) ? 'selected' : '';
+                            echo "<option value='$key' $selected>$val</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Course</label>
+                    <?php
+                    $query_command = "SELECT * FROM course";
+                    $result = $conn->query($query_command);
+                    ?>
+                    <select required name="course_id" class="form-select">
+                        <option value="">Select Course</option>
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($course_id) && $course_id ==  $row['id']) ? 'selected' : '' ?>>
+                                <?php echo $row['course_name']  ?>
+                            </option>
+                        <?php } ?>
+                    </select>
                 </div>
             </form>
         </div>
@@ -75,6 +125,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Semester</th>
+                                    <th>Course</th>
                                     <th>DateCreated</th>
                                     <th>Action</th>
                                 </tr>

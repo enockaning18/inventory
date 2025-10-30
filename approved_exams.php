@@ -49,7 +49,12 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <div class=" mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
             <h3><ion-icon name="alert-circle-outline"></ion-icon> Approved Exams </h3>
-            <a href="examination.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Book Exams </button></a>
+            <div>
+                <a href="pending_exams.php"><button class="btn text-white px-2" style="background-color:gold;">Pending</button></a>
+                <a href="cancelled_exams.php"><button class="btn text-white px-2" style="background-color:red;">Cancelled</button></a>
+            </div>
+            
+            <a href="examination.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Book/ShowAll Exams </button></a>
         </div>
         <hr style="margin-bottom: 3rem;">
     </div>
@@ -86,14 +91,17 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Compuer</th>
-                                    <th>Issue </th>
-                                    <th>Lab</th>
-                                    <th>Issue Date </th>
-                                    <th>Issue Description</th>
-                                    <th>Issue Date</th>
-                                    <th>Date Added</th>
-                                    <th>Action</th>
+                                    <th>ExamsDate</th>
+                                    <th>Course</th>
+                                    <th>Module</th>
+                                    <th>BatchTime</th>
+                                    <th>Session</th>
+                                    <th>StartTime</th>
+                                    <th>Semester</th>
+                                    <th>Instructor</th>
+                                    <th>Status</th>
+                                    <th>DateBooked</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="issues_table">

@@ -13,7 +13,7 @@ if (isset($_GET['id'])) {
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            header("Location: ../modules.php?status=deleted");
+            header("Location: ../modules.php?status=delete");
         } else {
             header("Location: ../modules.php?status=notfound");
         }

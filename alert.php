@@ -135,7 +135,15 @@ function successAlert($title)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'No, <?php echo $title; ?> can be scheduled on thursdays, try again',
+                    text: 'Error! No <?php echo $title; ?> can be scheduled on thursdays, try again',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
+            <?php elseif ($_GET['status'] == 'date_time_exists'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Error! <?php echo $title; ?> already exist on the selected date and batch time, try again',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });

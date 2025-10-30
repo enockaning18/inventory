@@ -3,8 +3,10 @@ require_once('../baseConnect/dbConnect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $id           = mysqli_real_escape_string($conn, $_POST['id']);
-    $module_name  = mysqli_real_escape_string($conn, trim($_POST['module_name']));
+    $id             = mysqli_real_escape_string($conn, $_POST['id']);
+    $module_name    = mysqli_real_escape_string($conn, trim($_POST['module_name']));
+    $semester       = mysqli_real_escape_string($conn, trim($_POST['batch_semester']));
+    $course_id      = mysqli_real_escape_string($conn, trim($_POST['course_id']));
 
     if (!empty($id)) {
 
@@ -20,14 +22,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $check->close();
 
-        $stmt = $conn->prepare("UPDATE module SET name = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE module SET name = ?, semester = ?, course_id = ? WHERE id = ?");
         if ($stmt) {
-            $stmt->bind_param("si", $module_name, $id);
+            // s = string, i = integer, i = integer
+            $stmt->bind_param("ssii", $module_name, $semester, $course_id, $id); 
+
             if ($stmt->execute()) {
                 header("Location: ../modules.php?status=update");
             } else {
                 header("Location: ../modules.php?status=error");
             }
+
             $stmt->close();
         } else {
             header("Location: ../modules.php?status=error");
@@ -47,9 +52,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $check->close();
 
-        $stmt = $conn->prepare("INSERT INTO module (name) VALUES (?)");
+        $stmt = $conn->prepare("INSERT INTO module (name, semester, course_id) VALUES (?,?,?)");
         if ($stmt) {
-            $stmt->bind_param("s", $module_name);
+            $stmt->bind_param("ssi", $module_name, $semester, $course_id);
             if ($stmt->execute()) {
                 header("Location: ../modules.php?status=save");
             } else {
