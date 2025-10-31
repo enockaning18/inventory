@@ -128,7 +128,7 @@ function successAlert($title)
                     title: 'Oops...',
                     text: 'Email already been used by another user!',
                     confirmButtonColor: '#d33',
-                    confirmButtonText: 'Retry'
+                    confirmButtonText: 'Okay, retry'
                 });
             <?php elseif ($_GET['status'] == 'exists'): ?>
                 Swal.fire({

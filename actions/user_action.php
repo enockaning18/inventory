@@ -82,8 +82,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bind_param("ssis", $email, $user_type, $instructor_id, $hashedKey);
 
             if ($stmt->execute()) {
+
+               // include mail notification
+                include 'send_notification.php';
+                sendNotification('users', 'id', $conn, $usermail);
+
                 header("Location: ../users.php?status=save");
-            } else {
+            } 
+            else {
                 header("Location: ../users.php?status=error");
             }
         }

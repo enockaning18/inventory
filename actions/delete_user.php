@@ -27,7 +27,7 @@ try {
 
     // Check affected rows
     if ($stmt->affected_rows > 0) {
-        header("Location: ../users.php?status=deleted");
+        header("Location: ../users.php?status=delete");
         exit();
     } else {
         header("Location: ../users.php?status=notfound");

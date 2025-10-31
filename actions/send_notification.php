@@ -1,66 +1,84 @@
 <?php
+session_start();
+require_once('../baseConnect/dbConnect.php');
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require __DIR__ . '/PHPMailer/Exception.php';
-require __DIR__ . '/PHPMailer/PHPMailer.php';
-require __DIR__ . '/PHPMailer/SMTP.php';
+// Load PHPMailer classes (ensure this folder exists)
+require __DIR__ . '../PHPMailer/Exception.php';
+require __DIR__ . '../PHPMailer/PHPMailer.php';
+require __DIR__ . '../PHPMailer/SMTP.php';
 
-function sendNotification($table, $idColumn, $conn) {
-    // Fetch the latest record
+// Check user session
+if (!isset($_SESSION['id'])) {
+    die("User not logged in.");
+}
+
+$userid = $_SESSION['id'];
+
+// Fetch logged-in user's email
+$stmt = $conn->prepare("SELECT email FROM users WHERE id = ?");
+$stmt->bind_param("i", $userid);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result && $result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $usermail = $row['email'];
+} else {
+    die("User not found.");
+}
+
+/**
+ * Send notification email for the latest record in a given table.
+ */
+function sendNotification($table, $idColumn, $conn, $usermail)
+{
     $sql = "SELECT * FROM $table ORDER BY $idColumn DESC LIMIT 1";
     $result = $conn->query($sql);
 
-    if ($result && $result->rowCount() > 0) {
-        $row = $result->fetch(PDO::FETCH_ASSOC);
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
 
-        // Email details
-        $to = "info@paishans.com";
-        $subject = "New " . ucfirst($table) . " Submission - Paishans Hydraulics";
-        $body  = "<h2>New " . ucfirst($table) . " Form Submission</h2>";
-        $body .= "<p><strong>Name:</strong> {$row['firstname']} {$row['lastname']}</p>";
-        $body .= "<p><strong>Email:</strong> {$row['email']}</p>";
+        $to = $usermail;
+        $subject = "New " . ucfirst($table) . " User";
+        $body  = "<h2>User " . ucfirst($table) . " Account Details</h2>";
+        $body .= "<p><strong>User Email:</strong> {$row['email']}</p>";
+        $body .= "<p><strong>Account Key:</strong> {$row['user_key']}</p>";
+        $body .= "<p><strong>Account Type:</strong> {$row['user_type']}</p>";
+        $body .= "<p><em>Sent from IPMC COLLEGE</em></p>";
 
-        if ($table === "contact") {
-            $body .= "<p><strong>Subject:</strong> {$row['subject']}</p>";
-            $body .= "<p><strong>Message:</strong> {$row['message']}</p>";
-        } elseif ($table === "enquiry") {
-            $body .= "<p><strong>Product Details:</strong> {$row['product_details']}</p>";
-        }
-
-        $body .= "<p><strong>Client IP:</strong> {$row['client_ip']}</p>";
-        $body .= "<p><em>Sent from Paishans Hydraulics Website</em></p>";
-
-        // Initialize PHPMailer
         $mail = new PHPMailer(true);
 
         try {
-            // Server settings
+            // SMTP settings
             $mail->isSMTP();
             $mail->Host       = 'smtp.hostinger.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'info@paishans.com'; // your Hostinger email
-            $mail->Password   = 'WsrmM/TcJq#2';   // replace with the email password
+            $mail->Password   = 'WsrmM/TcJq#2';     // your actual email password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // SSL
             $mail->Port       = 465;
 
-            // Recipients
-            $mail->setFrom('info@paishans.com', 'Paishans Hydraulics');
+            // Email content
+            $mail->setFrom('info@paishans.com', 'IPMC GHANA');
             $mail->addAddress($to);
             $mail->addReplyTo('info@paishans.com');
-
-            // Content
             $mail->isHTML(true);
             $mail->Subject = $subject;
             $mail->Body    = $body;
 
             $mail->send();
-            error_log("Email notification sent to $to");
+            error_log("Email sent to $to");
         } catch (Exception $e) {
-            error_log("Email error: {$mail->ErrorInfo}");
+            error_log("Mail error: {$mail->ErrorInfo}");
         }
     } else {
-        error_log("No record found in $table table");
+        error_log("No record found in $table table.");
     }
 }
+
+// Example: send notification from a table (you can call dynamically)
+sendNotification('users', 'id', $conn, $usermail);
 ?>
