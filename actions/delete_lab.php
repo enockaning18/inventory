@@ -13,10 +13,10 @@ if (isset($_GET['id'])) {
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            header("Location: ../labs.php?status=deleted");
+            header("Location: ../labs.php?status=delete");
             exit();
         } else {
-            header("Location: ../labs.php?status=notfound");
+            header("Location: ../labs.php?status=error");
             exit();
         }
 
@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
             header("Location: ../labs.php?status=lab_fk_error");
             exit();
         } else {
-            // Optional: log the error message for debugging
+            
             error_log("SQL Error: " . $e->getMessage());
             header("Location: ../labs.php?status=error");
             exit();
@@ -34,7 +34,7 @@ if (isset($_GET['id'])) {
     }
 
 } else {
-    header("Location: ../labs.php?status=invalid");
+    header("Location: ../labs.php?status=error");
     exit();
 }
 ?>

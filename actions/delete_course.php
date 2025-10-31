@@ -13,9 +13,9 @@ if (isset($_GET['id'])) {
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            header("Location: ../viewcourse.php?status=deleted");
+            header("Location: ../viewcourse.php?status=delete");
         } else {
-            header("Location: ../viewcourse.php?status=notfound");
+            header("Location: ../viewcourse.php?status=error");
         }
         exit();
 
@@ -28,7 +28,7 @@ if (isset($_GET['id'])) {
         exit();
     }
 } else {
-    header("Location: ../viewcourse.php?status=invalid");
+    header("Location: ../viewcourse.php?status=error");
     exit();
 }
 ?>

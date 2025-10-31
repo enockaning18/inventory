@@ -17,15 +17,15 @@ $result = $stmt->get_result();
 
 if ($result && $result->num_rows > 0) {
     $instructor = $result->fetch_assoc();
-
     $inst_name = $instructor['first_name'] . " " . $instructor['last_name'];
 } else {
     echo "Instructor not found.";
+    exit;
 }
 
-
 // Initialize form variables
-$id = $examination_date = $batch_time = $session = $course_id = $date_booked = $start_time = $module_id = $batch_semester = $instructor_id = "";
+$id = $examination_date = $batch_time = $session = $course_id = $date_booked = $start_time = $module_id = $batch_semester = $instructor_id = $instructor_name = $status = "";
+
 
 // Edit mode - fetch exam details
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
@@ -56,17 +56,17 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $result = $stmt->get_result();
 
     if ($row = $result->fetch_assoc()) {
-        $id              = $row['id'];
+        $id               = $row['id'];
         $examination_date = $row['examination_date'];
-        $batch_time      = $row['batch_time'];
-        $session         = $row['session'];
-        $course_id       = $row['course_id'];
-        $date_booked     = $row['date_booked'];
-        $start_time      = $row['start_time'];
-        $module_id       = $row['module_id'];
-        $batch_semester  = $row['batch_semester'];
-        $instructor_id   = $row['instructor_id'];
-        $instructor_name = $row['instructor_name'];
+        $batch_time       = $row['batch_time'];
+        $session          = $row['session'];
+        $course_id        = $row['course_id'];
+        $date_booked      = $row['date_booked'];
+        $start_time       = $row['start_time'];
+        $module_id        = $row['module_id'];
+        $batch_semester   = $row['batch_semester'];
+        $instructor_id    = $row['instructor_id'];
+        $instructor_name  = $row['instructor_name'];
     }
 
     $stmt->close();
@@ -113,11 +113,13 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
         <!-- Exam Form -->
         <form class="row g-3 border rounded bg-light shadow-sm p-4" id="Form" method="POST" action="actions/examination_action.php">
-            <input type="hidden" name="id" value="<?= $id ?>">
+            <input type="hidden" name="id" value="<?= htmlspecialchars($id) ?>">
+            <input type="hidden" name="instructor_id" value="<?= htmlspecialchars($instid) ?>">
+            <input type="hidden" name="status" value="2">
 
             <div class="col-md-4">
                 <label class="form-label">Examination Date</label>
-                <input required type="date" name="examination_date" value="<?php echo isset($examination_date) ? $examination_date : '' ?>" class="form-control">
+                <input required type="date" name="examination_date" id="exam_date" value="<?php echo isset($examination_date) ? htmlspecialchars($examination_date) : '' ?>" class="form-control">
             </div>
 
             <div class="col-md-4">
@@ -128,7 +130,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     $courses = $conn->query("SELECT * FROM course");
                     while ($course = $courses->fetch_assoc()) {
                         $selected = ($course_id == $course['id']) ? 'selected' : '';
-                        echo "<option value='{$course['id']}' $selected>{$course['course_name']}</option>";
+                        echo "<option value='{$course['id']}' $selected>" . htmlspecialchars($course['course_name']) . "</option>";
                     }
                     ?>
                 </select>
@@ -150,13 +152,13 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
             <div class="col-md-4">
                 <label class="form-label">Module</label>
-                <select required id="module" name="module_id" class="form-select" data-selected="<?= isset($module_id) ? $module_id : '' ?>">
+                <select required id="module" name="module_id" class="form-select">
                     <option value="">Select Module</option>
                     <?php
                     $modules = $conn->query("SELECT * FROM module");
                     while ($module = $modules->fetch_assoc()) {
                         $selected = ($module_id == $module['id']) ? 'selected' : '';
-                        echo "<option value='{$module['id']}' $selected>{$module['name']}</option>";
+                        echo "<option value='{$module['id']}' $selected>" . htmlspecialchars($module['name']) . "</option>";
                     }
                     ?>
                 </select>
@@ -187,20 +189,18 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
             <div class="col-md-4">
                 <label class="form-label">Date Booked</label>
-                <input required type="date" name="date_booked" value="<?php echo isset($date_booked) ? $date_booked : '' ?>" class="form-control">
+                <input required type="date" name="date_booked" value="<?php echo isset($date_booked) ? htmlspecialchars($date_booked) : '' ?>" class="form-control">
             </div>
 
             <div class="col-md-4">
                 <label class="form-label">Start Time</label>
-                <input required type="time" name="start_time" value="<?php echo isset($start_time) ? $start_time : '' ?>" class="form-control">
+                <input required type="time" name="start_time" value="<?php echo isset($start_time) ? htmlspecialchars($start_time) : '' ?>" class="form-control">
             </div>
             <div class="col-md-4">
                 <label class="form-label">Booking By</label>
-                <input type="text" name="instructor" class="form-control" value="<?php echo isset($instructor_name) ? $instructor_name : $inst_name ?>" readonly>
-                <input type="hidden" name="instructor_id" class="form-control" value="<?php echo isset($instructor_id) ? $instructor_id : '' ?>">
+                <input type="text" name="instructor" class="form-control" value="<?php echo isset($inst_name) ? htmlspecialchars($inst_name) : htmlspecialchars($inst_name) ?>" readonly>
             </div>
 
-            <input type="hidden" name="status" value="2">
         </form>
         <hr class="mb-5">
     </div>
@@ -215,13 +215,13 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <form id="filterForm" class="d-flex gap-2">
                             <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search..">
 
-                            <select required id="module" name="module" class="form-select" data-selected="<?= isset($module_id) ? $module_id : '' ?>">
+                            <select required id="module_filter" name="module" class="form-select" data-selected="<?= isset($module_id) ? $module_id : '' ?>">
                                 <option value="">Select Module</option>
                                 <?php
-                                $modules = $conn->query("SELECT * FROM module");
-                                while ($module = $modules->fetch_assoc()) {
-                                    $selected = ($module_id == $module['id']) ? 'selected' : '';
-                                    echo "<option value='{$module['id']}' $selected>{$module['name']}</option>";
+                                $modules2 = $conn->query("SELECT * FROM module");
+                                while ($module2 = $modules2->fetch_assoc()) {
+                                    $selected = ($module_id == $module2['id']) ? 'selected' : '';
+                                    echo "<option value='{$module2['id']}' $selected>" . htmlspecialchars($module2['name']) . "</option>";
                                 }
                                 ?>
                             </select>
@@ -230,10 +230,10 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             $query_command = "SELECT * FROM course ";
                             $result = $conn->query($query_command);
                             ?>
-                            <select required id="Type" name="course" class="form-select">
+                            <select required id="course_filter" name="course" class="form-select">
                                 <option value="">All Course</option>
                                 <?php while ($row = $result->fetch_assoc()) { ?>
-                                    <option value="<?php echo $row['id'] ?>" <?php echo (isset($course_id) && $course_id ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['course_name'] ?></option>
+                                    <option value="<?php echo $row['id'] ?>" <?php echo (isset($course_id) && $course_id ==  $row['id']) ? 'selected' : '' ?>><?php echo htmlspecialchars($row['course_name']) ?></option>
                                 <?php } ?>
                             </select>
 
@@ -302,8 +302,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             function load_examination() {
                 const filters = {
                     search: $("#searchBox").val(),
-                    module: $("#module").val(),
-                    course: $("#course").val(),
+                    module: $("#module_filter").val(),
+                    course: $("#course_filter").val(),
                     semester: $("#semester").val(),
                     status: $("#status").val()
                 };
@@ -338,6 +338,18 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $title = "Examination";
     successAlert($title);
     ?>
+
+    <script>
+        // Set min date for exam_date to today (prevents picks in past)
+        document.addEventListener('DOMContentLoaded', function() {
+            const d = new Date();
+            d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); // local date normalization
+            const today = d.toISOString().split('T')[0];
+            const examDate = document.getElementById('exam_date');
+            if (examDate) examDate.min = today;
+        });
+    </script>
+
 </body>
 
 </html>

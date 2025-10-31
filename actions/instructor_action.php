@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($check->num_rows > 0) {
             // Email belongs to another instructor
-            header("Location: ../instructors.php?status=exist");
+            header("Location: ../instructors.php?status=exists");
             exit();
         }
         $check->close();

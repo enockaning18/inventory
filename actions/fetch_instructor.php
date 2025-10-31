@@ -61,7 +61,6 @@ if (!empty($params)) {
 $stmt->execute();
 $result = $stmt->get_result();
 
-// ✅ Display records
 if ($result && $result->num_rows > 0) {
     $counter = 1;
     while ($row = $result->fetch_assoc()) {
@@ -78,7 +77,7 @@ if ($result && $result->num_rows > 0) {
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>
                     <a class='text-decoration-none' href='actions/delete_instructor.php?id=" . intval($row['instructid']) . "' 
-                       onclick=\"return confirm('Do you want to delete this instructor?');\">
+                       onclick=\"return confirm('DO YOU WANT TO DELETE THIS INSTRUCTOR ?');\">
                         <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                     </a>
                 </td>

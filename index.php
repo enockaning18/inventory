@@ -49,7 +49,7 @@
                 </div>
                 
                 <div class="mb-3">
-                    <button class="btn btn-primary d-flex align-items-center justify-content-center w-100" name="auth_login" type="submit">
+                    <button class="btn btn-danger d-flex align-items-center justify-content-center w-100" name="auth_login" type="submit">
                         Sign In <i class="bi bi-arrow-right ms-2"></i>
                     </button>
 

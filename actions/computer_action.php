@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt = $conn->prepare("UPDATE computers 
                                 SET computer_name = ?, brand = ?, serial_number = ?, memory_size = ?, hard_drive_size = ?, lab = ?, 
-                                monitor_name = ?, size = ?, monitor_serial = ?WHERE id = ?");
+                                monitor_name = ?, size = ?, monitor_serial = ? WHERE id = ?");
         if ($stmt) {
             $stmt->bind_param("sssssssssi", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial, $id);
             if ($stmt->execute()) {

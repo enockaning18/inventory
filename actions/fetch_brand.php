@@ -48,7 +48,7 @@ if ($result && $result->num_rows > 0) {
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>
                     <a class='text-decoration-none' href='actions/delete_brand.php?id=" . intval($row['id']) . "' 
-                       onclick=\"return confirm('Do you want to delete this brand?');\">
+                       onclick=\"return confirm('DO YOU WANT TO DELETE THIS BRAND ?');\">
                         <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                     </a>
                 </td>

@@ -243,7 +243,14 @@ body {
 }
 
 .log-card button {
-  background-color: darkred;
+  background-color: rgba(149, 9, 9, 0.947) !important;
+  color: #fff;
+  border: 2px solid #fff;
+  box-shadow: 2px 2px 2px 2px solid rgb(113, 107, 107);
+
+}
+.log-card button:hover {
+  background-color: maroon !important;
   color: #fff;
   border: 2px solid #fff;
   box-shadow: 2px 2px 2px 2px solid rgb(113, 107, 107);

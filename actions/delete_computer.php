@@ -1,23 +1,37 @@
-
 <?php
 require_once('../baseConnect/dbConnect.php');
 
+// Enable MySQLi exceptions for cleaner error handling
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
 if (isset($_GET['id'])) {
-    $id = intval($_GET['id']); 
+    $id = intval($_GET['id']);
 
-    $stmt = $conn->prepare("DELETE FROM computers WHERE id = ?");
-    $stmt->bind_param("i", $id);
+    try {
+        $stmt = $conn->prepare("DELETE FROM computers WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
 
-    if ($stmt->execute()) {
-        header("Location: ../computers.php?status=delete");
+        if ($stmt->affected_rows > 0) {
+            header("Location: ../computers.php?status=delete");
+        } else {
+            header("Location: ../computers.php?status=error");
+        }
         exit();
-    } else {
-        header("Location: ../computers.php?status=error");
+
+    } catch (mysqli_sql_exception $e) {
+        // Check for foreign key constraint violation (error code 1451)
+        if ($e->getCode() == 1451) {
+            header("Location: ../computers.php?status=computer_fk_error");
+        } else {
+            // Other SQL error (optional: show message for debugging)
+            header("Location: ../computers.php?status=error&msg=" . urlencode($e->getMessage()));
+        }
         exit();
     }
-} 
-else {
-    // SQL error (wrong table/columns)
+
+} else {
     header("Location: ../computers.php?status=error");
     exit();
 }
+?>

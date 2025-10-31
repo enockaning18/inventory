@@ -3,10 +3,6 @@
     if (!$conn || $conn->connect_error) {
         die("Database connection failed: " . $conn->connect_error);
     }
-    
-    // computers info
-    $sql = "SELECT * FROM computers ORDER BY id DESC";
-    $result = $conn->query($sql);
 
     // upcoming exams
     $e_sql = "SELECT 
@@ -18,7 +14,8 @@
             INNER JOIN course ON examination.course_id = course.id
             INNER JOIN module ON examination.module_id = module.id
             INNER JOIN instructors ON examination.instructor_id = instructors.id
-            WHERE examination.examination_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+            WHERE status = 'approve' AND examination.examination_date BETWEEN CURDATE() 
+            AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
             ORDER BY examination.examination_date ASC";
 
     $e_result = $conn->query($e_sql);
@@ -70,6 +67,10 @@
 
         <table>
         <?php
+            // computers info
+            $sql = "SELECT * FROM computers ORDER BY id DESC";
+            $result = $conn->query($sql);
+
             if ($result && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     ?>

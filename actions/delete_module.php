@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
         if ($stmt->affected_rows > 0) {
             header("Location: ../modules.php?status=delete");
         } else {
-            header("Location: ../modules.php?status=notfound");
+            header("Location: ../modules.php?status=error");
         }
         exit();
 
@@ -30,7 +30,7 @@ if (isset($_GET['id'])) {
     }
 
 } else {
-    header("Location: ../modules.php?status=invalid");
+    header("Location: ../modules.php?status=error");
     exit();
 }
 ?>

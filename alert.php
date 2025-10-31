@@ -106,6 +106,14 @@ function successAlert($title)
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Done'
                 });
+            <?php elseif ($_GET['status'] == 'past_date'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!',
+                    text: 'Exams date must be a future date!',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Retry'
+                });
             <?php elseif ($_GET['status'] == 'assigned'): ?>
                 Swal.fire({
                     icon: 'error',
@@ -152,6 +160,22 @@ function successAlert($title)
                     icon: 'error',
                     title: 'Oops... can\'t delete',
                     text: 'Lab has been assigned to an instructor ',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
+            <?php elseif ($_GET['status'] == 'instructor_fk_error'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops... can\'t delete',
+                    text: 'Instructor has been assigned to exams/account',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
+            <?php elseif ($_GET['status'] == 'computer_fk_error'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops... can\'t delete',
+                    text: 'Computer has been assigned to an issue',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });

@@ -8,8 +8,8 @@ require_once('baseConnect/dbConnect.php');
 
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, computer_name, brand, serial_number, memory_size, hard_drive_size, lab 
-                            FROM computers WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, computer_name, brand, serial_number, memory_size, hard_drive_size, lab, 
+                            monitor_name, size, monitor_serial FROM computers WHERE id = ?");
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
@@ -21,6 +21,9 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         $memory_size = $row['memory_size'];
         $hard_drive_size = $row['hard_drive_size'];
         $lab = $row['lab'];
+        $monitor = $row['monitor_name'];
+        $size = $row['size'];
+        $monitor_serial = $row['monitor_serial'];
     }
     $stmt->close();
 }
