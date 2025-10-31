@@ -1,3 +1,14 @@
+<?php
+
+    // fetch instructor name
+    if (!isset($_SESSION['instructorid'])) {
+        die("Instructor not logged in.");
+    }
+
+    $usertype = $_SESSION['type'];
+
+?>
+    
     <div class="navigation" style="overflow-y: scroll;">
         <ul class="m-0 p-0">
             <li style="margin-bottom: 0px;">

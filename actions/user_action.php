@@ -13,6 +13,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $user_type     = mysqli_real_escape_string($conn, $_POST['usertype'] ?? '');
     $instructor_id = !empty($_POST['instructor_id']) ? intval($_POST['instructor_id']) : null;
 
+    // check type to determine default key
+    $defaultkey = "";
+
+    if($user_type == 'admin'){
+        $defaultkey = 'Admin2025!';
+    }
+    elseif($user_type == 'instructor'){
+        $defaultkey = 'Instructor2025!';
+    }
+    elseif($user_type == 'student'){
+        $defaultkey = 'Student2025!';
+    }
+
     // Validate required fields
     if (empty($email) || empty($user_type)) {
         header("Location: ../users.php?status=missing");
@@ -71,21 +84,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else {
             
             $stmt = $conn->prepare("
-                INSERT INTO users (email, user_type, instructor_id, user_key, date_created)
-                VALUES (?, ?, ?, ?, NOW())
+                INSERT INTO users (email, user_type, instructor_id, user_key, defaultkey, date_created)
+                VALUES (?, ?, ?, ?, ?, NOW())
             ");
 
             if (!$stmt) {
                 throw new Exception("prepare_failed");
             }
 
-            $stmt->bind_param("ssis", $email, $user_type, $instructor_id, $hashedKey);
+            $stmt->bind_param("ssiss", $email, $user_type, $instructor_id, $hashedKey, $defaultkey);
 
             if ($stmt->execute()) {
 
                // include mail notification
                 include 'send_notification.php';
-                sendNotification('users', 'id', $conn, $usermail);
+                sendNotification('users', 'id', $conn, $email, $defaultkey);
 
                 header("Location: ../users.php?status=save");
             } 
@@ -93,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 header("Location: ../users.php?status=error");
             }
         }
-
+        
         $stmt->close();
     } catch (Exception $e) {
         header("Location: ../users.php?status=error");

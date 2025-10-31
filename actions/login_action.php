@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $stmt = $conn->prepare("SELECT id, email, user_key, instructor_id FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Verify password
         if (password_verify($userkey, $user['user_key'])) {
             $_SESSION['id'] = $user['id'];
+            $_SESSION['type'] = $user['user_type'];
             $_SESSION['instructorid'] = $user['instructor_id'];
             $_SESSION['logged_in'] = true;
 

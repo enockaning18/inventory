@@ -65,12 +65,12 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
                 <div class="col-md-4">
                     <label class="form-label">Password</label>
-                    <input required type="password" name="userkey" value="<?php echo htmlspecialchars($userkey); ?>" class="form-control" autocomplete="off">
+                    <input required type="password" name="userkey" id="userkey" value="<?php echo htmlspecialchars($userkey); ?>" class="form-control" autocomplete="off">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Usertype</label>
-                    <select required name="usertype" class="form-select">
+                    <select required name="usertype" id="usertype" class="form-select" onchange="setUserTypeText()">
                         <option value="">Choose usertype</option>
                         <option value="admin" <?php echo ($usertype == "admin") ? 'selected' : ''; ?>>Admin</option>
                         <option value="instructor" <?php echo ($usertype == "instructor") ? 'selected' : ''; ?>>Instructor</option>
@@ -139,6 +139,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     </div>
 
     <!-- Scripts -->
+    <script src="assets/js/set_default_password.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/jquery.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
