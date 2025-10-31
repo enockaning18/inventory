@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2025 at 02:42 PM
+-- Generation Time: Oct 31, 2025 at 04:46 PM
 -- Server version: 10.4.16-MariaDB
 -- PHP Version: 7.4.12
 
@@ -40,8 +40,7 @@ CREATE TABLE `brand` (
 INSERT INTO `brand` (`id`, `brand_name`, `date_added`) VALUES
 (1, 'Lenovo ', '2025-10-27'),
 (2, 'HP', '2025-10-28'),
-(3, 'Dell', '2025-10-29'),
-(6, 'Toshiba', '2025-10-29');
+(3, 'Dell', '2025-10-29');
 
 -- --------------------------------------------------------
 
@@ -57,6 +56,9 @@ CREATE TABLE `computers` (
   `memory_size` varchar(50) NOT NULL,
   `hard_drive_size` varchar(100) NOT NULL,
   `lab` int(11) NOT NULL,
+  `monitor_name` varchar(100) NOT NULL,
+  `size` varchar(20) NOT NULL,
+  `monitor_serial` varchar(100) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -64,10 +66,8 @@ CREATE TABLE `computers` (
 -- Dumping data for table `computers`
 --
 
-INSERT INTO `computers` (`id`, `computer_name`, `brand`, `serial_number`, `memory_size`, `hard_drive_size`, `lab`, `date_added`) VALUES
-(2, 'DESKTOP-N9R4ILO', 1, '26100.6899', '16', '500', 1, '2025-10-27'),
-(3, 'i5 Computer', 2, '73828972012', '16', '500', 1, '2025-10-29'),
-(5, 'i3 Computer', 3, '1923989320', '32', '256', 3, '2025-10-29');
+INSERT INTO `computers` (`id`, `computer_name`, `brand`, `serial_number`, `memory_size`, `hard_drive_size`, `lab`, `monitor_name`, `size`, `monitor_serial`, `date_added`) VALUES
+(10, 'i7 10Gen system unit', 2, '111222333000', '12', '256', 1, 'MonitorOne', '19inches', '000111222333', '2025-10-30');
 
 -- --------------------------------------------------------
 
@@ -87,12 +87,14 @@ CREATE TABLE `course` (
 --
 
 INSERT INTO `course` (`id`, `course_name`, `createdby`, `datecreated`) VALUES
-(4, 'Database', 4, '2025-10-28'),
-(6, 'Software Engineering', 4, '2025-10-28'),
-(8, 'Graphics & Web', 4, '2025-10-29'),
-(11, 'IT @ Workplace', 3, '2025-10-29'),
-(12, 'Graphics & Web Design', 3, '2025-10-29'),
-(14, 'Software', 4, '2025-10-29');
+(4, 'Database', 7, '2025-10-28'),
+(6, 'Software Engineering', 7, '2025-10-28'),
+(8, 'Graphics & Web', 7, '2025-10-29'),
+(11, 'IT @ Workplace', 7, '2025-10-29'),
+(12, 'Graphics & Web Design', 7, '2025-10-29'),
+(14, 'Software', 7, '2025-10-29'),
+(15, 'System Eng', 7, '2025-10-30'),
+(16, 'Hardware', 7, '2025-10-30');
 
 -- --------------------------------------------------------
 
@@ -120,10 +122,8 @@ CREATE TABLE `examination` (
 --
 
 INSERT INTO `examination` (`id`, `examination_date`, `batch_time`, `session`, `course_id`, `date_booked`, `start_time`, `module_id`, `instructor_id`, `batch_semester`, `status`, `date_added`) VALUES
-(4, '2025-10-29', '7am - 9am', 'Weekday', 4, '2025-10-29', '15:00', 1, 7, 'Sem-1', 'approve', '2025-10-29'),
-(5, '2025-10-29', '9am - 11am', 'Weekday', 4, '2025-10-29', '09:00', 2, 8, 'Sem-1', 'cancelled', '2025-10-29'),
-(6, '2025-10-31', '1pm - 3pm', 'Weekday', 8, '2025-10-28', '13:00', 5, 9, 'Sem-1', 'pending', '2025-10-29'),
-(7, '2025-10-31', '11am - 1pm', 'Weekday', 6, '2025-10-30', '11:00', 2, 7, 'Sem-1', 'approve', '2025-10-29');
+(12, '2025-11-07', '1pm - 3pm', 'Weekday', 6, '2025-10-30', '13:00', 1, 7, 'Sem-2', 'pending', '2025-10-30'),
+(13, '2025-11-03', '11am - 1pm', 'Weekday', 8, '2025-10-30', '11:00', 8, 7, 'Sem-2', 'approve', '2025-10-30');
 
 -- --------------------------------------------------------
 
@@ -147,9 +147,9 @@ CREATE TABLE `instructors` (
 --
 
 INSERT INTO `instructors` (`id`, `first_name`, `last_name`, `lab_id`, `phone`, `email`, `course_id`, `date_added`) VALUES
-(7, 'Unicom', 'Center', 1, '0240526430', 'mckenzieraney43@gmail.com', 4, '2025-10-29'),
-(8, 'Daniel', 'Darko', 4, '0260613128', 'info@luxuryshippinghome.com', 8, '2025-10-29'),
-(9, 'Agyei', 'Emmanuel', 3, '0260614128', 'smgee43@gmail.com', 6, '2025-10-29');
+(7, 'Unicom', 'Center', 4, '0240526430', 'mckenzieraney43@gmail.com', 8, '2025-10-29'),
+(13, 'Agyei', 'Emmanuel', 3, '0260613128', 'smgee43@gmail.com', 11, '2025-10-30'),
+(15, 'Daniel', 'Darko', 4, '0283819314', 'info@luxuryshippinghome.com', 16, '2025-10-31');
 
 -- --------------------------------------------------------
 
@@ -166,15 +166,6 @@ CREATE TABLE `issues` (
   `issue_description` varchar(500) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `issues`
---
-
-INSERT INTO `issues` (`id`, `computer`, `issue_type`, `lab`, `issue_date`, `issue_description`, `date_added`) VALUES
-(4, 2, 'Software', 1, '2025-10-01', 'Auto Restart', '2025-10-27'),
-(6, 3, 'Hardware', 1, '2025-10-29', 'Computer can not run applications', '2025-10-29'),
-(8, 5, 'Hardware', 3, '2025-10-29', 'Memory fault detected needs replacement', '2025-10-29');
 
 -- --------------------------------------------------------
 
@@ -197,7 +188,8 @@ CREATE TABLE `lab` (
 INSERT INTO `lab` (`id`, `lab_name`, `course_id`, `number_computers`, `date_added`) VALUES
 (1, 'Lab2', 4, '10', '2025-10-27'),
 (3, 'Lab4', 6, '30', '2025-10-29'),
-(4, 'Lab3', 8, '25', '2025-10-29');
+(4, 'Lab3', 8, '25', '2025-10-29'),
+(7, 'Lab5', 16, '18', '2025-10-30');
 
 -- --------------------------------------------------------
 
@@ -222,7 +214,6 @@ INSERT INTO `module` (`id`, `name`, `semester`, `course_id`, `date_created`) VAL
 (2, 'Programming Methods', 'Sem-1', 6, '2025-10-29'),
 (3, 'Core Java', 'Sem-1', 6, '2025-10-29'),
 (5, 'Adobe Premier', 'Sem-2', 12, '2025-10-29'),
-(6, 'PowerBI', 'Sem-1', 4, '2025-10-29'),
 (8, 'System Analysis & Design', 'Sem-2', 8, '2025-10-29');
 
 -- --------------------------------------------------------
@@ -237,6 +228,7 @@ CREATE TABLE `users` (
   `user_type` varchar(30) NOT NULL COMMENT '1-admin\r\n2-instructor\r\n3-student',
   `instructor_id` int(11) NOT NULL,
   `user_key` varchar(255) NOT NULL,
+  `defaultkey` varchar(50) NOT NULL,
   `date_created` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -244,8 +236,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `user_type`, `instructor_id`, `user_key`, `date_created`) VALUES
-(7, 'admin@email.com', 'admin', 7, '$2y$10$QD2LLGF9SY3n.TpWzTuAmexHUMLmNg/7CMYHKJx3psFC8/y3S/P0q', '2025-10-30');
+INSERT INTO `users` (`id`, `email`, `user_type`, `instructor_id`, `user_key`, `defaultkey`, `date_created`) VALUES
+(7, 'admin@email.com', 'admin', 7, '$2y$10$vXv/lTUj2NrqNax.oElRUugEUsNxgaOCwymyw6CCZ3pGIfDUexUO.', '', '2025-10-30'),
+(31, 'smgee43@gmail.com', 'instructor', 13, '$2y$10$bdjh/1xfvb8jqvZyKEdnseKQ5/mPZRcGHrvlqd2nvG/.16uPTIiwm', 'Instructor2025!', '2025-10-31');
 
 --
 -- Indexes for dumped tables
@@ -331,55 +324,55 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `brand`
 --
 ALTER TABLE `brand`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `computers`
 --
 ALTER TABLE `computers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `examination`
 --
 ALTER TABLE `examination`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `instructors`
 --
 ALTER TABLE `instructors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `issues`
 --
 ALTER TABLE `issues`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `lab`
 --
 ALTER TABLE `lab`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `module`
 --
 ALTER TABLE `module`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Constraints for dumped tables
