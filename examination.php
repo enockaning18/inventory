@@ -9,6 +9,7 @@ if (!isset($_SESSION['instructorid'])) {
 }
 
 $instid = $_SESSION['instructorid'];
+$usertype = $_SESSION['type'];
 
 $stmt = $conn->prepare("SELECT * FROM instructors WHERE id = ?");
 $stmt->bind_param("i", $instid);
@@ -100,7 +101,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="my-auto">
                 <ion-icon name="book-outline"></ion-icon>
-                Examinations
+                Exams Booking
             </h3>
             <div>
                 <a href="approved_exams.php"><button class="btn text-white px-2" style="background-color:green;">Approved</button></a>
@@ -203,95 +204,6 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
         </form>
         <hr class="mb-5">
-    </div>
-
-    <!-- Exams Table (unchanged) -->
-    <div class="mt-5 mx-auto" style="width: 95%">
-        <div class="row">
-            <div class="col">
-                <div class="card shadow">
-                    <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
-                        <h5 class="mb-0" style="color: maroon;">List of Exams</h5>
-                        <form id="filterForm" class="d-flex gap-2">
-                            <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search..">
-
-                            <select required id="module_filter" name="module" class="form-select" data-selected="<?= isset($module_id) ? $module_id : '' ?>">
-                                <option value="">Select Module</option>
-                                <?php
-                                $modules2 = $conn->query("SELECT * FROM module");
-                                while ($module2 = $modules2->fetch_assoc()) {
-                                    $selected = ($module_id == $module2['id']) ? 'selected' : '';
-                                    echo "<option value='{$module2['id']}' $selected>" . htmlspecialchars($module2['name']) . "</option>";
-                                }
-                                ?>
-                            </select>
-
-                            <?php
-                            $query_command = "SELECT * FROM course ";
-                            $result = $conn->query($query_command);
-                            ?>
-                            <select required id="course_filter" name="course" class="form-select">
-                                <option value="">All Course</option>
-                                <?php while ($row = $result->fetch_assoc()) { ?>
-                                    <option value="<?php echo $row['id'] ?>" <?php echo (isset($course_id) && $course_id ==  $row['id']) ? 'selected' : '' ?>><?php echo htmlspecialchars($row['course_name']) ?></option>
-                                <?php } ?>
-                            </select>
-
-                            <select name="semester" id="semester" class="form-select">
-                                <option value="">All Semesters</option>
-                                <?php
-                                $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4"];
-                                foreach ($semesters as $key => $val) {
-                                    $selected = ($batch_semester == $key) ? 'selected' : '';
-                                    echo "<option value='$key' $selected>$val</option>";
-                                }
-                                ?>
-
-                            </select>
-
-                            <select name="status" id="status" class="form-select">
-                                <option value="">All Status</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Approve">Approve</option>
-                                <option value="Cancelled">Cancelled</option>
-                            </select>
-                        </form>
-
-                    </div>
-                    <div class="table-responsive" style="height: 300px;">
-                        <table class="table table-striped align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>#</th>
-                                    <th>ExamsDate</th>
-                                    <th>Course</th>
-                                    <th>Module</th>
-                                    <th>BatchTime</th>
-                                    <th>Session</th>
-                                    <th>StartTime</th>
-                                    <th>Semester</th>
-                                    <th>Instructor</th>
-                                    <th>Status</th>
-                                    <th>DateBooked</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="examination_table">
-                                <!-- fetch the data using the ajax -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="card-footer">
-                        <nav>
-                            <ul class="pagination justify-content-center mb-0">
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="assets/js/fetch_data_helper.js"></script>

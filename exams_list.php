@@ -3,34 +3,35 @@ require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 
+// fetch instructor name
+if (!isset($_SESSION['instructorid']) && !isset($_SESSION['type'])) {
+    die("Instructor not logged in.");
+}
 
-// initialize variables used in the form when edit btn is called
+$instid = $_SESSION['instructorid'];
+$usertype = $_SESSION['type'];
 
-if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
-    $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, issue_type, lab, issue_date, issue_description, computer FROM issues WHERE id = ?");
-    $stmt->bind_param("i", $edit_id);
-    $stmt->execute();
-    $row = $stmt->get_result()->fetch_assoc();
-    if ($row) {
-        $id = $row['id'];
-        $computer = $row['computer'];
-        $issue_type = $row['issue_type'];
-        $lab = $row['lab'];
-        $issue_date = $row['issue_date'];
-        $issue_description = $row['issue_description'];
-    }
-    $stmt->close();
-} ?>
+$stmt = $conn->prepare("SELECT * FROM instructors WHERE id = ?");
+$stmt->bind_param("i", $instid);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result && $result->num_rows > 0) {
+    $instructor = $result->fetch_assoc();
+    $inst_name = $instructor['first_name'] . " " . $instructor['last_name'];
+} else {
+    echo "Instructor not found.";
+    exit;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>ApprovedExams - IPMC INVENTORY MANAGER</title>
+    <title>Examination - IPMC INVENTORY MANAGER</title>
     <link rel="icon" type="image/ico" href="assets/imgs/inventory_logo.png" />
-
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-icons.min.css" />
@@ -46,26 +47,32 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     require("includes/sidebar.php");
     require("includes/topbar.php");
     ?>
-    <div class=" mx-auto" style="margin-top: 4rem; width:85%">
+
+    <div class="mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
-            <h3><ion-icon name="alert-circle-outline"></ion-icon> Cancelled Exams </h3>
+            <h3 class="my-auto">
+                <ion-icon name="book-outline"></ion-icon>
+                Examinations
+            </h3>
             <div>
                 <a href="approved_exams.php"><button class="btn text-white px-2" style="background-color:green;">Approved</button></a>
                 <a href="pending_exams.php"><button class="btn text-white px-2" style="background-color:gold;">Pending</button></a>
+                <a href="cancelled_exams.php"><button class="btn text-white px-2" style="background-color:red;">Cancelled</button></a>
             </div>
-            <a href="exams_list.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">View Booked Examinations </button></a>
+            <a href="examination.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Book Examination</button></a>
         </div>
-        <hr style="margin-bottom: 3rem;">
+        <hr class="mb-4">
     </div>
 
-    <div class=" mt-5 mx-auto" style="width: 95%">
+    <!-- Exams Table (unchanged) -->
+    <div class="mt-5 mx-auto" style="width: 95%">
         <div class="row">
             <div class="col">
                 <div class="card shadow">
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
-                        <!-- <h5 class="mb-0" style="color: maroon;">List of Approved Exams </h5> -->
+                        <h5 class="mb-0" style="color: maroon;">List of Exams</h5>
                         <form id="filterForm" class="d-flex gap-2">
-                            <input type="search" class="form-control px-4" id="searchBox" name="search" placeholder="Search..">
+                            <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search..">
 
                             <select required id="module_filter" name="module" class="form-select" data-selected="<?= isset($module_id) ? $module_id : '' ?>">
                                 <option value="">Select Module</option>
@@ -100,9 +107,17 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                 ?>
 
                             </select>
+
+                            <select name="status" id="status" class="form-select">
+                                <option value="">All Status</option>
+                                <option value="Approve">Approve</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
                         </form>
+
                     </div>
-                    <div class="table-responsive" style="height: 300px">
+                    <div class="table-responsive" style="height: 300px;">
                         <table class="table table-striped align-middle">
                             <thead class="table-light">
                                 <tr>
@@ -120,11 +135,12 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="issues_table">
+                            <tbody id="examination_table">
                                 <!-- fetch the data using the ajax -->
                             </tbody>
                         </table>
                     </div>
+
                     <div class="card-footer">
                         <nav>
                             <ul class="pagination justify-content-center mb-0">
@@ -136,42 +152,63 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             </div>
         </div>
     </div>
-    <!-- =========== Scripts =========  -->
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/jquery.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script src="assets/js/fetch_data_helper.js"></script>
+
+    <!-- JS -->
     <script>
         $(document).ready(function() {
-            function load_issues(search = '') {
+            function load_examination() {
+                const filters = {
+                    search: $("#searchBox").val(),
+                    module: $("#module_filter").val(),
+                    course: $("#course_filter").val(),
+                    semester: $("#semester").val(),
+                    status: $("#status").val()
+                };
+
                 $.ajax({
-                    url: "actions/fetch_examination_cancelled.php",
+                    url: "actions/fetch_examination.php",
                     type: "POST",
-                    data: {
-                        search: search
-                    },
+                    data: filters,
                     success: function(data) {
-                        $("#issues_table").html(data);
+                        $("#examination_table").html(data);
+                    },
+                    error: function() {
+                        $("#examination_table").html("<tr><td colspan='12' class='text-center text-danger'>Error loading data</td></tr>");
                     }
                 });
             }
 
-            // Load on page start
-            load_issues();
+            // Initial load
+            load_examination();
 
-            // Search computer
-            $("#searchBox").on("keyup", function() {
-                let search = $(this).val();
-                load_issues(search);
-            });
+            // Reload on any change
+            $("#filterForm select, #searchBox").on("change keyup", load_examination);
         });
     </script>
 
 
+    <script src="assets/js/main.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
     <?php
-    $title = "Examination ";
+    $title = "Examination";
     successAlert($title);
     ?>
+
+    <script>
+        // Set min date for exam_date to today (prevents picks in past)
+        document.addEventListener('DOMContentLoaded', function() {
+            const d = new Date();
+            d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); // local date normalization
+            const today = d.toISOString().split('T')[0];
+            const examDate = document.getElementById('exam_date');
+            if (examDate) examDate.min = today;
+        });
+    </script>
+
 </body>
 
 </html>

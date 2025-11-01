@@ -3,6 +3,14 @@ require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
 
+// fetch instructor name
+if (!isset($_SESSION['id']) && !isset($_SESSION['type'])) {
+    die("Invalid User!");
+}
+
+$user_id = intval($_SESSION['id']);
+$usertype = $_SESSION['type'];
+
 // Initialize form variables
 $id = $email = $userkey = $usertype = $instructor_id = "";
 
@@ -81,18 +89,34 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <div class="col-md-4">
                     <label class="form-label">Assign Instructor</label>
                     <?php
-                    $query_command = "SELECT id, first_name, last_name FROM instructors";
-                    $result = $conn->query($query_command);
+                    if($usertype != 'admin'){
+
+                        $instructor_id = $_SESSION['instructorid'] ?? 0;
+
+                        $query_command = "SELECT id, first_name, last_name FROM instructors WHERE id = ?";
+                        $stmt = $conn->prepare($query_command);
+                        $stmt->bind_param("i", $instructor_id);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                    }
+                    else{
+                        
+                        $query_command = "SELECT id, first_name, last_name FROM instructors";
+                        $stmt = $conn->prepare($query_command);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                    }
+                    
                     ?>
-                    <select required name="instructor_id" class="form-select">
-                        <option value="">Select instructor</option>
+                    <select required name="instructor_id" class="form-select" readonly>
                         <?php while ($inst = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $inst['id']; ?>" <?php echo ($instructor_id == $inst['id']) ? 'selected' : ''; ?>>
+                            <option value="<?php echo $inst['id']; ?>" selected>
                                 <?php echo htmlspecialchars($inst['first_name'] . ' ' . $inst['last_name']); ?>
                             </option>
                         <?php } ?>
                     </select>
                 </div>
+
             </form>
         </div>
     </div>

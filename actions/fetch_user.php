@@ -1,12 +1,11 @@
 <?php
+session_start();
 require_once('../baseConnect/dbConnect.php');
 
-if (!$conn) {
-    echo "<tr><td colspan='7' class='text-center text-danger'>Database connection failed</td></tr>";
-    exit;
-}
+$usertype = $_SESSION['type'] ?? '';
+$user_id  = intval($_SESSION['id'] ?? 0);
 
-$search = isset($_POST['search']) ? trim($_POST['search']) : '';
+$search = trim($_POST['search'] ?? '');
 
 $sql = "
     SELECT 
@@ -18,10 +17,16 @@ $sql = "
         CONCAT(i.first_name, ' ', i.last_name) AS inst_name
     FROM users u
     LEFT JOIN instructors i ON u.instructor_id = i.id
-    WHERE 1
 ";
 
-// Apply search filter if not empty
+// limit results by user type
+if ($usertype != 'admin') {
+    $sql .= " WHERE u.id = $user_id";
+} else {
+    $sql .= " WHERE 1";
+}
+
+// filter records
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
     $sql .= " AND (

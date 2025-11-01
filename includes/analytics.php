@@ -1,5 +1,11 @@
 <?php 
 
+    // fetch instructor name
+    if (!isset($_SESSION['type'])) {
+        die("Invalid User!");
+    }
+    $usertype = $_SESSION['type'];
+
     // Count approved exams
     $statusApproved = 'approve';
     $stmt = $conn->prepare("SELECT COUNT(*) AS total_approved FROM examination WHERE status = ?");
@@ -113,6 +119,12 @@
     <div class="card-toFlex">
         <div class="cardContent">
             <div class="numbers"><?php echo isset($totalPending) ? $totalPending : '0'; ?></div>
+            <?php
+            // if($usertype == 'admin')
+            // {
+            ?>
+            <!-- <a href="pending_exams.php"> -->
+        <?php //} ?>
             <a href="pending_exams.php">
                 <div class="cardName" title="View Pending Exams">PendingExams</div>
             </a>
@@ -125,7 +137,14 @@
     <div class="card-toFlex">
         <div class="cardContent">
             <div class="numbers"><?php echo isset($totalComputers) ? $totalComputers : '0'; ?></div>
+        <?php
+            if($usertype == 'admin')
+            {
+            ?>
             <a href="computers.php">
+        <?php } else { ?>
+            <a href="#">
+            <?php } ?>
                 <div class="cardName" title="View All Computers">Computers</div>
             </a>
         </div>
@@ -138,7 +157,14 @@
     <div class="card-toFlex">
         <div class="cardContent">
             <div class="numbers"><?php echo isset($totalInstructors) ? $totalInstructors : '0'; ?></div>
+        <?php
+            if($usertype == 'admin')
+            {
+            ?>
             <a href="instructors.php">
+        <?php } else { ?>
+            <a href="#">
+            <?php } ?>
                 <div class="cardName" title="View Instructors">Instructors</div>
             </a>
         </div>
@@ -150,7 +176,14 @@
     <div class="card-toFlex">
         <div class="cardContent">
             <div class="numbers"><?php echo isset($totalCourses) ? $totalCourses : '0'; ?></div>
+        <?php
+            if($usertype == 'admin')
+            {
+            ?>
             <a href="labs.php">
+        <?php } else { ?>
+            <a href="#">
+            <?php } ?>
                 <div class="cardName" title="View Courses">Courses</div>
             </a>
         </div>
@@ -162,7 +195,14 @@
     <div class="card-toFlex">
         <div class="cardContent">
             <div class="numbers"><?php echo isset($totalReplacements) ? $totalReplacements : '0'; ?></div>
+        <?php
+            if($usertype == 'admin')
+            {
+            ?>
             <a href="issues.php">
+        <?php } else { ?>
+            <a href="#">
+            <?php } ?>
                 <div class="cardName" title="View Computers to be Replaced">Replacements</div>
             </a>
         </div>
@@ -174,7 +214,14 @@
     <div class="card-toFlex">
         <div class="cardContent">
             <div class="numbers"><?php echo isset($totalIssues) ? $totalIssues : '0'; ?></div>
+        <?php
+            if($usertype == 'admin')
+            {
+            ?>
             <a href="issues.php">
+        <?php } else { ?>
+            <a href="#">
+            <?php } ?>
                 <div class="cardName" title="View Faulty Computers">Issues</div>
             </a>
         </div>

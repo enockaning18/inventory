@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2025 at 04:46 PM
+-- Generation Time: Nov 01, 2025 at 01:26 AM
 -- Server version: 10.4.16-MariaDB
 -- PHP Version: 7.4.12
 
@@ -122,8 +122,9 @@ CREATE TABLE `examination` (
 --
 
 INSERT INTO `examination` (`id`, `examination_date`, `batch_time`, `session`, `course_id`, `date_booked`, `start_time`, `module_id`, `instructor_id`, `batch_semester`, `status`, `date_added`) VALUES
-(12, '2025-11-07', '1pm - 3pm', 'Weekday', 6, '2025-10-30', '13:00', 1, 7, 'Sem-2', 'pending', '2025-10-30'),
-(13, '2025-11-03', '11am - 1pm', 'Weekday', 8, '2025-10-30', '11:00', 8, 7, 'Sem-2', 'approve', '2025-10-30');
+(12, '2025-11-07', '1pm - 3pm', 'Weekday', 6, '2025-10-30', '13:00', 1, 7, 'Sem-2', 'cancelled', '2025-10-30'),
+(13, '2025-11-03', '11am - 1pm', 'Weekday', 8, '2025-10-30', '11:00', 8, 7, 'Sem-2', 'approve', '2025-10-30'),
+(14, '2025-11-05', '3pm - 5pm', 'Weekday', 6, '2025-10-31', '15:00', 2, 7, 'Sem-1', 'pending', '2025-10-31');
 
 -- --------------------------------------------------------
 
@@ -342,7 +343,7 @@ ALTER TABLE `course`
 -- AUTO_INCREMENT for table `examination`
 --
 ALTER TABLE `examination`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `instructors`

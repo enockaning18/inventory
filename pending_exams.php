@@ -53,7 +53,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <a href="approved_exams.php"><button class="btn text-white px-2" style="background-color:green;">Approved</button></a>
                 <a href="cancelled_exams.php"><button class="btn text-white px-2" style="background-color:red;">Cancelled</button></a>
             </div>
-            <a href="examination.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Book/ShowAll Exams </button></a>
+            <a href="exams_list.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">View Booked Examinations </button></a>
         </div>
         <hr style="margin-bottom: 3rem;">
     </div>
@@ -67,21 +67,37 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <form id="filterForm" class="d-flex gap-2">
                             <input type="search" class="form-control px-4" id="searchBox" name="search" placeholder="Search..">
 
-                            <select name="reporttype" id="reporttype" class="form-select">
+                            <select required id="module_filter" name="module" class="form-select" data-selected="<?= isset($module_id) ? $module_id : '' ?>">
+                                <option value="">Select Module</option>
+                                <?php
+                                $modules2 = $conn->query("SELECT * FROM module");
+                                while ($module2 = $modules2->fetch_assoc()) {
+                                    $selected = ($module_id == $module2['id']) ? 'selected' : '';
+                                    echo "<option value='{$module2['id']}' $selected>" . htmlspecialchars($module2['name']) . "</option>";
+                                }
+                                ?>
+                            </select>
+
+                            <?php
+                            $query_command = "SELECT * FROM course ";
+                            $result = $conn->query($query_command);
+                            ?>
+                            <select required id="course_filter" name="course" class="form-select">
                                 <option value="">All Course</option>
-                                <option value=""> </option>
+                                <?php while ($row = $result->fetch_assoc()) { ?>
+                                    <option value="<?php echo $row['id'] ?>" <?php echo (isset($course_id) && $course_id ==  $row['id']) ? 'selected' : '' ?>><?php echo htmlspecialchars($row['course_name']) ?></option>
+                                <?php } ?>
                             </select>
-                            <select name="reporttype" id="reporttype" class="form-select">
-                                <option value="">All Modules </option>
-                                <option value=""> </option>
-                            </select>
-                            <select name="reporttype" id="reporttype" class="form-select">
-                                <option value="">All Semesters </option>
-                                <option value=""> </option>
-                            </select>
-                            <select name="reporttype" id="reporttype" class="form-select">
-                                <option value="">All Instructors </option>
-                                <option value=""> </option>
+
+                            <select name="semester" id="semester" class="form-select">
+                                <option value="">All Semesters</option>
+                                <?php
+                                $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4"];
+                                foreach ($semesters as $key => $val) {
+                                    $selected = ($batch_semester == $key) ? 'selected' : '';
+                                    echo "<option value='$key' $selected>$val</option>";
+                                }
+                                ?>
                             </select>
                         </form>
                     </div>

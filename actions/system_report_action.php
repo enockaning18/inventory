@@ -1,5 +1,9 @@
 <?php
+session_start();
 require_once('../baseConnect/dbConnect.php');
+$instructorid = intval($_SESSION['instructorid']);
+$usertype = $_SESSION['type'];
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -53,17 +57,31 @@ if (isset($_POST['generate_report'])) {
                     LEFT JOIN lab ON instructors.lab_id = lab.id
                     WHERE instructors.date_added BETWEEN ? AND ?";
             break;
-
-        case 'examination':
-            $sql = "SELECT examination.*, course.course_name AS course, module.name AS module, 
-                    CONCAT(instructors.first_name,' ',instructors.last_name) AS instructor_name
-                    FROM examination
-                    INNER JOIN course ON examination.course_id = course.id
-                    INNER JOIN module ON examination.module_id = module.id
-                    INNER JOIN instructors ON examination.instructor_id = instructors.id
-                    WHERE examination.date_added BETWEEN ? AND ?";
-            break;
-    }
+            case 'examination':
+                if ($usertype != 'admin') {
+                    $sql = "SELECT examination.*, 
+                                   course.course_name AS course, 
+                                   module.name AS module, 
+                                   CONCAT(instructors.first_name,' ',instructors.last_name) AS instructor_name
+                            FROM examination
+                            INNER JOIN course ON examination.course_id = course.id
+                            INNER JOIN module ON examination.module_id = module.id
+                            INNER JOIN instructors ON examination.instructor_id = instructors.id
+                            WHERE examination.date_added BETWEEN ? AND ?
+                            AND examination.instructor_id = $instructorid";
+                } else {
+                    $sql = "SELECT examination.*, 
+                                   course.course_name AS course, 
+                                   module.name AS module, 
+                                   CONCAT(instructors.first_name,' ',instructors.last_name) AS instructor_name
+                            FROM examination
+                            INNER JOIN course ON examination.course_id = course.id
+                            INNER JOIN module ON examination.module_id = module.id
+                            INNER JOIN instructors ON examination.instructor_id = instructors.id
+                            WHERE examination.date_added BETWEEN ? AND ?";
+                }
+                break;
+            }
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $start, $end);

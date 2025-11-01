@@ -25,7 +25,14 @@ require_once('baseConnect/dbConnect.php');
     <?php
     require("includes/sidebar.php");
     require("includes/topbar.php");
-    ?>
+
+    // fetch instructor name
+    if (!isset($_SESSION['type'])) {
+        die("Invalid User");
+    }
+    $usertype = $_SESSION['type'];
+
+?>
 
     <div class="mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
@@ -38,12 +45,17 @@ require_once('baseConnect/dbConnect.php');
                 <div class="col-md-4">
                     <label class="form-label">Report Type</label>
                     <select id="reportType" name="report_type" class="form-select" required>
-                        <option value="">Select Report Type</option>
+                        <option value="">Select Report Type:</option>
                         <option value="examination">Examinations</option>
+                <?php
+                    if($usertype == 'admin')
+                    {
+                    ?>
                         <option value="computers">Computers</option>
                         <option value="instructors">Instructors</option>
                         <option value="issues">Issues</option>
-                        <option value="lab">Labs</option>                      
+                        <option value="lab">Labs</option> 
+                <?php } ?>
                     </select>
                 </div>
 

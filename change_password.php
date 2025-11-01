@@ -1,27 +1,7 @@
 <?php
-require_once('alert.php');
-require_once('actions/start_session.php');
-require_once('baseConnect/dbConnect.php');
-
-// // initialize variables used in the form when edit btn is called
-// $firstname = $lastname = $mobile = $email = $subject = $message = '';
-
-// if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
-//     $edit_id = intval($_GET['edit_id']);
-//     $stmt = $conn->prepare("SELECT id, firstname, lastname, email, userid, userkey FROM users WHERE id = ?");
-//     $stmt->bind_param("i", $edit_id);
-//     $stmt->execute();
-//     $row = $stmt->get_result()->fetch_assoc();
-//     if ($row) {
-//         $id        = $row['id'];
-//         $firstname = $row['firstname'];
-//         $lastname  = $row['lastname'];
-//         $userid     = $row['userid'];
-//         $email   = $row['email'];
-//         $userkey   = $row['userkey'];
-//     }
-//     $stmt->close();
-// }
+    require_once('alert.php');
+    require_once('actions/start_session.php');
+    require_once('baseConnect/dbConnect.php');
 ?>
 
 
@@ -31,7 +11,7 @@ require_once('baseConnect/dbConnect.php');
 <head>
     <meta charset="UTF-8">
     <title>Change Password - IPMC INVENTORY MANAGER</title>
-    <link rel="shortcut icon" href="../assets/imgs/icons/frhab-favlogo.ico" type="image/x-icon">
+    <link rel="icon" type="image/ico" href="assets/imgs/inventory_logo.png" />
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-icons.min.css" />

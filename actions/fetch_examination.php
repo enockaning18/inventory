@@ -1,5 +1,9 @@
 <?php
+session_start();
 require_once('../baseConnect/dbConnect.php');
+
+$instructorid = intval($_SESSION['instructorid']);
+$usertype = '';
 
 // Ensure connection is valid
 if (!$conn) {
@@ -24,7 +28,7 @@ $sql = "SELECT examination.*,
         INNER JOIN course ON examination.course_id = course.id
         INNER JOIN module ON examination.module_id = module.id
         INNER JOIN instructors ON examination.instructor_id = instructors.id
-        WHERE 1";
+        WHERE instructor_id = $instructorid";
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
@@ -76,7 +80,85 @@ if ($result && $result->num_rows > 0) {
             default:
                 $badgeClass = 'bg-secondary';
         }
-        echo "<tr>
+
+        // if exams is approved
+        if($usertype != 'admin' && $status == 'approve' ){
+            
+            echo "<tr>
+                <th scope='row'>" . $counter++ . "</th>
+                <td>" . htmlspecialchars($row['examination_date']) . "</td>
+                <td>" . htmlspecialchars($row['course']) . "</td>
+                <td>" . htmlspecialchars($row['module']) . "</td>
+                <td>" . htmlspecialchars($row['batch_time']) . "</td>
+                <td>" . htmlspecialchars($row['session']) . "</td>            
+                <td>" . htmlspecialchars($row['start_time']) . "</td>
+                <td>" . htmlspecialchars($row['batch_semester']) . "</td>
+                <td>" . htmlspecialchars($row['instructor_name']) . "</td>
+                <td><span class='badge $badgeClass'>" . htmlspecialchars($status) . "</span></td>
+                <td>" . htmlspecialchars($row['date_booked']) . "</td>
+                <td>
+                    <a href='examination.php' class='text-decoration-none'>
+                        <i class='bi bi-eye text-primary fs-5 me-2'></i>
+                    </a>
+                </td>
+            </tr>";
+        }
+        // if exams is pending
+        elseif($usertype != 'admin' && $status == 'pending' ){
+            
+            echo "<tr>
+                <th scope='row'>" . $counter++ . "</th>
+                <td>" . htmlspecialchars($row['examination_date']) . "</td>
+                <td>" . htmlspecialchars($row['course']) . "</td>
+                <td>" . htmlspecialchars($row['module']) . "</td>
+                <td>" . htmlspecialchars($row['batch_time']) . "</td>
+                <td>" . htmlspecialchars($row['session']) . "</td>            
+                <td>" . htmlspecialchars($row['start_time']) . "</td>
+                <td>" . htmlspecialchars($row['batch_semester']) . "</td>
+                <td>" . htmlspecialchars($row['instructor_name']) . "</td>
+                <td><span class='badge $badgeClass'>" . htmlspecialchars($status) . "</span></td>
+                <td>" . htmlspecialchars($row['date_booked']) . "</td>
+                <td>
+                    <a href='actions/edit_examination.php?id={$row['id']}' class='text-decoration-none'>
+                        <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
+                    </a>
+                    <a href='actions/delete_examination.php?id={$row['id']}' onclick=\"return confirm('Delete this record?');\" class='text-decoration-none'>
+                        <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
+                    </a>
+                    <a href='actions/update_exam_status.php?id={$row['id']}&status=cancelled' class='text-decoration-none'>
+                        <i class='bi bi-x-circle-fill text-danger fs-5 ms-1'></i>
+                    </a>
+                </td>
+            </tr>";
+        }
+        // if exams is cancelled
+        elseif($usertype != 'admin' && $status == 'cancelled' ){
+            
+            echo "<tr>
+                <th scope='row'>" . $counter++ . "</th>
+                <td>" . htmlspecialchars($row['examination_date']) . "</td>
+                <td>" . htmlspecialchars($row['course']) . "</td>
+                <td>" . htmlspecialchars($row['module']) . "</td>
+                <td>" . htmlspecialchars($row['batch_time']) . "</td>
+                <td>" . htmlspecialchars($row['session']) . "</td>            
+                <td>" . htmlspecialchars($row['start_time']) . "</td>
+                <td>" . htmlspecialchars($row['batch_semester']) . "</td>
+                <td>" . htmlspecialchars($row['instructor_name']) . "</td>
+                <td><span class='badge $badgeClass'>" . htmlspecialchars($status) . "</span></td>
+                <td>" . htmlspecialchars($row['date_booked']) . "</td>
+                <td>
+                    <a href='actions/update_exam_status.php?id={$row['id']}&status=pending' class='text-decoration-none'>
+                        <i class='bi bi-hourglass-split text-warning fs-5 ms-1'></i>
+                    </a>
+                    <a href='actions/delete_examination.php?id={$row['id']}' onclick=\"return confirm('Delete this record?');\" class='text-decoration-none'>
+                        <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
+                    </a>
+                </td>
+            </tr>";
+        }
+        // if usertype is admin assign full access
+        else{
+            echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
                 <td>" . htmlspecialchars($row['examination_date']) . "</td>
                 <td>" . htmlspecialchars($row['course']) . "</td>
@@ -106,6 +188,7 @@ if ($result && $result->num_rows > 0) {
                     </a>
                 </td>
             </tr>";
+        }
     }
 } else {
     echo "<tr><td colspan='12' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Approved Exam(s) Found</td></tr>";

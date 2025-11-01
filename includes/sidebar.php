@@ -1,12 +1,9 @@
 <?php
-
     // fetch instructor name
-    if (!isset($_SESSION['instructorid'])) {
-        die("Instructor not logged in.");
+    if (!isset($_SESSION['instructorid']) && !isset($_SESSION['type'])) {
+        die("Invalid User!");
     }
-
     $usertype = $_SESSION['type'];
-
 ?>
     
     <div class="navigation" style="overflow-y: scroll;">
@@ -34,7 +31,18 @@
                     <span class="title">Examination</span>
                 </a>
             </li>
-
+            <li>
+                <a href="exams_list.php">
+                    <span class="icon">
+                        <ion-icon name="eye"></ion-icon>
+                    </span>
+                    <span class="title">Vew Exams</span>
+                </a>
+            </li>
+        <?php
+            if($usertype == 'admin')
+            {
+            ?>
             <li>
                 <a href="labs.php">
                     <span class="icon">
@@ -87,6 +95,7 @@
                     <span class="title">Issues</span>
                 </a>
             </li>
+        <?php   }   ?>
 
             <li>
                 <a href="report.php">
