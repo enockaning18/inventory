@@ -81,7 +81,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <select required name="batch_semester" class="form-select">
                         <option value="">Choose Semester</option>
                         <?php
-                        $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4"];
+                        $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4","Year-1" => "One Year","Short-Course" => "Short Course"];
                         foreach ($semesters as $key => $val) {
                             $selected = ($semester == $key) ? 'selected' : '';
                             echo "<option value='$key' $selected>$val</option>";

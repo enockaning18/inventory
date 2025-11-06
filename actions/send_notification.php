@@ -44,14 +44,26 @@ function sendNotification($table, $idColumn, $conn, $usermail, $defaultkey)
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
 
-        $to = $usermail;
-        $subject = "New User Account - IPMC COLLEGE";
-        $body  = "<h2>User Account Details</h2>";
-        $body .= "<p><strong>UserEmail:</strong> {$row['email']}</p>";
-        $body .= "<p><strong>Account Key:</strong> {$row['defaultkey']}</p>";
-        $body .= "<p><strong>Account Type:</strong> {$row['user_type']}</p>";
-        $body .= "<p>Access app via: http://127.0.0.1:100/inventory/index.php</p>";
-        $body .= "<p><em>Sent from IPMC COLLEGE</em></p>";
+        if($usermail != $usermail.'#reset')
+        {
+            $to = $usermail;
+            $subject = "New User Account - IPMC COLLEGE";
+            $body  = "<h2>User Account Details</h2>";
+            $body .= "<p><strong>UserEmail:</strong> {$row['email']}</p>";
+            $body .= "<p><strong>Account Key:</strong> {$row['defaultkey']}</p>";
+            $body .= "<p><strong>Account Type:</strong> {$row['user_type']}</p>";
+            $body .= "<p>Access app via: http://192.168.1.254/ipmc.exams_inventory</p>";
+            $body .= "<p><em>Sent from IPMC COLLEGE</em></p>";
+        }
+        else{
+
+            $to = $usermail;
+            $subject = "User Password Reset - IPMC COLLEGE";
+            $body  = "<h2>Follow this Instruction</h2>";
+            $body .= "<p>In order to reset your account password, kidnly click on the link provided below..</p>";
+            $body .= "<p>Access app via: http://192.168.1.254/ipmc.exams_inventory/update_password.php</p>";
+            $body .= "<p><em>Sent from IPMC COLLEGE</em></p>";
+        }
 
         $mail = new PHPMailer(true);
 

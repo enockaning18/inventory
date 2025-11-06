@@ -99,7 +99,7 @@ if ($result && $result->num_rows > 0) {
                             <select name="semester" id="semester" class="form-select">
                                 <option value="">All Semesters</option>
                                 <?php
-                                $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4"];
+                                $semesters = ["Sem-1" => "Semester 1", "Sem-2" => "Semester 2", "Sem-3" => "Semester 3", "Sem-4" => "Semester 4", "Year-1" => "One Year", "Short-Course" => "Short Course"];
                                 foreach ($semesters as $key => $val) {
                                     $selected = ($batch_semester == $key) ? 'selected' : '';
                                     echo "<option value='$key' $selected>$val</option>";
@@ -117,7 +117,7 @@ if ($result && $result->num_rows > 0) {
                         </form>
 
                     </div>
-                    <div class="table-responsive" style="height: 300px;">
+                    <div class="table-responsive" style="height: 500px;">
                         <table class="table table-striped align-middle">
                             <thead class="table-light">
                                 <tr>

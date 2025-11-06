@@ -20,25 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        // Hash new password securely
-        $hashedPassword = password_hash($userkey, PASSWORD_DEFAULT);
-
-        // Update user password
-        $update_stmt = $conn->prepare("UPDATE users SET user_key = ? WHERE email = ?");
-        if ($update_stmt) {
-            $update_stmt->bind_param("ss", $hashedPassword, $email);
-            if ($update_stmt->execute()) {
-                header("Location: ../index.php?status=change_password");
-                exit();
-            } else {
-                header("Location: ../forgot_password.php?status=update_failed");
-                exit();
-            }
-        } else {
-            header("Location: ../forgot_password.php?status=query_error");
-            exit();
-        }
-    } else {
+        // send password link to user for reset
+        // include mail notification
+        include 'send_notification.php';
+        sendNotification('users', 'id', $conn, $email.'#reset', $defaultkey);
+        
+    } 
+    else {
         header("Location: ../forgot_password.php?status=user_not_found");
         exit();
     }

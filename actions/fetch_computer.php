@@ -77,7 +77,7 @@ if ($result && $result->num_rows > 0) {
             </tr>";
     }
 } else {
-    echo "<tr><td colspan='10' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No computer Record(s) Found</td></tr>";
+    echo "<tr><td colspan='14' class='text-center' style='color: maroon; font-size: 18px;'>Opps! No computer Record(s) Found</td></tr>";
 }
 
 $conn->close();

@@ -36,7 +36,7 @@
                     <span class="icon">
                         <ion-icon name="eye"></ion-icon>
                     </span>
-                    <span class="title">Vew Exams</span>
+                    <span class="title">View Exams</span>
                 </a>
             </li>
         <?php
@@ -78,6 +78,15 @@
                     <span class="title">Computers </span>
                 </a>
             </li>
+	    <li>
+                <a href="computers_list.php">
+                    <span class="icon">
+                        <ion-icon name="eye"></ion-icon>
+                    </span>
+                    <span class="title">View PCs</span>
+                </a>
+            </li>
+
 
             <li>
                 <a href="brands.php">

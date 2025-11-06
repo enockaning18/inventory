@@ -191,7 +191,7 @@ if ($result && $result->num_rows > 0) {
         }
     }
 } else {
-    echo "<tr><td colspan='12' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Approved Exam(s) Found</td></tr>";
+    echo "<tr><td colspan='14' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Approved Exam(s) Found</td></tr>";
 }
 
 $conn->close();
