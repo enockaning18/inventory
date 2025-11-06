@@ -62,6 +62,22 @@ function successAlert($title)
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Okay'
                 });
+            <?php elseif ($_GET['status'] == 'mail_sent'): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Reset Password',
+                    text: "Reset password link has been sent to your email",
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Okay'
+                });
+            <?php elseif ($_GET['status'] == 'missing'): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Reset Password',
+                    text: "Oops! Unknown User Email",
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Retry'
+                });
             <?php elseif ($_GET['status'] == 'incorrect_password'): ?>
                 Swal.fire({
                     icon: 'error',
@@ -183,7 +199,15 @@ function successAlert($title)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops... ',
-                    text: ' User not found',
+                    text: ' User was not Found!',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
+            <?php elseif ($_GET['status'] == 'invalid_request'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops... ',
+                    text: ' Error Occured, try again!',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });

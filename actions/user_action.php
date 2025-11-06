@@ -98,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                // include mail notification
                 include 'send_notification.php';
-                sendNotification('users', 'id', $conn, $email, $defaultkey);
+                sendNotification('users', 'id', $conn, $email, $defaultkey, $type = 'new_account');
 
                 header("Location: ../users.php?status=save");
             } 

@@ -39,8 +39,10 @@
                 <button class="btn btn-primary d-flex align-items-center justify-content-center w-100" name="auth_login" type="submit">
                     Change Password <i class="bi bi-arrow-right ms-2"></i>
                 </button>
-                <!-- <a href="forgot_password.php"><small>Login Page </small></a> -->
             </div>
+            <center>
+                <a href="index.php"><small style="color: #fff;">Remember now..? Login here </small></a>
+            </center>
         </form>
 
         </div>

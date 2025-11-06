@@ -10,33 +10,9 @@ require __DIR__ . '/PHPMailer/Exception.php';
 require __DIR__ . '/PHPMailer/PHPMailer.php';
 require __DIR__ . '/PHPMailer/SMTP.php';
 
-// Check user session
-if (!isset($_SESSION['id'])) {
-    die("User not logged in.");
-}
 
-$userid = $_SESSION['id'];
-
-// Fetch logged-in user's email
-$stmt = $conn->prepare("SELECT email, defaultkey FROM users WHERE id = ?");
-$stmt->bind_param("i", $userid);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result && $result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-
-    $usermail = $row['email'];
-    $defaultkey = $row['defaultkey'];
-} 
-else {
-    die("User not found.");
-}
-
-/**
- * Send notification email for the latest record in a given table.
- */
-function sendNotification($table, $idColumn, $conn, $usermail, $defaultkey)
+// function to handle mailer after new account or password reset request
+function sendNotification($table, $idColumn, $conn, $usermail, $defaultkey, $type)
 {
     $sql = "SELECT * FROM $table ORDER BY $idColumn DESC LIMIT 1";
     $result = $conn->query($sql);
@@ -44,7 +20,7 @@ function sendNotification($table, $idColumn, $conn, $usermail, $defaultkey)
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
 
-        if($usermail != $usermail.'#reset')
+        if($type === 'new_account')
         {
             $to = $usermail;
             $subject = "New User Account - IPMC COLLEGE";
@@ -59,8 +35,8 @@ function sendNotification($table, $idColumn, $conn, $usermail, $defaultkey)
 
             $to = $usermail;
             $subject = "User Password Reset - IPMC COLLEGE";
-            $body  = "<h2>Follow this Instruction</h2>";
-            $body .= "<p>In order to reset your account password, kidnly click on the link provided below..</p>";
+            $body  = "<h2>Follow this Instructions</h2>";
+            $body .= "<p>In order to reset your account password, kindly click on the link provided below..</p>";
             $body .= "<p>Access app via: http://192.168.1.254/ipmc.exams_inventory/update_password.php</p>";
             $body .= "<p><em>Sent from IPMC COLLEGE</em></p>";
         }
@@ -95,6 +71,6 @@ function sendNotification($table, $idColumn, $conn, $usermail, $defaultkey)
     }
 }
 
-// Example: send notification from a table (you can call dynamically)
-sendNotification('users', 'id', $conn, $usermail, $defaultkey);
+// send email after passing args
+sendNotification('users', 'id', $conn, $usermail, $defaultkey, $type);
 ?>
