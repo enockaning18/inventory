@@ -96,7 +96,7 @@
         <div class="cardContent">
             <div class="numbers"><?php echo isset($totalApproved) ? $totalApproved : '0'; ?></div>
             <a href="approved_exams.php">
-                <div class="cardName" title="View Confirmed Exams">ConfirmedExams</div>
+                <div class="cardName" title="View Confirmed Exams">ApprovedExams</div>
             </a>
         </div>
         <div class="iconBx">

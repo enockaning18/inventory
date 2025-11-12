@@ -4,9 +4,12 @@
         die("Database connection failed: " . $conn->connect_error);
     }
 
+    // setting time zone
+    date_default_timezone_set('UTC'); // or your correct timezone
+
     // upcoming exams
     $e_sql = "SELECT 
-                examination.*, 
+                examination.*,
                 course.course_name AS course, 
                 module.name AS module, 
                 CONCAT(instructors.first_name, ' ', instructors.last_name) AS instructor_name
@@ -14,9 +17,9 @@
             INNER JOIN course ON examination.course_id = course.id
             INNER JOIN module ON examination.module_id = module.id
             INNER JOIN instructors ON examination.instructor_id = instructors.id
-            WHERE status = 'approve' AND examination.examination_date BETWEEN CURDATE() 
+            WHERE status = 'approve' AND examination_date BETWEEN CURDATE() 
             AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
-            ORDER BY examination.examination_date ASC";
+            ORDER BY examination_date DESC";
 
     $e_result = $conn->query($e_sql);
 ?>
