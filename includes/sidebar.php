@@ -39,6 +39,14 @@
                     <span class="title">View Exams</span>
                 </a>
             </li>
+            <li>
+                <a href="exams_calender.php">
+                    <span class="icon">
+                        <ion-icon name="calendar"></ion-icon>
+                    </span>
+                    <span class="title">Exams Calender</span>
+                </a>
+            </li>
         <?php
             if($usertype == 'admin')
             {
