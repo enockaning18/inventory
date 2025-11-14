@@ -41,7 +41,7 @@ require_once('baseConnect/dbConnect.php');
         <hr style="margin-bottom: 3rem;">
 
         <div class="g-3 mb-5">
-            <form class="row g-3 border bg-light shadow-sm p-3 pb-5" id="ReportForm" method="POST" action="actions/generate_report.php">
+            <form class="row g-3 border bg-light shadow-sm p-3 pb-5" id="ReportForm" method="POST">
                 <div class="col-md-4">
                     <label class="form-label">Report Type</label>
                     <select id="reportType" name="report_type" class="form-select" required>
@@ -107,42 +107,42 @@ require_once('baseConnect/dbConnect.php');
     <!-- export report to excel -->
     <?php   include('actions/export_xslx.php'); ?>
 
-    <script>
-        $(document).ready(function() {
-            $('#ReportForm').on('submit', function(e) {
-                e.preventDefault();
+<script>
+    $(document).ready(function() {
+        $('#ReportForm').on('submit', function(e) {
+            e.preventDefault();
 
-                // Add manual key to emulate submit button name
-                let formData = $(this).serialize() + '&generate_report=true';
+            // Add manual key to emulate submit button name
+            let formData = $(this).serialize() + '&generate_report=true';
 
-                $.ajax({
-                    url: 'actions/system_report_action.php',
-                    type: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        const parts = response.split('<!--SPLIT-->');
-                        $('#reportCaption').html(parts[0]);
-                        $('#reportHead').html(parts[1]);
-                        $('#reportTable').html(parts[2]);
-                    },
+            $.ajax({
+                url: 'actions/system_report_action.php',
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    const parts = response.split('<!--SPLIT-->');
+                    $('#reportCaption').html(parts[0]);
+                    $('#reportHead').html(parts[1]);
+                    $('#reportTable').html(parts[2]);
+                },
 
-                    error: function(xhr, status, error) {
-                        console.error("Error:", status, error, xhr.responseText);
-                        alert('Error generating report. Check console for details.');
-                    }
-                });
+                error: function(xhr, status, error) {
+                    console.error("Error:", status, error, xhr.responseText);
+                    alert('Error generating report. Check console for details.');
+                }
             });
         });
-    </script>
+    });
+</script>
 
-    <script>
-        document.getElementById('printReport').addEventListener('click', function() {
-            let printCaption = document.getElementById('reportCaption').innerHTML;
-            let printHead = document.getElementById('reportHead').innerHTML;
-            let printContent = document.getElementById('reportTable').innerHTML;
-            let originalContent = document.body.innerHTML;
+<script>
+    document.getElementById('printReport').addEventListener('click', function() {
+        let printCaption = document.getElementById('reportCaption').innerHTML;
+        let printHead = document.getElementById('reportHead').innerHTML;
+        let printContent = document.getElementById('reportTable').innerHTML;
+        let originalContent = document.body.innerHTML;
 
-            document.body.innerHTML = `
+        document.body.innerHTML = `
         <html>
         <head>
             <title>Print Report</title>
@@ -150,20 +150,29 @@ require_once('baseConnect/dbConnect.php');
         </head>
         <body class="p-4 mt-5">
             <h3 class="text-center mb-4">${printCaption}</h3>
-            <table class="table  table-striped">
+            <br />
+            <table class="table  table-striped" style="font-size: 24px;">
                 <thead> ${printHead} </thead>
                 <tbody> ${printContent} </tbody>
             </table>
+            <br />
+            <center>
+                <h3> GOOD LUCK !</h3>
+            </center>
+            <div style="font-size: 20px; margin-top: 50px;">
+                ............................................
+                <br/>
+                Administrator Kumasi Branch
+            </div>
         </body>
         </html>
     `;
 
-            window.print();
-            document.body.innerHTML = originalContent;
-            location.reload();
-        });
-    </script>
+        window.print();
+        document.body.innerHTML = originalContent;
+        location.reload();
+    });
+</script>
 
 </body>
-
 </html>
