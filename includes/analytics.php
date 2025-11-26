@@ -13,7 +13,6 @@
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
-
     $totalApproved = $row['total_approved'] ?? 0;
 
     // Count pending exams
@@ -78,6 +77,10 @@
     $row = $result->fetch_assoc();
 
     $totalReplacements = $row['total_replacement'] ?? 0;
+
+
+
+    
 
     $stmt->close();
     // $conn->close();

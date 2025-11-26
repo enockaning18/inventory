@@ -48,13 +48,23 @@ if ($result && $result->num_rows > 0) {
     require("includes/topbar.php");
     ?>
 
-<div class="mx-auto" style="margin-top: 4rem; width:85%">
+    <div class="mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="my-auto">
                 <ion-icon name="book-outline"></ion-icon>
                 Computers
             </h3>
-            <a href="computers.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Add Computer</button></a>
+
+
+            <div>
+                <div class="btn text-white px-2 bg-primary ">No. Monitors: </div>
+                <div class="btn text-white px-2 bg-primary ">No. Systems: </div>
+                <div class="btn text-white px-2 bg-primary ">No. Computers: </div>
+            </div>
+            <div>
+                <a href="computers.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Add Computer</button></a>
+            </div>
+
         </div>
         <hr class="mb-4">
     </div>
@@ -96,7 +106,7 @@ if ($result && $result->num_rows > 0) {
                                 $query_command = "SELECT DISTINCT memory_size  FROM computers ";
                                 $result = $conn->query($query_command);
                                 while ($memory = $result->fetch_assoc()) {
-                                    echo '<option value="' . $memory['memory_size'] . '">' . $memory['memory_size']."GB" . '</option>';
+                                    echo '<option value="' . $memory['memory_size'] . '">' . $memory['memory_size'] . "GB" . '</option>';
                                 }
                                 ?>
                             </select>
@@ -107,7 +117,7 @@ if ($result && $result->num_rows > 0) {
                                 $query_command = "SELECT DISTINCT hard_drive_size FROM computers ";
                                 $result = $conn->query($query_command);
                                 while ($drive = $result->fetch_assoc()) {
-                                    echo '<option value="' . $drive['hard_drive_size'] . '">' . $drive['hard_drive_size']."GB" . '</option>';
+                                    echo '<option value="' . $drive['hard_drive_size'] . '">' . $drive['hard_drive_size'] . "GB" . '</option>';
                                 }
                                 ?>
                             </select>

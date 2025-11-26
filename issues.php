@@ -57,17 +57,24 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
 
                 <div class="col-md-4">
-                    <label class="form-label">Computer</label>
-                    <select required id="Type" name="computers" class="form-select">
+                    <label class="form-label">Device Type</label>
+                    <select required id="deviceType" name="computers" class="form-select">
                         <option value="">Select</option>
                         <?php
+                        // fetch systems 
                         $query_command = "SELECT * FROM computers ";
                         $result = $conn->query($query_command);
                         ?>
                         <?php while ($row = $result->fetch_assoc()) { ?>
                             <option value="<?php echo $row['id'] ?>" <?php echo (isset($computer) && $computer ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['computer_name'] ?></option>
                         <?php } ?>
+
                     </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Serial Number</label>
+                    <input type="text" id="serialNumber" name="serial_number" class="form-control" readonly>
                 </div>
 
                 <div class="col-md-4">
@@ -82,7 +89,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
                 <div class="col-md-4">
                     <label class="form-label">Lab</label>
-                    <select required id="Type" name="lab" class="form-select">
+                    <select required id="labSelect" name="lab_select_ui" class="form-select">
                         <option value="">Choose Lab</option>
                         <?php
                         $query_command = "SELECT * FROM lab ";
@@ -92,6 +99,25 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <option value="<?php echo $row['id'] ?>" <?php echo (isset($lab) && $lab ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['lab_name'] ?></option>
                         <?php } ?>
                     </select>
+                    <input type="hidden" id="labHidden" name="lab" value="<?php echo isset($lab) ? $lab : '' ?>">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Issue Status</label>
+                    <select required id="issueStatus" name="issue_status" class="form-select">
+                        <option value="">Select</option>
+                        <option value="Pending" selected>Pending</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4" id="resolutionTypeDiv" style="display: none;">
+                    <label class="form-label">Resolution Type</label>
+                    <select id="resolutionType" name="resolved_type	" class="form-select">
+                        <option value="">Select</option>
+                        <option value="Repaired & Returned">Repaired & Returned</option>
+                        <option value="Unrepaired & Replaced">Unrepaired & Replaced</option>
+                    </select>
                 </div>
 
 
@@ -100,9 +126,24 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="date" name="issue_date" value="<?php echo isset($issue_date) ? $issue_date  : '' ?>" class="form-control">
                 </div>
 
+
                 <div class="col-md-8">
                     <label class="form-label">Issue Description</label>
                     <textarea class="form-control" name="issue_description" id=""><?php echo isset($issue_description) ? $issue_description  : '' ?></textarea>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Sent to Accra</label>
+                    <div class="">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentYes" value="Yes">
+                            <label class="form-check-label" for="sentYes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentNo" value="No">
+                            <label class="form-check-label" for="sentNo">No</label>
+                        </div>
+                    </div>
                 </div>
 
             </form>
@@ -141,12 +182,13 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Compuer</th>
+                                    <th>Device Type</th>
                                     <th>Issue </th>
                                     <th>Lab</th>
                                     <th>Issue Date </th>
                                     <th>Issue Description</th>
                                     <th>Issue Date</th>
+                                    <th>Issue Status</th>
                                     <th>Date Added</th>
                                     <th>Action</th>
                                 </tr>
@@ -215,6 +257,109 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 const lab_type = $(this).val();
                 load_issues(search, issue_type, lab_type);
             });
+
+            // Show/hide resolution type dropdown based on issue status
+            $("#issueStatus").on("change", function() {
+                if ($(this).val() === "Resolved") {
+                    $("#resolutionTypeDiv").show();
+                    $("#resolutionType").prop("required", true);
+                } else {
+                    $("#resolutionTypeDiv").hide();
+                    $("#resolutionType").prop("required", false);
+                    $("#resolutionType").val("");
+                }
+            });
+
+            // Fetch serial number and lab when device type is selected
+            $("#deviceType").on("change", function() {
+                const deviceId = $(this).val();
+                if (deviceId) {
+                    $.ajax({
+                        url: "actions/fetch_device_serial.php",
+                        type: "POST",
+                        dataType: "json",
+                        data: { device_id: deviceId },
+                        success: function(data) {
+                            // set serial
+                            $("#serialNumber").val(data.serial_number || "");
+
+                            // if server returned a lab id, set hidden input and select, then disable UI select
+                            if (data.lab_id) {
+                                $("#labSelect").val(data.lab_id);
+                                $("#labHidden").val(data.lab_id);
+                                $("#labSelect").prop("disabled", true);
+                            } else {
+                                // no lab found for device: allow user to choose
+                                $("#labSelect").prop("disabled", false);
+                                $("#labHidden").val("");
+                            }
+                        },
+                        error: function() {
+                            $("#serialNumber").val("");
+                            $("#labSelect").prop("disabled", false);
+                            $("#labHidden").val("");
+                        }
+                    });
+                } else {
+                    // no device chosen: enable lab selection and clear serial & hidden lab
+                    $("#serialNumber").val("");
+                    $("#labSelect").prop("disabled", false);
+                    $("#labHidden").val("");
+                }
+            });
+
+            // If a device is already selected on load (edit flow), trigger change to populate lab & serial
+            if ($("#deviceType").val()) {
+                $("#deviceType").trigger("change");
+            }
+
+            // If user manually changes lab (when enabled), keep hidden input in sync
+            $("#labSelect").on("change", function() {
+                if (!$(this).prop("disabled")) {
+                    $("#labHidden").val($(this).val());
+                }
+            });
+
+            // Handle issue status modal
+            $('#issueModal').on('show.bs.modal', function(e) {
+                const issueId = $(e.relatedTarget).data('issue-id');
+                $("#modalIssueId").val(issueId);
+                $.ajax({
+                    url: "actions/fetch_issue_details.php",
+                    type: "POST",
+                    data: {
+                        issue_id: issueId
+                    },
+                    success: function(data) {
+                        const issue = JSON.parse(data);
+                        $("#dateReceived").val(issue.date_added);
+                        $("#modalIssueStatus").val(issue.issue_status || '');
+                        $("#modalResolutionType").val(issue.resolved_type	 || '');
+
+                        // Show/hide resolution type based on status
+                        if (issue.issue_status === 'Resolved') {
+                            $("#modalResolutionTypeDiv").show();
+                        } else {
+                            $("#modalResolutionTypeDiv").hide();
+                        }
+                    },
+                    error: function() {
+                        alert("Error loading issue details");
+                    }
+                });
+            });
+
+            // Show/hide resolution type in modal based on status change
+            $("#modalIssueStatus").on("change", function() {
+                if ($(this).val() === "Resolved") {
+                    $("#modalResolutionTypeDiv").show();
+                    $("#modalResolutionType").prop("required", true);
+                } else {
+                    $("#modalResolutionTypeDiv").hide();
+                    $("#modalResolutionType").prop("required", false);
+                    $("#modalResolutionType").val("");
+                }
+            });
         });
     </script>
 
@@ -223,6 +368,51 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $title = "Issue ";
     successAlert($title);
     ?>
+
+    <!-- Issue Status Modal -->
+    <div class="modal fade" id="issueModal" tabindex="-1" aria-labelledby="issueModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="issueModalLabel">Issue Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="issueStatusForm" method="POST" action="actions/update_issue_status.php">
+                    <div class="modal-body">
+                        <input type="hidden" id="modalIssueId" name="issue_id">
+
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Date Received:</strong></label>
+                            <input type="text" id="dateReceived" class="form-control" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Issue Status</strong></label>
+                            <select id="modalIssueStatus" name="issue_status" class="form-select" required>
+                                <option value="">Select</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Resolved">Resolved</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3" id="modalResolutionTypeDiv" style="display: none;">
+                            <label class="form-label"><strong>Resolution Type</strong></label>
+                            <select id="modalResolutionType" name="resolved_type" class="form-select">
+                                <option value="">Select</option>
+                                <option value="Repaired & Returned">Repaired & Returned</option>
+                                <option value="Unrepaired & Replaced">Unrepaired & Replaced</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Status</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

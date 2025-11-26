@@ -98,21 +98,25 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Hard Drive Size</label>
-                    <input required type="number" name="hard_drive_size" value="<?php echo isset($hard_drive_size) ? $hard_drive_size : '' ?>" class="form-control">
+                    <input required type="text" name="hard_drive_size" value="<?php echo isset($hard_drive_size) ? $hard_drive_size : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Lab</label>
-                    <select required id="Type" name="lab" class="form-select">
-                        <option value="">Choose Lab</option>
-                        <?php
-                        $query_command = "SELECT * FROM lab ";
-                        $result = $conn->query($query_command);
-                        ?>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($lab) && $lab ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['lab_name'] ?></option>
-                        <?php } ?>
-                    </select>
+                    <label class="form-label">ISeries </label>
+                    <input required type="text" name="i_series" value="" class="form-control">
                 </div>
+                <div class="col-md-4">
+                    <label class="form-label">Generation </label>
+                    <input required type="text" name="generation" value="" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Speed </label>
+                    <input required type="text" name="speed" value="" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Processor Type </label>
+                    <input required type="text" name="processor_type" value="" class="form-control">
+                </div>
+                
 
                 <!-- monitor info -->
                 <div style="display: flex; align-items: center;">
@@ -132,19 +136,49 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <label class="form-label">Serial Number</label>
                     <input required type="text" name="monitor_serial" value="<?php echo isset($monitor_serial) ? $monitor_serial : '' ?>" class="form-control">
                 </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Select Brand</label>
+                    <?php
+                    $query_command = "SELECT * FROM brand ";
+                    $result = $conn->query($query_command);
+                    ?>
+                    <select required id="Type" name="brand" class="form-select">
+                        <option value="">Choose Brand</option>
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($brand) && $brand ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['brand_name'] ?></option>
+                        <?php } ?>
+
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Lab</label>
+                    <select required id="Type" name="lab" class="form-select">
+                        <option value="">Choose Lab</option>
+                        <?php
+                        $query_command = "SELECT * FROM lab ";
+                        $result = $conn->query($query_command);
+                        ?>
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($lab) && $lab ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['lab_name'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+
             </form>
         </div>
     </div>
 
-   
-                    
- <!-- =========== Scripts =========  -->
+
+
+    <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/jquery.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    
-<?php
+
+    <?php
     $title = "Computer";
     successAlert($title);
     ?>

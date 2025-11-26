@@ -3,7 +3,7 @@ require_once('../baseConnect/dbConnect.php');
 
 // Ensure connection is valid
 if (!$conn) {
-    echo "<tr><td colspan='9' class='text-center text-danger'>Database connection failed</td></tr>";
+    echo "<tr><td colspan='10' class='text-center text-danger'>Database connection failed</td></tr>";
     exit;
 }
 
@@ -14,11 +14,11 @@ $lab_type    = isset($_POST['lab_type']) ? trim($_POST['lab_type']) : '';
 
 $sql = "SELECT 
             issues.*, 
-            computers.computer_name AS pc, 
+            computers.computer_name AS device_name, 
             lab.lab_name AS labname 
         FROM issues
-        INNER JOIN computers ON issues.computer = computers.id
-        INNER JOIN lab ON issues.lab = lab.id
+        LEFT JOIN computers ON issues.computer = computers.id
+        LEFT JOIN lab ON issues.lab = lab.id
         WHERE 1";
 
 //  Filter by search
@@ -30,6 +30,8 @@ if (!empty($search)) {
                 OR lab.lab_name LIKE '%$search%' 
                 OR issues.issue_date LIKE '%$search%' 
                 OR issues.issue_description LIKE '%$search%'
+                OR issues.serial_number LIKE '%$search%'
+                OR issues.sent_to_accra LIKE '%$search%'
             )";
 }
 
@@ -52,14 +54,22 @@ $result = $conn->query($sql);
 if ($result && $result->num_rows > 0) {
     $counter = 1;
     while ($row = $result->fetch_assoc()) {
+
+
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
-                <td>" . htmlspecialchars($row['pc']) . "</td>
+
+                <td>
+                    <div>" . htmlspecialchars($row['device_name']) . "</div>
+                    <div class='text-muted small'>(" . htmlspecialchars($row['serial_number']) . ")</div>
+                </td>
+                </td>
                 <td>" . htmlspecialchars($row['issue_type']) . "</td>
                 <td>" . htmlspecialchars($row['labname']) . "</td>
                 <td>" . htmlspecialchars($row['issue_date']) . "</td>
                 <td>" . htmlspecialchars($row['issue_description']) . "</td>
                 <td>" . htmlspecialchars($row['issue_date']) . "</td>
+                <td>" . htmlspecialchars(ucfirst($row['issue_status'])) . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
                     <a class='text-decoration-none' href='actions/edit_issue.php?id=" . $row['id'] . "'>
@@ -68,11 +78,15 @@ if ($result && $result->num_rows > 0) {
                     <a class='text-decoration-none' href='actions/delete_issue.php?id=" . $row['id'] . "' onclick=\"return confirm('DO YOU WANT TO DELETE THIS ISSUE?');\">
                         <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                     </a>
+                    <a class='text-decoration-none' href='#' data-bs-toggle='modal' data-bs-target='#issueModal' data-issue-id='" . $row['id'] . "'>
+                        <i class='bi bi-check-circle-fill text-success fs-5 ms-1'></i>
+                    </a>
                 </td>
             </tr>";
     }
 } else {
-    echo "<tr><td colspan='9' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Issue Record(s) Found</td></tr>";
+    // table in issues.php has 10 columns now, use colspan=10
+    echo "<tr><td colspan='10' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Issue Record(s) Found</td></tr>";
 }
 
 $conn->close();

@@ -122,6 +122,14 @@ function successAlert($title)
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Done'
                 });
+            <?php elseif ($_GET['status'] == 'issue_update'): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '<?php echo $title; ?> status updated successfully!',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Done'
+                });
             <?php elseif ($_GET['status'] == 'past_date'): ?>
                 Swal.fire({
                     icon: 'error',
