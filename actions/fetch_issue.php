@@ -55,6 +55,20 @@ if ($result && $result->num_rows > 0) {
     $counter = 1;
     while ($row = $result->fetch_assoc()) {
 
+        $status = htmlspecialchars($row['issue_status']);
+        $badgeClass = '';
+
+        switch (ucfirst($status)) {
+            case 'Resolved':
+                $badgeClass = 'bg-success';
+                break;
+            case 'Pending':
+                $badgeClass = 'bg-warning text-dark';
+                break;
+            default:
+                $badgeClass = 'bg-secondary';
+        }
+
 
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
@@ -69,7 +83,7 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['issue_date']) . "</td>
                 <td>" . htmlspecialchars($row['issue_description']) . "</td>
                 <td>" . htmlspecialchars($row['issue_date']) . "</td>
-                <td>" . htmlspecialchars(ucfirst($row['issue_status'])) . "</td>
+                <td><span class='badge {$badgeClass}'>" . htmlspecialchars(ucfirst($row['issue_status'])) . "</span></td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
                     <a class='text-decoration-none' href='actions/edit_issue.php?id=" . $row['id'] . "'>
