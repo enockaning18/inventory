@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2025 at 01:26 AM
+-- Generation Time: Nov 26, 2025 at 06:20 PM
 -- Server version: 10.4.16-MariaDB
 -- PHP Version: 7.4.12
 
@@ -122,9 +122,10 @@ CREATE TABLE `examination` (
 --
 
 INSERT INTO `examination` (`id`, `examination_date`, `batch_time`, `session`, `course_id`, `date_booked`, `start_time`, `module_id`, `instructor_id`, `batch_semester`, `status`, `date_added`) VALUES
-(12, '2025-11-07', '1pm - 3pm', 'Weekday', 6, '2025-10-30', '13:00', 1, 7, 'Sem-2', 'cancelled', '2025-10-30'),
+(12, '2025-11-14', '1pm - 3pm', 'Weekday', 6, '2025-10-30', '13:00', 1, 7, 'Sem-2', 'cancelled', '2025-10-30'),
 (13, '2025-11-03', '11am - 1pm', 'Weekday', 8, '2025-10-30', '11:00', 8, 7, 'Sem-2', 'approve', '2025-10-30'),
-(14, '2025-11-05', '3pm - 5pm', 'Weekday', 6, '2025-10-31', '15:00', 2, 7, 'Sem-1', 'pending', '2025-10-31');
+(14, '2025-11-05', '3pm - 5pm', 'Weekday', 6, '2025-10-31', '15:00', 2, 7, 'Sem-1', 'pending', '2025-10-31'),
+(15, '2025-11-14', '9am - 11am', 'Weekday', 6, '2025-11-12', '09:00', 1, 15, 'Sem-2', 'pending', '2025-11-12');
 
 -- --------------------------------------------------------
 
@@ -239,7 +240,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `email`, `user_type`, `instructor_id`, `user_key`, `defaultkey`, `date_created`) VALUES
 (7, 'admin@email.com', 'admin', 7, '$2y$10$vXv/lTUj2NrqNax.oElRUugEUsNxgaOCwymyw6CCZ3pGIfDUexUO.', '', '2025-10-30'),
-(31, 'smgee43@gmail.com', 'instructor', 13, '$2y$10$bdjh/1xfvb8jqvZyKEdnseKQ5/mPZRcGHrvlqd2nvG/.16uPTIiwm', 'Instructor2025!', '2025-10-31');
+(33, 'test@email.com', 'instructor', 15, '$2y$10$AsXLUql8DMnYjC010K4TYOVVGe76sSOgZbHxqxreE7V97O9eHxun6', 'Instructor2025!', '2025-11-12');
 
 --
 -- Indexes for dumped tables
@@ -343,7 +344,7 @@ ALTER TABLE `course`
 -- AUTO_INCREMENT for table `examination`
 --
 ALTER TABLE `examination`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `instructors`
@@ -373,7 +374,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- Constraints for dumped tables
