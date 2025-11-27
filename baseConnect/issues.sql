@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 26, 2025 at 11:47 PM
+-- Generation Time: Nov 27, 2025 at 04:32 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -32,20 +32,23 @@ CREATE TABLE `issues` (
   `computer` int(11) NOT NULL,
   `serial_number` varchar(100) NOT NULL,
   `issue_type` varchar(100) NOT NULL,
+  `resolved_type` varchar(50) DEFAULT NULL,
   `lab` int(11) DEFAULT NULL,
   `issue_status` varchar(100) NOT NULL,
   `issue_date` date NOT NULL DEFAULT current_timestamp(),
   `issue_description` varchar(500) NOT NULL,
   `sent_to_accra` varchar(50) NOT NULL,
-  `date_added` date NOT NULL DEFAULT current_timestamp()
+  `date_added` date NOT NULL DEFAULT current_timestamp(),
+  `date_returned` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `issues`
 --
 
-INSERT INTO `issues` (`id`, `computer`, `serial_number`, `issue_type`, `lab`, `issue_status`, `issue_date`, `issue_description`, `sent_to_accra`, `date_added`) VALUES
-(11, 10, '', 'Software', 1, 'pending', '2025-11-06', 'Software Update ', '', '2025-11-26');
+INSERT INTO `issues` (`id`, `computer`, `serial_number`, `issue_type`, `resolved_type`, `lab`, `issue_status`, `issue_date`, `issue_description`, `sent_to_accra`, `date_added`, `date_returned`) VALUES
+(11, 10, '111222333000', 'Software', 'Repaired & Returned', 1, 'Resolved', '2025-11-06', 'Software Update ', '', '2025-11-26', '2025-11-28'),
+(12, 10, '111222333000', 'Software', 'Repaired & Returned', 1, 'Resolved', '2025-11-26', 'updates', 'No', '2025-11-26', '2025-11-26');
 
 --
 -- Indexes for dumped tables
@@ -67,7 +70,7 @@ ALTER TABLE `issues`
 -- AUTO_INCREMENT for table `issues`
 --
 ALTER TABLE `issues`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
