@@ -14,6 +14,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $size            = mysqli_real_escape_string($conn, $_POST['size']);
     $monitor_serial  = mysqli_real_escape_string($conn, $_POST['monitor_serial']);
     $date_added      = mysqli_real_escape_string($conn, $_POST['date_added']);
+    $processor      = mysqli_real_escape_string($conn, $_POST['processor']);
+    $generation      = mysqli_real_escape_string($conn, $_POST['generation']);
+    $speed      = mysqli_real_escape_string($conn, $_POST['speed']);
+    $processor_type      = mysqli_real_escape_string($conn, $_POST['processor_type']);
+    $monitor_brand      = mysqli_real_escape_string($conn, $_POST['monitor_brand']);
 
     if (!empty($id)) {
 
@@ -31,9 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt = $conn->prepare("UPDATE computers 
                                 SET computer_name = ?, brand = ?, serial_number = ?, memory_size = ?, hard_drive_size = ?, lab = ?, 
-                                monitor_name = ?, size = ?, monitor_serial = ? WHERE id = ?");
+                                monitor_name = ?, size = ?, monitor_serial = ?, processor = ?, generation = ?, speed = ?, processor_type = ?, monitor_brand = ? WHERE id = ?");
         if ($stmt) {
-            $stmt->bind_param("sssssssssi", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial, $id);
+            $stmt->bind_param("ssssssssssssssi", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial, $processor, $generation, $speed, $processor_type, $monitor_brand, $id);
             if ($stmt->execute()) {
                 header("Location: ../computers.php?status=update");
             } else {
@@ -57,10 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $check->close();
 
-        $stmt = $conn->prepare("INSERT INTO computers (computer_name, brand, serial_number, memory_size, hard_drive_size, lab, monitor_name, size, monitor_serial)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO computers (computer_name, brand, serial_number, memory_size, hard_drive_size, lab, monitor_name, size, monitor_serial, processor, generation, speed, processor_type, monitor_brand)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         if ($stmt) {
-            $stmt->bind_param("sssssssss", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial);
+            $stmt->bind_param("ssssssssssssss", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial, $processor, $generation, $speed, $processor_type, $monitor_brand);
             if ($stmt->execute()) {
                 header("Location: ../computers.php?status=save");
             } else {

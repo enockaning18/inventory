@@ -157,7 +157,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
                         <h5 class="mb-0" style="color: maroon;">List of Issues </h5>
                         <form id="filterForm" class="d-flex gap-2">
-                            <input type="search" class="form-control px-4" id="searchBox" name="search" placeholder="Search..">
+                            <input type="search" class="form-control" style="padding-right: 150px" id="searchBox" name="search" placeholder="Search..">
 
                             <select name="issue_type" id="issue_type" class="form-select">
                                 <option value="">All Issues </option>
@@ -382,8 +382,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <input type="hidden" id="modalIssueId" name="issue_id">
 
                         <div class="mb-3">
-                            <label class="form-label"><strong>Date Received:</strong></label>
-                            <input type="text" id="dateReceived" class="form-control" readonly>
+                            <label class="form-label"><strong>Date Returned:</strong></label>
+                            <input type="date" id="dateReturned" name="date_returned" class="form-control" required>
                         </div>
 
                         <div class="mb-3">

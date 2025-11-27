@@ -115,7 +115,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
                         <h5 class="mb-0" style="color: maroon;">List of Instructors</h5>
                         <form id="filterForm" class="d-flex gap-2">
-                            <input type="search" class="form-control px-4" id="searchBox" name="search" placeholder="Search..">
+                            <input type="search" class="form-control" style="padding-right: 150px" id="searchBox" name="search" placeholder="Search..">
                         </form>
                     </div>
                     <div class="table-responsive" style="height: 300px">

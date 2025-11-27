@@ -2,6 +2,8 @@
 require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
+require_once('includes/counts_analytics.php');
+
 
 // fetch instructor name
 if (!isset($_SESSION['instructorid']) && !isset($_SESSION['type'])) {
@@ -57,9 +59,9 @@ if ($result && $result->num_rows > 0) {
 
 
             <div>
-                <div class="btn text-white px-2 bg-primary ">No. Monitors: </div>
-                <div class="btn text-white px-2 bg-primary ">No. Systems: </div>
-                <div class="btn text-white px-2 bg-primary ">No. Computers: </div>
+                <div class="btn text-white px-2 bg-primary ">No. Monitors: <?php echo $totalMonitors ?> </div>
+                <div class="btn text-white px-2 bg-primary ">No. Systems: <?php echo $totalSystems ?> </div>
+                <div class="btn text-white px-2 bg-primary ">No. Computers: <?php echo $totalComputers ?> </div>
             </div>
             <div>
                 <a href="computers.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Add Computer</button></a>
@@ -76,7 +78,7 @@ if ($result && $result->num_rows > 0) {
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
                         <h5 class="mb-0" style="color: maroon;">List of Computers </h5>
                         <form id="filterForm" class="d-flex gap-2">
-                            <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search..">
+                            <input type="search" class="form-control" style="padding-right: 150px" id="searchBox" name="search" placeholder="Search..">
 
                             <select name="lab_type" id="lab_type" class="form-select">
                                 <option value="">All Labs</option>

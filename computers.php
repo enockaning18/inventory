@@ -9,7 +9,7 @@ require_once('baseConnect/dbConnect.php');
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
     $stmt = $conn->prepare("SELECT id, computer_name, brand, serial_number, memory_size, hard_drive_size, lab, 
-                            monitor_name, size, monitor_serial FROM computers WHERE id = ?");
+                            monitor_name, size, monitor_serial, processor, generation, speed, processor_type, monitor_brand FROM computers WHERE id = ?");
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
@@ -24,6 +24,11 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         $monitor = $row['monitor_name'];
         $size = $row['size'];
         $monitor_serial = $row['monitor_serial'];
+        $processor = $row['processor'];
+        $generation = $row['generation'];
+        $speed = $row['speed'];
+        $processor_type = $row['processor_type'];
+        $monitor_brand = $row['monitor_brand'];
     }
     $stmt->close();
 }
@@ -101,20 +106,20 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="text" name="hard_drive_size" value="<?php echo isset($hard_drive_size) ? $hard_drive_size : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">ISeries </label>
-                    <input required type="text" name="i_series" value="" class="form-control">
+                    <label class="form-label">Processor </label>
+                    <input required type="text" name="processor" value="<?php echo isset($processor) ? $processor : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Generation </label>
-                    <input required type="text" name="generation" value="" class="form-control">
+                    <input required type="text" name="generation" value="<?php echo isset($generation) ? $generation : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Speed </label>
-                    <input required type="text" name="speed" value="" class="form-control">
+                    <input required type="text" name="speed" value="<?php echo isset($speed) ? $speed : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Processor Type </label>
-                    <input required type="text" name="processor_type" value="" class="form-control">
+                    <input required type="text" name="processor_type" value="<?php echo isset($processor_type) ? $processor_type : '' ?>" class="form-control">
                 </div>
                 
 

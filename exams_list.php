@@ -72,7 +72,7 @@ if ($result && $result->num_rows > 0) {
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
                         <h5 class="mb-0" style="color: maroon;">List of Exams</h5>
                         <form id="filterForm" class="d-flex gap-2">
-                            <input type="search" class="form-control" id="searchBox" name="search" placeholder="Search..">
+                            <input type="search" class="form-control" style="padding-right: 100px" id="searchBox" name="search" placeholder="Search..">
 
                             <select required id="module_filter" name="module" class="form-select" data-selected="<?= isset($module_id) ? $module_id : '' ?>">
                                 <option value="">Select Module</option>
