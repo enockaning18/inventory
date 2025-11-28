@@ -61,6 +61,44 @@ body {
   background-color: var(--white);
 }
 
+/* ---------- ACTIVE MENU ITEM (added) ---------- */
+.navigation ul li.active {
+  background: var(--white) !important;
+}
+
+.navigation ul li.active a {
+  color: maroon !important;
+}
+
+.navigation ul li.active .icon,
+.navigation ul li.active .title {
+  color: maroon !important;
+}
+
+.navigation ul li.active a::before,
+.navigation ul li.active a::after {
+  /* keep the same curve effect */
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.navigation ul li.active a::before {
+  top: -50px;
+  box-shadow: 35px 35px 0 10px var(--white);
+}
+
+.navigation ul li.active a::after {
+  bottom: -50px;
+  box-shadow: 35px -35px 0 10px var(--white);
+}
+/* ---------- END ACTIVE MENU ITEM ---------- */
+
 .navigation ul li:nth-child(1) {
   margin-bottom: 40px;
   pointer-events: none;
@@ -187,9 +225,9 @@ body {
 
 .search label ion-icon {
   position: absolute;
-  top: 50%; 
-  left: 10px; 
-  transform: translateY(-50%); 
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
   font-size: 1.2rem;
   color: var(--black2);
 }
@@ -223,7 +261,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .log-card {
@@ -231,7 +269,7 @@ body {
   height: 70%;
   border-radius: 15px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  border: 2px solid #f00 ;
+  border: 2px solid #f00;
   background: linear-gradient(45deg, rgba(139, 0, 0, 0.634), white);
   color: #fff;
   font-size: 18px;
@@ -247,14 +285,12 @@ body {
   color: #fff;
   border: 2px solid #fff;
   box-shadow: 2px 2px 2px 2px solid rgb(113, 107, 107);
-
 }
 .log-card button:hover {
   background-color: maroon !important;
   color: #fff;
   border: 2px solid #fff;
   box-shadow: 2px 2px 2px 2px solid rgb(113, 107, 107);
-
 }
 
 .log-logo {
