@@ -65,7 +65,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             </h3>
             <div>
                 <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update System</button>
-                <a href="add_monitor.php" class="btn text-white px-4 bg-success">Add Monitor</a>
+                <a href="monitors.php" class="btn text-white px-4 bg-success">Add Monitor</a>
             </div>
         </div>
         <hr style="margin-bottom: 3rem;">
