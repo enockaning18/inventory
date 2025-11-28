@@ -112,6 +112,14 @@
                     <span class="title">Issues</span>
                 </a>
             </li>
+            <li>
+                <a href="issues_list.php">
+                    <span class="icon">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                    </span>
+                    <span class="title">View Issues</span>
+                </a>
+            </li>
         <?php   }   ?>
 
             <li>
