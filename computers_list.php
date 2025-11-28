@@ -56,17 +56,13 @@ if ($result && $result->num_rows > 0) {
                 <ion-icon name="book-outline"></ion-icon>
                 Computers
             </h3>
-
-
             <div>
-                <div class="btn text-white px-2 bg-primary ">No. Monitors: <?php echo $totalMonitors ?> </div>
-                <div class="btn text-white px-2 bg-primary ">No. Systems: <?php echo $totalSystems ?> </div>
-                <div class="btn text-white px-2 bg-primary ">No. Computers: <?php echo $totalComputers ?> </div>
+                <div class="btn text-white px-2 bg-primary ">Monitors: <?php echo $totalMonitors ?> </div>
+                <div class="btn text-white px-2 bg-danger ">System Units: <?php echo $totalSystems ?> </div>
             </div>
             <div>
                 <a href="computers.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Add Computer</button></a>
             </div>
-
         </div>
         <hr class="mb-4">
     </div>
