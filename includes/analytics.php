@@ -103,10 +103,6 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $totalComputers  = $row['total_computers'] ?? 0;
 
-
-
-
-
 $stmt->close();
 // $conn->close();
 
@@ -173,15 +169,45 @@ $stmt->close();
                 <?php } else { ?>
                     <a href="#">
                     <?php } ?>
-                    <div class="cardName" title="View All Computers">Computers</div>
-                    <div class="d-flex gap-5 mt-2">
-                        <div class="cardName" style="font-size: 13px;" title="View All Computers">No. Monitors <?php echo $totalMonitors ?></div>
-                        <div class="cardName" style="font-size: 13px;" title="View All Computers">No. Computers <?php echo $totalSystems ?></div>
-                    </div>
+                        <div class="cardName" title="View All Computers">Computers</div>
                     </a>
         </div>
         <div class="iconBx">
             <ion-icon name="laptop-outline"></ion-icon>
+        </div>
+    </div>
+    <div class="card-toFlex">
+        <div class="cardContent">
+            <div class="numbers"><?php echo isset($totalMonitors) ? $totalMonitors : '0'; ?></div>
+            <?php
+            if ($usertype == 'admin') {
+            ?>
+                <a href="computers.php">
+                <?php } else { ?>
+                    <a href="#">
+                    <?php } ?>
+                        <div class="cardName" title="View All Computers">Monitors</div>
+                    </a>
+        </div>
+        <div class="iconBx">
+            <ion-icon name="cube-outline"></ion-icon>
+        </div>
+    </div>
+    <div class="card-toFlex">
+        <div class="cardContent">
+            <div class="numbers"><?php echo isset($totalSystems) ? $totalSystems : '0'; ?></div>
+            <?php
+            if ($usertype == 'admin') {
+            ?>
+                <a href="computers.php">
+                <?php } else { ?>
+                    <a href="#">
+                    <?php } ?>
+                        <div class="cardName" title="View All Computers">System Units</div>
+                    </a>
+        </div>
+        <div class="iconBx">
+            <ion-icon name="server-outline"></ion-icon>
         </div>
     </div>
 
@@ -255,6 +281,40 @@ $stmt->close();
         </div>
         <div class="iconBx">
             <ion-icon name="alert-circle-outline"></ion-icon>
+        </div>
+    </div>
+    <div class="card-toFlex">
+        <div class="cardContent">
+            <div class="numbers"><?php echo isset($totalIssues) ? $totalIssues : '0'; ?></div>
+            <?php
+            if ($usertype == 'admin') {
+            ?>
+                <a href="issues.php">
+                <?php } else { ?>
+                    <a href="#">
+                    <?php } ?>
+                    <div class="cardName" title="View Faulty Computers">Sent to Accra</div>
+                    </a>
+        </div>
+        <div class="iconBx">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+        </div>
+    </div>
+    <div class="card-toFlex">
+        <div class="cardContent">
+            <div class="numbers"><?php echo isset($totalIssues) ? $totalIssues : '0'; ?></div>
+            <?php
+            if ($usertype == 'admin') {
+            ?>
+                <a href="issues.php">
+                <?php } else { ?>
+                    <a href="#">
+                    <?php } ?>
+                    <div class="cardName" title="View Faulty Computers">Returned</div>
+                    </a>
+        </div>
+        <div class="iconBx">
+            <ion-icon name="refresh-outline"></ion-icon>
         </div>
     </div>
 </div>

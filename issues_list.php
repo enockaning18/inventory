@@ -42,115 +42,77 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
 <body>
 
-    <?php
+<?php
     require("includes/sidebar.php");
     require("includes/topbar.php");
     ?>
     <div class=" mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
-            <h3><ion-icon name="alert-circle-outline"></ion-icon> Issues </h3>
-            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Issue </button>
+            <h3><ion-icon name="alert-circle-outline"></ion-icon> Issues List</h3>
+            <a href="issues.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">New Issue </button></a>
         </div>
         <hr style="margin-bottom: 3rem;">
-        <div class="g-3" style="margin-bottom: 7rem">
-            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/issues_action.php">
-                <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
-
-                <div class="col-md-4">
-                    <label class="form-label">Device Type</label>
-                    <select required id="deviceType" name="computers" class="form-select">
-                        <option value="">Select</option>
-                        <?php
-                        // fetch systems 
-                        $query_command = "SELECT * FROM computers ";
-                        $result = $conn->query($query_command);
-                        ?>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($computer) && $computer ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['computer_name'] ?></option>
-                        <?php } ?>
-
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Serial Number</label>
-                    <input type="text" id="serialNumber" name="serial_number" class="form-control" readonly>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Issue Type</label>
-                    <select required id="Type" name="issue_type" class="form-select">
-                        <option value="">Select</option>
-                        <option value="Software" <?php echo (isset($issue_type) && $issue_type == 'Software') ? 'selected' : '' ?>>Software</option>
-                        <option value="Hardware" <?php echo (isset($issue_type) && $issue_type == 'Hardware') ? 'selected' : '' ?>>Hardware</option>
-                    </select>
-                </div>
-
-
-                <div class="col-md-4">
-                    <label class="form-label">Lab</label>
-                    <select required id="labSelect" name="lab_select_ui" class="form-select">
-                        <option value="">Choose Lab</option>
-                        <?php
-                        $query_command = "SELECT * FROM lab ";
-                        $result = $conn->query($query_command);
-                        ?>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($lab) && $lab ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['lab_name'] ?></option>
-                        <?php } ?>
-                    </select>
-                    <input type="hidden" id="labHidden" name="lab" value="<?php echo isset($lab) ? $lab : '' ?>">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Issue Status</label>
-                    <select required id="issueStatus" name="issue_status" class="form-select">
-                        <option value="">Select</option>
-                        <option value="Pending" selected>Pending</option>
-                        <option value="Resolved">Resolved</option>
-                    </select>
-                </div>
-
-                <div class="col-md-4" id="resolutionTypeDiv" style="display: none;">
-                    <label class="form-label">Resolution Type</label>
-                    <select id="resolutionType" name="resolved_type	" class="form-select">
-                        <option value="">Select</option>
-                        <option value="Repaired & Returned">Repaired & Returned</option>
-                        <option value="Unrepaired & Replaced">Unrepaired & Replaced</option>
-                    </select>
-                </div>
-
-
-                <div class="col-md-4">
-                    <label class="form-label">Issue Date</label>
-                    <input required type="date" name="issue_date" value="<?php echo isset($issue_date) ? $issue_date  : '' ?>" class="form-control">
-                </div>
-
-
-                <div class="col-md-8">
-                    <label class="form-label">Issue Description</label>
-                    <textarea class="form-control" name="issue_description" id=""><?php echo isset($issue_description) ? $issue_description  : '' ?></textarea>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Sent to Accra</label>
-                    <div class="">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentYes" value="Yes">
-                            <label class="form-check-label" for="sentYes">Yes</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentNo" value="No">
-                            <label class="form-check-label" for="sentNo">No</label>
-                        </div>
-                    </div>
-                </div>
-
-            </form>
-        </div>
     </div>
 
-    
+    <div class=" mt-5 mx-auto" style="width: 95%">
+        <div class="row">
+            <div class="col">
+                <div class="card shadow">
+                    <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
+                        <h5 class="mb-0" style="color: maroon;">List of Issues </h5>
+                        <form id="filterForm" class="d-flex gap-2">
+                            <input type="search" class="form-control" style="padding-right: 150px" id="searchBox" name="search" placeholder="Search..">
+
+                            <select name="issue_type" id="issue_type" class="form-select">
+                                <option value="">All Issues </option>
+                                <option value="Software">Software </option>
+                                <option value="Hardware">Hardware </option>
+                            </select>
+
+                            <select name="lab_type" id="lab_type" class="form-select">
+                                <option value="">All Labs </option>
+                                <?php
+                                $query_command = "SELECT * FROM lab ";
+                                $result = $conn->query($query_command);
+                                ?>
+                                <?php while ($lab_result = $result->fetch_assoc()) { ?>
+                                    <option value="<?php echo $lab_result['lab_name'] ?>"><?php echo $lab_result['lab_name'] ?></option>
+                                <?php } ?>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="table-responsive" style="height: 300px">
+                        <table class="table table-striped align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Device</th>
+                                    <th>Issue </th>
+                                    <th>Lab</th>
+                                    <th>Issue Date </th>
+                                    <th>Issue Description</th>
+                                    <th>Issue Date</th>
+                                    <th>Issue Status</th>
+                                    <th>Date Added</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="issues_table">
+                                <!-- fetch the data using the ajax -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <nav>
+                            <ul class="pagination justify-content-center mb-0">
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/jquery.js"></script>
