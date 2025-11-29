@@ -1,4 +1,7 @@
 <?php
+// error_reporting(E_ALL);
+// ini_set("display_errors", 1);
+
 require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
@@ -65,13 +68,13 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             </h3>
             <div>
                 <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Monitor</button>
-
+                <a href="computers.php" class="btn text-white px-4 bg-success">Add System Unit</a>
             </div>
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 4rem">
 
-            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/computer_action.php">
+            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/monitor_action.php">
                 <!-- monitor info -->
                 <div style="display: flex; align-items: center;">
                     <span style="margin-right: 10px; color: maroon;">Monitor Information</span>
@@ -119,15 +122,9 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <?php } ?>
                     </select>
                 </div>
-
-
-
-
             </form>
         </div>
     </div>
-
-
 
     <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>
@@ -136,9 +133,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <?php
-    $title = "Computer";
+    $title = "Monitor";
     successAlert($title);
     ?>
 </body>
-
 </html>

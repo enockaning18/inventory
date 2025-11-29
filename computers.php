@@ -1,4 +1,5 @@
 <?php
+
 require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
@@ -77,12 +78,12 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <hr style="flex: 1; border: 1px solid #000;">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Device Name</label>
+                    <label class="form-label">Device Name/Model</label>
                     <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
-                    <input required type="text" name="computer_name" value="<?php echo isset($computer_name) ? $computer_name : '' ?>" class="form-control">
+                    <input required type="text" name="system_name" value="<?php echo isset($computer_name) ? $computer_name : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Select Brand</label>
+                    <label class="form-label">System Brand</label>
                     <?php
                     $query_command = "SELECT * FROM brand ";
                     $result = $conn->query($query_command);
@@ -105,11 +106,11 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="number" name="memory_size" value="<?php echo isset($memory_size) ? $memory_size : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Hard Drive Size</label>
+                    <label class="form-label">HDD/SSD Size</label>
                     <input required type="text" name="hard_drive_size" value="<?php echo isset($hard_drive_size) ? $hard_drive_size : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Iseries</label>
+                    <label class="form-label">Device Series</label>
                     <select name="iseries" id="" class="form-select">
                         <option value="">Select</option>
                         <option value="i3">i3</option>
@@ -123,11 +124,11 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="text" name="generation" value="<?php echo isset($generation) ? $generation : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Speed </label>
+                    <label class="form-label">Speed GHz</label>
                     <input required type="text" name="speed" value="<?php echo isset($speed) ? $speed : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Processor Type </label>
+                    <label class="form-label">Processor</label>
                     <input required type="text" name="processor_type" value="<?php echo isset($processor_type) ? $processor_type : '' ?>" class="form-control">
                 </div>
 
@@ -145,64 +146,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     </select>
                 </div>
             </form>
-
-            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/computer_action.php">
-                <!-- monitor info -->
-                <div style="display: flex; align-items: center;">
-                    <span style="margin-right: 10px; color: maroon;">Monitor Information</span>
-                    <hr style="flex: 1; border: 1px solid #000;">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Device Name</label>
-                    <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
-                    <input required type="text" name="monitor" value="<?php echo isset($monitor) ? $monitor : '' ?>" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Size</label>
-                    <input required type="text" name="size" value="<?php echo isset($size) ? $size : '' ?>" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Serial Number</label>
-                    <input required type="text" name="monitor_serial" value="<?php echo isset($monitor_serial) ? $monitor_serial : '' ?>" class="form-control">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Select Brand</label>
-                    <?php
-                    $query_command = "SELECT * FROM brand ";
-                    $result = $conn->query($query_command);
-                    ?>
-                    <select required id="Type" name="brand" class="form-select">
-                        <option value="">Choose Brand</option>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($brand) && $brand ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['brand_name'] ?></option>
-                        <?php } ?>
-
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Lab</label>
-                    <select required id="Type" name="lab" class="form-select">
-                        <option value="">Choose Lab</option>
-                        <?php
-                        $query_command = "SELECT * FROM lab ";
-                        $result = $conn->query($query_command);
-                        ?>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($lab) && $lab ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['lab_name'] ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-
-
-
-
-            </form>
         </div>
     </div>
-
-
 
     <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>

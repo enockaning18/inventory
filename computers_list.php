@@ -61,7 +61,7 @@ if ($result && $result->num_rows > 0) {
                 <div class="btn text-white px-2 bg-danger ">System Units: <?php echo $totalSystems ?> </div>
             </div>
             <div>
-                <a href="computers.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Add Computer</button></a>
+                <a href="computers.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Add System</button></a>
             </div>
         </div>
         <hr class="mb-4">

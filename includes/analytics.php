@@ -35,14 +35,6 @@ $row = $result->fetch_assoc();
 
 $totalCancelled = $row['total_cancelled'] ?? 0;
 
-// Count total computers
-$stmt = $conn->prepare("SELECT COUNT(*) AS total_computers FROM computers");
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-
-$totalComputers = $row['total_computers'] ?? 0;
-
 // Count total faulty computers
 $stmt = $conn->prepare("SELECT COUNT(*) AS total_issues FROM issues");
 $stmt->execute();
@@ -78,34 +70,31 @@ $row = $result->fetch_assoc();
 
 $totalReplacements = $row['total_replacement'] ?? 0;
 
-
-
-// Count total monitoers
-$stmt = $conn->prepare("SELECT COUNT(monitor_name) AS total_monitors FROM computers");
+// Count total monitors
+$stmt = $conn->prepare("SELECT COUNT(*) AS total_monitors FROM monitor");
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $totalMonitors = $row['total_monitors'] ?? 0;
 
-
 // Count system
-$stmt = $conn->prepare("SELECT COUNT(computer_name) AS total_systems FROM computers");
+$stmt = $conn->prepare("SELECT COUNT(*) AS total_systems FROM `system`");
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $totalSystems  = $row['total_systems'] ?? 0;
 
-
 // Count computers
-$stmt = $conn->prepare("SELECT COUNT(*) AS total_computers FROM computers");
+$stmt = $conn->prepare("SELECT 
+                        (SELECT COUNT(*) FROM monitor) +
+                        (SELECT COUNT(*) FROM system) 
+                        AS total_computers;");
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $totalComputers  = $row['total_computers'] ?? 0;
 
-$stmt->close();
-// $conn->close();
-
+// $stmt->close();
 ?>
 
 <style>
@@ -127,7 +116,6 @@ $stmt->close();
             <ion-icon name="checkmark-circle-outline"></ion-icon>
         </div>
     </div>
-
     <div class="card-toFlex">
         <div class="cardContent">
             <div class="numbers"><?php echo isset($totalCancelled) ? $totalCancelled : '0'; ?></div>
@@ -139,7 +127,6 @@ $stmt->close();
             <ion-icon name="close-circle-outline"></ion-icon>
         </div>
     </div>
-
     <div class="card-toFlex">
         <div class="cardContent">
             <div class="numbers"><?php echo isset($totalPending) ? $totalPending : '0'; ?></div>
@@ -165,12 +152,12 @@ $stmt->close();
             <?php
             if ($usertype == 'admin') {
             ?>
-                <a href="computers.php">
-                <?php } else { ?>
-                    <a href="#">
-                    <?php } ?>
-                        <div class="cardName" title="View All Computers">Computers</div>
-                    </a>
+            <a href="computers.php">
+            <?php } else { ?>
+                <a href="#">
+                <?php } ?>
+                    <div class="cardName" title="View All Computers">Computers</div>
+                </a>
         </div>
         <div class="iconBx">
             <ion-icon name="laptop-outline"></ion-icon>
@@ -182,12 +169,12 @@ $stmt->close();
             <?php
             if ($usertype == 'admin') {
             ?>
-                <a href="computers.php">
-                <?php } else { ?>
-                    <a href="#">
-                    <?php } ?>
-                        <div class="cardName" title="View All Computers">Monitors</div>
-                    </a>
+            <a href="computers.php">
+            <?php } else { ?>
+                <a href="#">
+                <?php } ?>
+                    <div class="cardName" title="View All Computers">Monitors</div>
+                </a>
         </div>
         <div class="iconBx">
             <ion-icon name="cube-outline"></ion-icon>
