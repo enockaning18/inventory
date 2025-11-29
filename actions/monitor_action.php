@@ -18,8 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($id)) {
 
         // Check if serial number already exists for another computer
-        $check = $conn->prepare("SELECT id FROM `monitor` WHERE serial_number = ? AND id != ?");
-        $check->bind_param("si", $serial_number, $id);
+        $check = $conn->prepare("SELECT id FROM `monitor` WHERE monitor_serial = ? AND id != ?");
+        $check->bind_param("si", $monitor_serial, $id);
         $check->execute();
         $check->store_result();
 
@@ -29,11 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $check->close();
 
-        $stmt = $conn->prepare("UPDATE monitor 
-                                SET computer_name = ?, brand = ?, serial_number = ?, memory_size = ?, hard_drive_size = ?, lab = ?, 
-                                monitor_name = ?, size = ?, monitor_serial = ?, processor = ?, generation = ?, speed = ?, processor_type = ?, monitor_brand = ? WHERE id = ?");
+        $stmt = $conn->prepare(" UPDATE monitor SET  monitor_name = ?, `size` =?, monitor_serial = ?, brand = ?, lab = ? WHERE id = ?");
         if ($stmt) {
-            $stmt->bind_param("ssssssssssssssi", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial, $processor, $generation, $speed, $processor_type, $monitor_brand, $id);
+            $stmt->bind_param("ssssii", $monitor_name, $size, $monitor_serial, $brand, $lab, $id);
             if ($stmt->execute()) {
                 header("Location: ../monitors.php?status=update");
             } else {

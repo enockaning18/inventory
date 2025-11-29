@@ -72,7 +72,7 @@ if ($result && $result->num_rows > 0) {
             <div class="col">
                 <div class="card shadow">
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
-                        <h5 class="mb-0" style="color: maroon;">List of Computers </h5>
+                        <h5 class="mb-0" style="color: maroon;">List of System </h5>
                         <form id="filterForm" class="d-flex gap-2">
                             <input type="search" class="form-control" style="padding-right: 150px" id="searchBox" name="search" placeholder="Search..">
 
@@ -101,7 +101,7 @@ if ($result && $result->num_rows > 0) {
                             <select name="memory_type" id="memory_type" class="form-select">
                                 <option value="">All Memory</option>
                                 <?php
-                                $query_command = "SELECT DISTINCT memory_size  FROM computers ";
+                                $query_command = "SELECT DISTINCT memory_size  FROM `system` ";
                                 $result = $conn->query($query_command);
                                 while ($memory = $result->fetch_assoc()) {
                                     echo '<option value="' . $memory['memory_size'] . '">' . $memory['memory_size'] . "GB" . '</option>';
@@ -112,7 +112,7 @@ if ($result && $result->num_rows > 0) {
                             <select name="drive_type" id="drive_type" class="form-select">
                                 <option value="">All HDD/SSD</option>
                                 <?php
-                                $query_command = "SELECT DISTINCT hard_drive_size FROM computers ";
+                                $query_command = "SELECT DISTINCT hard_drive_size FROM `system` ";
                                 $result = $conn->query($query_command);
                                 while ($drive = $result->fetch_assoc()) {
                                     echo '<option value="' . $drive['hard_drive_size'] . '">' . $drive['hard_drive_size'] . "GB" . '</option>';
@@ -130,12 +130,13 @@ if ($result && $result->num_rows > 0) {
                                     <th>#</th>
                                     <th>SystemInfo</th>
                                     <th>Brand</th>
-                                    <th>Serial_No1</th>
+                                    <th>Serial_No</th>
+                                    <th>Iseries</th>
+                                    <th>Processor Type</th>
+                                    <th>Speed</th>
+                                    <th>Generation</th>
                                     <th>Memory</th>
                                     <th>HDD/SSD</th>
-                                    <th>MonitorInfo</th>
-                                    <th>Size</th>
-                                    <th>Serial_No2</th>
                                     <th>Lab</th>
                                     <th>DateAdded</th>
                                     <th>Action</th>
@@ -209,6 +210,11 @@ if ($result && $result->num_rows > 0) {
             });
         });
     </script>
+
+    <?php
+    $title = "System";
+    successAlert($title);
+    ?>
 
 </body>
 

@@ -8,27 +8,22 @@ require_once('baseConnect/dbConnect.php');
 
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, computer_name, brand, serial_number, memory_size, hard_drive_size, lab, 
-                            monitor_name, size, monitor_serial, processor, generation, speed, processor_type, monitor_brand FROM computers WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, system_name, brand, serial_number, memory_size, hard_drive_size, lab, iseries, speed, processor_type, generation FROM `system` WHERE id = ?");
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
     if ($row) {
         $id = $row['id'];
-        $computer_name = $row['computer_name'];
+        $system_name = $row['system_name'];
         $brand  = $row['brand'];
         $serial_number = $row['serial_number'];
         $memory_size = $row['memory_size'];
         $hard_drive_size = $row['hard_drive_size'];
         $lab = $row['lab'];
-        $monitor = $row['monitor_name'];
-        $size = $row['size'];
-        $monitor_serial = $row['monitor_serial'];
-        $processor = $row['processor'];
+        $iseries = $row['iseries'];
         $generation = $row['generation'];
         $speed = $row['speed'];
         $processor_type = $row['processor_type'];
-        $monitor_brand = $row['monitor_brand'];
     }
     $stmt->close();
 }
@@ -79,7 +74,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <div class="col-md-4">
                     <label class="form-label">Device Name</label>
                     <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
-                    <input required type="text" name="computer_name" value="<?php echo isset($computer_name) ? $computer_name : '' ?>" class="form-control">
+                    <input required type="text" name="system_name" value="<?php echo isset($system_name) ? $system_name : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Select Brand</label>
@@ -112,10 +107,10 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <label class="form-label">Iseries</label>
                     <select name="iseries" id="" class="form-select">
                         <option value="">Select</option>
-                        <option value="i3">i3</option>
-                        <option value="i5">i5</option>
-                        <option value="i7">i7</option>
-                        <option value="i9">i9</option>
+                        <option value="i3" <?php echo (isset($iseries) && $iseries == 'i3') ? 'selected' : '' ?>>i3</option>
+                        <option value="i5" <?php echo (isset($iseries) && $iseries == 'i5') ? 'selected' : '' ?>>i5</option>
+                        <option value="i7" <?php echo (isset($iseries) && $iseries == 'i7') ? 'selected' : '' ?>>i7</option>
+                        <option value="i9" <?php echo (isset($iseries) && $iseries == 'i9') ? 'selected' : '' ?>>i9</option>
                     </select>
                 </div>
                 <div class="col-md-4">
@@ -159,7 +154,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <?php
-    $title = "Computer";
+    $title = "System";
     successAlert($title);
     ?>
 </body>

@@ -72,7 +72,7 @@ if ($result && $result->num_rows > 0) {
             <div class="col">
                 <div class="card shadow">
                     <div class="card-header d-flex justify-content-between align-items-center border-0 px-4 py-3">
-                        <h5 class="mb-0" style="color: maroon;">List of Computers </h5>
+                        <h5 class="mb-0" style="color: maroon;">List of System </h5>
                         <form id="filterForm" class="d-flex gap-2">
                             <input type="search" class="form-control" style="padding-right: 150px" id="searchBox" name="search" placeholder="Search..">
 
@@ -185,6 +185,10 @@ if ($result && $result->num_rows > 0) {
         });
     </script>
 
+    <?php
+    $title = "Monitor";
+    successAlert($title);
+    ?>
 </body>
 
 </html>

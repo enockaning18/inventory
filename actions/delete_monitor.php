@@ -8,30 +8,30 @@ if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
 
     try {
-        $stmt = $conn->prepare("DELETE FROM computers WHERE id = ?");
+        $stmt = $conn->prepare("DELETE FROM monitor WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            header("Location: ../computers.php?status=delete");
+            header("Location: ../monitors.php?status=delete");
         } else {
-            header("Location: ../computers.php?status=error");
+            header("Location: ../monitors.php?status=error");
         }
         exit();
 
     } catch (mysqli_sql_exception $e) {
         // Check for foreign key constraint violation (error code 1451)
         if ($e->getCode() == 1451) {
-            header("Location: ../computers.php?status=system_fk_error");
+            header("Location: ../monitors.php?status=system_fk_error");
         } else {
             // Other SQL error (optional: show message for debugging)
-            header("Location: ../computers.php?status=error&msg=" . urlencode($e->getMessage()));
+            header("Location: ../monitors.php?status=error&msg=" . urlencode($e->getMessage()));
         }
         exit();
     }
 
 } else {
-    header("Location: ../computers.php?status=error");
+    header("Location: ../monitors.php?status=error");
     exit();
 }
 ?>

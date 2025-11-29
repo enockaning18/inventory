@@ -71,7 +71,7 @@
         <table>
         <?php
             // computers info
-            $sql = "SELECT * FROM computers ORDER BY id DESC";
+            $sql = "SELECT * FROM `system` ORDER BY id DESC";
             $result = $conn->query($sql);
 
             if ($result && $result->num_rows > 0) {
@@ -82,7 +82,7 @@
                     <ion-icon name="desktop-outline" class="fs-3"></ion-icon>
                 </td>
                 <td>
-                    <h4 class="text-primary"><?php echo $row['computer_name']; ?> <span><?php echo 'RAM:'.$row['memory_size'].'GB'; ?></span></h4>
+                    <h4 class="text-primary"><?php echo $row['system_name']; ?> <span><?php echo 'RAM:'.$row['memory_size'].'GB'; ?></span></h4>
                     <h4><span><?php echo 'HDD: '.$row['hard_drive_size'].'GB  | '; ?></span><span class="text-danger"> <?php echo $row['serial_number']; ?></span></h4>
                 <?php
                     }

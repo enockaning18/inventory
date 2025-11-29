@@ -4,7 +4,7 @@ require_once('../baseConnect/dbConnect.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $id              = mysqli_real_escape_string($conn, $_POST['id']);
-    $system_name   = mysqli_real_escape_string($conn, $_POST['computer_name']);
+    $system_name   = mysqli_real_escape_string($conn, $_POST['system_name']);
     $brand           = mysqli_real_escape_string($conn, $_POST['brand']);
     $serial_number   = mysqli_real_escape_string($conn, $_POST['serial_number']);
     $memory_size     = mysqli_real_escape_string($conn, $_POST['memory_size']);
@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $processor_type            = mysqli_real_escape_string($conn, $_POST['processor_type']);
     $iseries  = mysqli_real_escape_string($conn, $_POST['iseries']);
     $speed            = mysqli_real_escape_string($conn, $_POST['speed']);
+    $generation            = mysqli_real_escape_string($conn, $_POST['generation']);
     $lab            = mysqli_real_escape_string($conn, $_POST['lab']);
 
 
@@ -34,10 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check->close();
 
         $stmt = $conn->prepare("UPDATE system 
-                                SET computer_name = ?, brand = ?, serial_number = ?, memory_size = ?, hard_drive_size = ?, lab = ?, 
-                                monitor_name = ?, size = ?, monitor_serial = ?, processor = ?, generation = ?, speed = ?, processor_type = ?, monitor_brand = ? WHERE id = ?");
+                                SET system_name = ?, brand = ?, serial_number = ?, memory_size = ?, hard_drive_size = ?, lab = ?,  generation = ?, speed = ?, processor_type = ?, iseries = ? WHERE id = ?");
         if ($stmt) {
-            $stmt->bind_param("ssssssssssssssi", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial, $processor, $generation, $speed, $processor_type, $monitor_brand, $id);
+            $stmt->bind_param("ssssssssssi", $system_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $generation, $speed, $processor_type, $iseries, $id);
             if ($stmt->execute()) {
                 header("Location: ../system.php?status=update");
             } else {

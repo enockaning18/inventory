@@ -8,27 +8,17 @@ require_once('baseConnect/dbConnect.php');
 
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, computer_name, brand, serial_number, memory_size, hard_drive_size, lab, 
-                            monitor_name, size, monitor_serial, processor, generation, speed, processor_type, monitor_brand FROM computers WHERE id = ?");
+    $stmt = $conn->prepare("SELECT * FROM monitor WHERE id = ?");
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
     if ($row) {
         $id = $row['id'];
-        $computer_name = $row['computer_name'];
-        $brand  = $row['brand'];
-        $serial_number = $row['serial_number'];
-        $memory_size = $row['memory_size'];
-        $hard_drive_size = $row['hard_drive_size'];
         $lab = $row['lab'];
         $monitor = $row['monitor_name'];
         $size = $row['size'];
         $monitor_serial = $row['monitor_serial'];
-        $processor = $row['processor'];
-        $generation = $row['generation'];
-        $speed = $row['speed'];
-        $processor_type = $row['processor_type'];
-        $monitor_brand = $row['monitor_brand'];
+        $brand = $row['brand'];
     }
     $stmt->close();
 }
