@@ -71,7 +71,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 4rem">
 
-            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/computer_action.php">
+            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/monitor_action.php">
                 <!-- monitor info -->
                 <div style="display: flex; align-items: center;">
                     <span style="margin-right: 10px; color: maroon;">Monitor Information</span>
@@ -80,7 +80,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <div class="col-md-4">
                     <label class="form-label">Device Name</label>
                     <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
-                    <input required type="text" name="monitor" value="<?php echo isset($monitor) ? $monitor : '' ?>" class="form-control">
+                    <input required type="text" name="monitor_name" value="<?php echo isset($monitor) ? $monitor : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Size</label>
@@ -136,7 +136,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <?php
-    $title = "Computer";
+    $title = "Monitor";
     successAlert($title);
     ?>
 </body>

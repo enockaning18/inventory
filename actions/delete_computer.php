@@ -22,7 +22,7 @@ if (isset($_GET['id'])) {
     } catch (mysqli_sql_exception $e) {
         // Check for foreign key constraint violation (error code 1451)
         if ($e->getCode() == 1451) {
-            header("Location: ../computers.php?status=computer_fk_error");
+            header("Location: ../computers.php?status=system_fk_error");
         } else {
             // Other SQL error (optional: show message for debugging)
             header("Location: ../computers.php?status=error&msg=" . urlencode($e->getMessage()));

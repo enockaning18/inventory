@@ -39,7 +39,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Computers - IPMC INVENTORY MANAGER</title>
+    <title>Systems - IPMC INVENTORY MANAGER</title>
     <link rel="icon" type="image/ico" href="assets/imgs/inventory_logo.png" />
 
     <link rel="stylesheet" href="assets/css/style.css">
@@ -61,7 +61,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="my-auto">
                 <ion-icon name="laptop-outline"></ion-icon>
-                Computers
+                Systems
             </h3>
             <div>
                 <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update System</button>
@@ -70,7 +70,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 4rem">
-            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/computer_action.php">
+            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/system_action.php">
                 <!-- system info -->
                 <div style="display: flex; align-items: center;">
                     <span style="margin-right: 10px; color: maroon;">System Information</span>
@@ -146,59 +146,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 </div>
             </form>
 
-            <form class="row g-3 border rounded bg-light shadow-sm p-3 pb-5" id="Form" method="POST" action="actions/computer_action.php">
-                <!-- monitor info -->
-                <div style="display: flex; align-items: center;">
-                    <span style="margin-right: 10px; color: maroon;">Monitor Information</span>
-                    <hr style="flex: 1; border: 1px solid #000;">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Device Name</label>
-                    <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
-                    <input required type="text" name="monitor" value="<?php echo isset($monitor) ? $monitor : '' ?>" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Size</label>
-                    <input required type="text" name="size" value="<?php echo isset($size) ? $size : '' ?>" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Serial Number</label>
-                    <input required type="text" name="monitor_serial" value="<?php echo isset($monitor_serial) ? $monitor_serial : '' ?>" class="form-control">
-                </div>
 
-                <div class="col-md-4">
-                    <label class="form-label">Select Brand</label>
-                    <?php
-                    $query_command = "SELECT * FROM brand ";
-                    $result = $conn->query($query_command);
-                    ?>
-                    <select required id="Type" name="brand" class="form-select">
-                        <option value="">Choose Brand</option>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($brand) && $brand ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['brand_name'] ?></option>
-                        <?php } ?>
-
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Lab</label>
-                    <select required id="Type" name="lab" class="form-select">
-                        <option value="">Choose Lab</option>
-                        <?php
-                        $query_command = "SELECT * FROM lab ";
-                        $result = $conn->query($query_command);
-                        ?>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($lab) && $lab ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['lab_name'] ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-
-
-
-
-            </form>
         </div>
     </div>
 

@@ -195,11 +195,11 @@ function successAlert($title)
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
-            <?php elseif ($_GET['status'] == 'computer_fk_error'): ?>
+            <?php elseif ($_GET['status'] == 'system_fk_error'): ?>
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops... can\'t delete',
-                    text: 'Computer has been assigned to an issue',
+                    text: 'System has been assigned to an issue',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });

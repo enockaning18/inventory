@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check->store_result();
 
         if ($check->num_rows > 0) {
-            header("Location: ../computers.php?status=exists");
+            header("Location: ../system.php?status=exists");
             exit();
         }
         $check->close();
@@ -39,13 +39,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt) {
             $stmt->bind_param("ssssssssssssssi", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial, $processor, $generation, $speed, $processor_type, $monitor_brand, $id);
             if ($stmt->execute()) {
-                header("Location: ../computers.php?status=update");
+                header("Location: ../system.php?status=update");
             } else {
-                header("Location: ../computers.php?status=error");
+                header("Location: ../system.php?status=error");
             }
             $stmt->close();
         } else {
-            header("Location: ../computers.php?status=error");
+            header("Location: ../system.php?status=error");
         }
     } else {
 
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check->store_result();
 
         if ($check->num_rows > 0) {
-            header("Location: ../computers.php?status=exists");
+            header("Location: ../system.php?status=exists");
             exit();
         }
         $check->close();
@@ -65,13 +65,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt) {
             $stmt->bind_param("sssssssss", $system_name, $brand, $serial_number, $memory_size, $hard_drive_size, $processor_type, $iseries, $speed, $lab);
             if ($stmt->execute()) {
-                header("Location: ../computers.php?status=save");
+                header("Location: ../system.php?status=save");
             } else {
-                header("Location: ../computers.php?status=error");
+                header("Location: ../system.php?status=error");
             }
             $stmt->close();
         } else {
-            header("Location: ../computers.php?status=error");
+            header("Location: ../system.php?status=error");
         }
     }
 

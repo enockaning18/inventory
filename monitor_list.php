@@ -32,7 +32,7 @@ if ($result && $result->num_rows > 0) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Examination - IPMC INVENTORY MANAGER</title>
+    <title>Monitors - IPMC INVENTORY MANAGER</title>
     <link rel="icon" type="image/ico" href="assets/imgs/inventory_logo.png" />
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -54,14 +54,14 @@ if ($result && $result->num_rows > 0) {
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="my-auto">
                 <ion-icon name="book-outline"></ion-icon>
-                Computers
+                Monitors
             </h3>
             <div>
                 <div class="btn text-white px-2 bg-primary ">Monitors: <?php echo $totalMonitors ?> </div>
                 <div class="btn text-white px-2 bg-danger ">System Units: <?php echo $totalSystems ?> </div>
             </div>
             <div>
-                <a href="computers.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Add Computer</button></a>
+                <a href="monitors.php"><button class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Add Monitor</button></a>
             </div>
         </div>
         <hr class="mb-4">
@@ -98,27 +98,6 @@ if ($result && $result->num_rows > 0) {
                                 ?>
                             </select>
 
-                            <select name="memory_type" id="memory_type" class="form-select">
-                                <option value="">All Memory</option>
-                                <?php
-                                $query_command = "SELECT DISTINCT memory_size  FROM computers ";
-                                $result = $conn->query($query_command);
-                                while ($memory = $result->fetch_assoc()) {
-                                    echo '<option value="' . $memory['memory_size'] . '">' . $memory['memory_size'] . "GB" . '</option>';
-                                }
-                                ?>
-                            </select>
-
-                            <select name="drive_type" id="drive_type" class="form-select">
-                                <option value="">All HDD/SSD</option>
-                                <?php
-                                $query_command = "SELECT DISTINCT hard_drive_size FROM computers ";
-                                $result = $conn->query($query_command);
-                                while ($drive = $result->fetch_assoc()) {
-                                    echo '<option value="' . $drive['hard_drive_size'] . '">' . $drive['hard_drive_size'] . "GB" . '</option>';
-                                }
-                                ?>
-                            </select>
                         </form>
                     </div>
 
@@ -128,20 +107,16 @@ if ($result && $result->num_rows > 0) {
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>SystemInfo</th>
+                                    <th>Monitor Name</th>
                                     <th>Brand</th>
-                                    <th>Serial_No1</th>
-                                    <th>Memory</th>
-                                    <th>HDD/SSD</th>
-                                    <th>MonitorInfo</th>
+                                    <th>Serial_No</th>
                                     <th>Size</th>
-                                    <th>Serial_No2</th>
                                     <th>Lab</th>
                                     <th>DateAdded</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="computer_table">
+                            <tbody id="monitor_table">
                                 <!-- fetch the data using the ajax -->
                             </tbody>
                         </table>
@@ -168,7 +143,7 @@ if ($result && $result->num_rows > 0) {
             // Function to load filtered results
             function load_computers(search = '', lab_type = '', brand_type = '', memory_type = '', drive_type = '') {
                 $.ajax({
-                    url: "actions/fetch_computer.php",
+                    url: "actions/fetch_monitors.php",
                     type: "POST",
                     data: {
                         search: search,
@@ -178,7 +153,7 @@ if ($result && $result->num_rows > 0) {
                         drive_type: drive_type
                     },
                     success: function(data) {
-                        $("#computer_table").html(data);
+                        $("#monitor_table").html(data);
                     }
                 });
             }
