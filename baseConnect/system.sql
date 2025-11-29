@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 28, 2025 at 06:38 PM
+-- Generation Time: Nov 29, 2025 at 11:25 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -34,9 +34,10 @@ CREATE TABLE `system` (
   `serial_number` varchar(100) NOT NULL,
   `memory_size` varchar(100) NOT NULL,
   `hard_drive_size` varchar(100) NOT NULL,
-  `processor` varchar(100) NOT NULL,
+  `processor_type` varchar(100) NOT NULL,
   `iseries` varchar(100) NOT NULL,
   `speed` varchar(100) NOT NULL,
+  `generation` varchar(50) NOT NULL,
   `lab` int(11) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -61,7 +62,7 @@ ALTER TABLE `system`
 -- AUTO_INCREMENT for table `system`
 --
 ALTER TABLE `system`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
