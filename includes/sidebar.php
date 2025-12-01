@@ -101,33 +101,18 @@ $usertype = $_SESSION['type'];
                     <span class="title">View Monitors</span>
                 </a>
             </li>
+<?php
+$usertype = $_SESSION['type'];
+
+// Function to set active link
+function active($page){
+    return basename($_SERVER['PHP_SELF']) == $page ? 'active' : '';
+}
+?>
 
 
-            <li>
-                <a href="brands.php">
-                    <span class="icon">
-                        <ion-icon name="pricetag-outline"></ion-icon>
-                    </span>
-                    <span class="title">Brand</span>
-                </a>
-            </li>
-            <li>
-                <a href="issues.php">
-                    <span class="icon">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                    </span>
-                    <span class="title">Issues</span>
-                </a>
-            </li>
-            <li>
-                <a href="issues_list.php">
-                    <span class="icon">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                    </span>
-                    <span class="title">View Issues</span>
-                </a>
-            </li>
-        <?php   }   ?>
+<div class="navigation" style="overflow-y: scroll;">
+    <ul class="m-0 p-0">
 
         <li>
             <a href="report.php">
@@ -145,5 +130,115 @@ $usertype = $_SESSION['type'];
                 <span class="title">Logout</span>
             </a>
         </li>
+    </ul>
+</div>
+        <li style="margin-bottom: 0px;">
+            <a href="nav_link.php">
+                <img src="assets/imgs/inventory_logo.png" width="100%" alt="logo">
+            </a>
+        </li>
+
+        <li class="<?php echo active('dashboard.php'); ?>">
+            <a href="dashboard.php">
+                <span class="icon"><ion-icon name="speedometer-outline"></ion-icon></span>
+                <span class="title">Dashboard</span>
+            </a>
+        </li>
+
+        <li class="<?php echo active('examination.php'); ?>">
+            <a href="examination.php">
+                <span class="icon"><ion-icon name="book-outline"></ion-icon></span>
+                <span class="title">Examination</span>
+            </a>
+        </li>
+
+        <li class="<?php echo active('exams_list.php'); ?>">
+            <a href="exams_list.php">
+                <span class="icon"><ion-icon name="eye"></ion-icon></span>
+                <span class="title">View Exams</span>
+            </a>
+        </li>
+
+        <li class="<?php echo active('exams_calender.php'); ?>">
+            <a href="exams_calender.php">
+                <span class="icon"><ion-icon name="calendar"></ion-icon></span>
+                <span class="title">Exams Calendar</span>
+            </a>
+        </li>
+
+        <?php if($usertype == 'admin'){ ?>
+
+        <li class="<?php echo active('labs.php'); ?>">
+            <a href="labs.php">
+                <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                <span class="title">Labs / Course</span>
+            </a>
+        </li>
+
+        <li class="<?php echo active('modules.php'); ?>">
+            <a href="modules.php">
+                <span class="icon"><ion-icon name="document-outline"></ion-icon></span>
+                <span class="title">Course Modules</span>
+            </a>
+        </li>
+
+        <li class="<?php echo active('instructors.php'); ?>">
+            <a href="instructors.php">
+                <span class="icon"><ion-icon name="school-outline"></ion-icon></span>
+                <span class="title">Instructors</span>
+            </a>
+        </li>
+
+        <li class="<?php echo active('computers.php'); ?>">
+            <a href="computers.php">
+                <span class="icon"><ion-icon name="laptop-outline"></ion-icon></span>
+                <span class="title">Computers</span>
+            </a>
+        </li>
+
+        <li class="<?php echo active('computers_list.php'); ?>">
+            <a href="computers_list.php">
+                <span class="icon"><ion-icon name="eye"></ion-icon></span>
+                <span class="title">View PCs</span>
+            </a>
+        </li>
+
+        <li class="<?php echo active('brands.php'); ?>">
+            <a href="brands.php">
+                <span class="icon"><ion-icon name="pricetag-outline"></ion-icon></span>
+                <span class="title">Brand</span>
+            </a>
+        </li>
+
+        <li class="<?php echo active('issues.php'); ?>">
+            <a href="issues.php">
+                <span class="icon"><ion-icon name="alert-circle-outline"></ion-icon></span>
+                <span class="title">Issues</span>
+            </a>
+        </li>
+
+        <li class="<?php echo active('issues_list.php'); ?>">
+            <a href="issues_list.php">
+                <span class="icon"><ion-icon name="alert-circle-outline"></ion-icon></span>
+                <span class="title">View Issues</span>
+            </a>
+        </li>
+
+        <?php } ?>
+
+        <li class="<?php echo active('report.php'); ?>">
+            <a href="report.php">
+                <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+                <span class="title">Report</span>
+            </a>
+        </li>
+
+        <li class="<?php echo active('logout.php'); ?>">
+            <a href="logout.php">
+                <span class="icon"><ion-icon name="exit-outline"></ion-icon></span>
+                <span class="title">Logout</span>
+            </a>
+        </li>
+
     </ul>
 </div>

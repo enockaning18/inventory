@@ -1,4 +1,7 @@
 <?php
+// error_reporting(E_ALL);
+// ini_set("display_errors", 1);
+
 require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
@@ -55,7 +58,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             </h3>
             <div>
                 <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Monitor</button>
-
+                <a href="computers.php" class="btn text-white px-4 bg-success">Add System Unit</a>
             </div>
         </div>
         <hr style="margin-bottom: 3rem;">
@@ -109,15 +112,9 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         <?php } ?>
                     </select>
                 </div>
-
-
-
-
             </form>
         </div>
     </div>
-
-
 
     <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>
@@ -130,5 +127,4 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     successAlert($title);
     ?>
 </body>
-
 </html>

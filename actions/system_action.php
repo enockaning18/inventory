@@ -18,6 +18,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
+    $id              = (int)($_POST['id']);
+    $system_name     = mysqli_real_escape_string($conn, $_POST['system_name']);
+    $brand           = (int)($_POST['brand']);
+    $serial_number   = mysqli_real_escape_string($conn, $_POST['serial_number']);
+    $memory_size     = mysqli_real_escape_string($conn, $_POST['memory_size']);
+    $hard_drive_size = mysqli_real_escape_string($conn, $_POST['hard_drive_size']);
+    $processor_type  = mysqli_real_escape_string($conn, $_POST['processor_type']);
+    $iseries         = mysqli_real_escape_string($conn, $_POST['iseries']);
+    $speed           = mysqli_real_escape_string($conn, $_POST['speed']);
+    $lab             = (int)($_POST['lab']);
 
 
     if (!empty($id)) {
@@ -38,6 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 SET system_name = ?, brand = ?, serial_number = ?, memory_size = ?, hard_drive_size = ?, lab = ?,  generation = ?, speed = ?, processor_type = ?, iseries = ? WHERE id = ?");
         if ($stmt) {
             $stmt->bind_param("ssssssssssi", $system_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $generation, $speed, $processor_type, $iseries, $id);
+            $stmt->bind_param("sisssissssssssi", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial, $processor, $generation, $speed, $processor_type, $monitor_brand, $id);
             if ($stmt->execute()) {
                 header("Location: ../system.php?status=update");
             } else {
@@ -60,10 +71,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $check->close();
 
-        $stmt = $conn->prepare("INSERT INTO `system`( system_name, brand, serial_number, memory_size, hard_drive_size, processor_type, iseries, speed, lab)
+        $stmt = $conn->prepare("INSERT INTO `system`( system_name, brand, serial_number, memory_size, hard_drive_size, processor, iseries, speed, lab)
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         if ($stmt) {
-            $stmt->bind_param("sssssssss", $system_name, $brand, $serial_number, $memory_size, $hard_drive_size, $processor_type, $iseries, $speed, $lab);
+            $stmt->bind_param("sissssssi", $system_name, $brand, $serial_number, $memory_size, $hard_drive_size, $processor_type, $iseries, $speed, $lab);
             if ($stmt->execute()) {
                 header("Location: ../system.php?status=save");
             } else {

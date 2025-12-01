@@ -1,4 +1,5 @@
 <?php
+
 require_once('actions/start_session.php');
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
@@ -72,12 +73,13 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <hr style="flex: 1; border: 1px solid #000;">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Device Name</label>
+                    <label class="form-label">Device Name/Model</label>
                     <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
                     <input required type="text" name="system_name" value="<?php echo isset($system_name) ? $system_name : '' ?>" class="form-control">
+                    <input required type="text" name="system_name" value="<?php echo isset($computer_name) ? $computer_name : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Select Brand</label>
+                    <label class="form-label">System Brand</label>
                     <?php
                     $query_command = "SELECT * FROM brand ";
                     $result = $conn->query($query_command);
@@ -100,11 +102,11 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="number" name="memory_size" value="<?php echo isset($memory_size) ? $memory_size : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Hard Drive Size</label>
+                    <label class="form-label">HDD/SSD Size</label>
                     <input required type="text" name="hard_drive_size" value="<?php echo isset($hard_drive_size) ? $hard_drive_size : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Iseries</label>
+                    <label class="form-label">Device Series</label>
                     <select name="iseries" id="" class="form-select">
                         <option value="">Select</option>
                         <option value="i3" <?php echo (isset($iseries) && $iseries == 'i3') ? 'selected' : '' ?>>i3</option>
@@ -118,11 +120,11 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="text" name="generation" value="<?php echo isset($generation) ? $generation : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Speed </label>
+                    <label class="form-label">Speed GHz</label>
                     <input required type="text" name="speed" value="<?php echo isset($speed) ? $speed : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Processor Type </label>
+                    <label class="form-label">Processor</label>
                     <input required type="text" name="processor_type" value="<?php echo isset($processor_type) ? $processor_type : '' ?>" class="form-control">
                 </div>
 
@@ -144,8 +146,6 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
         </div>
     </div>
-
-
 
     <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>
