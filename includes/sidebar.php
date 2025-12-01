@@ -40,7 +40,7 @@ function active($page)
 
             <ul class="dropdown-menu">
                 <li class="<?php echo active('examination.php'); ?>">
-                    <a href="examination.php">Add Examination</a>
+                    <a href="examination.php">New Examination</a>
                 </li>
 
                 <li class="<?php echo active('exams_list.php'); ?>">
@@ -87,39 +87,20 @@ function active($page)
 
                 <ul class="dropdown-menu">
                     <li class="<?php echo active('examination.php'); ?>">
-                        <a href="system.php">Add System</a>
+                        <a href="system.php">New System Unit</a>
+                    </li>
+                    <li class="<?php echo active('system_list.php'); ?>">
+                        <a href="system_list.php">View Systems </a>
                     </li>
 
                     <li class="<?php echo active('exams_list.php'); ?>">
-                        <a href="monitors.php">Add Monitor</a>
-                    </li>
-
-                    <li class="<?php echo active('system_list.php'); ?>">
-                        <a href="system_list.php">View Systems </a>
+                        <a href="monitors.php">New Monitor</a>
                     </li>
                     <li class="<?php echo active('monitors_list.php'); ?>">
                         <a href="monitor_list.php">View Monitors </a>
                     </li>
                 </ul>
             </li>
-            <!-- 
-            <li class="<?php echo active('system.php'); ?>">
-                <a href="system.php">
-                    <span class="icon"><ion-icon name="laptop-outline"></ion-icon></span>
-                    <span class="title">System</span>
-                </a>
-            </li>
-
-
-            <li class="<?php echo active('monitors.php'); ?>">
-                <a href="monitors.php">
-                    <span class="icon"><ion-icon name="display"></ion-icon></span>
-                    <span class="title">Monitor</span>
-                </a>
-            </li> -->
-
-
-
             <li class="<?php echo active('brands.php'); ?>">
                 <a href="brands.php">
                     <span class="icon"><ion-icon name="pricetag-outline"></ion-icon></span>
@@ -135,7 +116,7 @@ function active($page)
 
                 <ul class="dropdown-menu">
                     <li class="<?php echo active('issues.php'); ?>">
-                        <a href="issues.php">Add Issue</a>
+                        <a href="issues.php">New Issue</a>
                     </li>
 
                     <li class="<?php echo active('issues_list.php'); ?>">
@@ -143,20 +124,6 @@ function active($page)
                     </li>
                 </ul>
             </li>
-
-            <!-- <li class="<?php echo active('issues.php'); ?>">
-                <a href="issues.php">
-                    <span class="icon"><ion-icon name="alert-circle-outline"></ion-icon></span>
-                    <span class="title">Issues</span>
-                </a>
-            </li>
-
-            <li class="<?php echo active('issues_list.php'); ?>">
-                <a href="issues_list.php">
-                    <span class="icon"><ion-icon name="alert-circle-outline"></ion-icon></span>
-                    <span class="title">View Issues</span>
-                </a>
-            </li> -->
 
         <?php } ?>
 

@@ -132,7 +132,7 @@ if ($result && $result->num_rows > 0) {
                                     <th>Brand</th>
                                     <th>Serial_No</th>
                                     <th>Iseries</th>
-                                    <th>Processor Type</th>
+                                    <th>Processor</th>
                                     <th>Speed</th>
                                     <th>Generation</th>
                                     <th>Memory</th>
