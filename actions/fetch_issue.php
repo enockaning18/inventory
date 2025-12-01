@@ -83,6 +83,7 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['issue_date']) . "</td>
                 <td><span class='badge {$badgeClass}'>" . htmlspecialchars(ucfirst($row['issue_status'])) . "</span></td>
                 <td>" . htmlspecialchars($row['resolved_type'] ?? 'N/A') . "</td>
+                <td>" . htmlspecialchars($row['date_returned'] ?? 'N/A') . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
                     <a class='text-decoration-none' href='actions/edit_issue.php?id=" . $row['id'] . "'>

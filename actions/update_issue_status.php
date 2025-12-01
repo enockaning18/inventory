@@ -16,10 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['issue_id'])) {
     $stmt->bind_param("sssi", $issue_status, $resolved_type, $date_returned, $issue_id);
 
     if ($stmt->execute()) {
-        header("Location: ../issues.php?status=issue_update");
+        header("Location: ../issues_list.php?status=issue_update");
         // $_SESSION['success'] = 'Issue status updated successfully';
     } else {
-        header("Location: ../issues.php?status=error");
+        header("Location: ../issues_list.php?status=error");
     }
     $stmt->close();
 

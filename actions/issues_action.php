@@ -47,9 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             );
 
             if ($stmt->execute()) {
-                header("Location: ../issues.php?status=update");
+                header("Location: ../issues_list.php?status=update");
             } else {
-                header("Location: ../issues.php?status=error");
+                header("Location: ../issues_list.php?status=error");
             }
 
             $stmt->close();
