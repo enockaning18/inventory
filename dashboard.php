@@ -1,4 +1,7 @@
 <?php
+ob_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 require_once('alert.php');
 require_once('baseConnect/dbConnect.php');
@@ -37,7 +40,7 @@ require_once('actions/start_session.php');
     ?>
 
     <!-- =========== Scripts =========  -->
-    <!-- <script src="assets/js/main.js"></script> -->
+    <script src="assets/js/main.js"></script>
 
     <!-- ====== ionicons ======= -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
