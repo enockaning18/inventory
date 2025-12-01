@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 26, 2025 at 06:20 PM
--- Server version: 10.4.16-MariaDB
--- PHP Version: 7.4.12
+-- Host: localhost
+-- Generation Time: Dec 01, 2025 at 08:02 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `brand` (
   `id` int(11) NOT NULL,
   `brand_name` varchar(100) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `brand`
@@ -45,33 +45,6 @@ INSERT INTO `brand` (`id`, `brand_name`, `date_added`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `computers`
---
-
-CREATE TABLE `computers` (
-  `id` int(11) NOT NULL,
-  `computer_name` varchar(100) NOT NULL,
-  `brand` int(11) NOT NULL,
-  `serial_number` varchar(100) NOT NULL,
-  `memory_size` varchar(50) NOT NULL,
-  `hard_drive_size` varchar(100) NOT NULL,
-  `lab` int(11) NOT NULL,
-  `monitor_name` varchar(100) NOT NULL,
-  `size` varchar(20) NOT NULL,
-  `monitor_serial` varchar(100) NOT NULL,
-  `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `computers`
---
-
-INSERT INTO `computers` (`id`, `computer_name`, `brand`, `serial_number`, `memory_size`, `hard_drive_size`, `lab`, `monitor_name`, `size`, `monitor_serial`, `date_added`) VALUES
-(10, 'i7 10Gen system unit', 2, '111222333000', '12', '256', 1, 'MonitorOne', '19inches', '000111222333', '2025-10-30');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `course`
 --
 
@@ -80,7 +53,7 @@ CREATE TABLE `course` (
   `course_name` varchar(100) NOT NULL,
   `createdby` int(11) NOT NULL,
   `datecreated` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `course`
@@ -115,7 +88,7 @@ CREATE TABLE `examination` (
   `batch_semester` varchar(100) NOT NULL,
   `status` enum('approve','pending','cancelled') NOT NULL DEFAULT 'pending' COMMENT '1-approved\r\n2-pending\r\n3-cancelled',
   `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `examination`
@@ -142,7 +115,7 @@ CREATE TABLE `instructors` (
   `email` varchar(100) NOT NULL,
   `course_id` int(11) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `instructors`
@@ -162,12 +135,24 @@ INSERT INTO `instructors` (`id`, `first_name`, `last_name`, `lab_id`, `phone`, `
 CREATE TABLE `issues` (
   `id` int(11) NOT NULL,
   `computer` int(11) NOT NULL,
+  `serial_number` varchar(100) NOT NULL,
   `issue_type` varchar(100) NOT NULL,
+  `resolved_type` varchar(50) DEFAULT NULL,
   `lab` int(11) DEFAULT NULL,
+  `issue_status` varchar(100) NOT NULL,
   `issue_date` date NOT NULL DEFAULT current_timestamp(),
   `issue_description` varchar(500) NOT NULL,
-  `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `sent_to_accra` varchar(50) NOT NULL,
+  `date_added` datetime NOT NULL DEFAULT current_timestamp(),
+  `date_returned` date DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `issues`
+--
+
+INSERT INTO `issues` (`id`, `computer`, `serial_number`, `issue_type`, `resolved_type`, `lab`, `issue_status`, `issue_date`, `issue_description`, `sent_to_accra`, `date_added`, `date_returned`) VALUES
+(21, 5, 'ASDASADA23', 'Software', 'Unrepaired & Replaced', 3, 'Resolved', '2025-12-03', 'Software Update ', '0', '2025-12-01 00:00:00', '2025-12-18');
 
 -- --------------------------------------------------------
 
@@ -181,7 +166,7 @@ CREATE TABLE `lab` (
   `course_id` int(11) NOT NULL,
   `number_computers` varchar(100) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `lab`
@@ -205,7 +190,7 @@ CREATE TABLE `module` (
   `semester` varchar(20) NOT NULL,
   `course_id` int(11) NOT NULL,
   `date_created` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `module`
@@ -221,6 +206,50 @@ INSERT INTO `module` (`id`, `name`, `semester`, `course_id`, `date_created`) VAL
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `monitor`
+--
+
+CREATE TABLE `monitor` (
+  `id` int(11) NOT NULL,
+  `monitor_name` varchar(100) NOT NULL,
+  `size` varchar(100) NOT NULL,
+  `monitor_serial` varchar(100) NOT NULL,
+  `brand` int(11) NOT NULL,
+  `lab` int(11) NOT NULL,
+  `date_added` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `system`
+--
+
+CREATE TABLE `system` (
+  `id` int(11) NOT NULL,
+  `system_name` varchar(100) NOT NULL,
+  `brand` int(11) NOT NULL,
+  `serial_number` varchar(100) NOT NULL,
+  `memory_size` varchar(100) NOT NULL,
+  `hard_drive_size` varchar(100) NOT NULL,
+  `processor_type` varchar(100) NOT NULL,
+  `iseries` varchar(100) NOT NULL,
+  `speed` varchar(100) NOT NULL,
+  `generation` varchar(50) NOT NULL,
+  `lab` int(11) NOT NULL,
+  `date_added` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `system`
+--
+
+INSERT INTO `system` (`id`, `system_name`, `brand`, `serial_number`, `memory_size`, `hard_drive_size`, `processor_type`, `iseries`, `speed`, `generation`, `lab`, `date_added`) VALUES
+(5, 'XUAJJA ', 3, 'ASDASADA23', '16', '500GIG', 'NVDIA', 'i5', '2.0', '6th ', 3, '2025-12-01');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -232,7 +261,7 @@ CREATE TABLE `users` (
   `user_key` varchar(255) NOT NULL,
   `defaultkey` varchar(50) NOT NULL,
   `date_created` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
@@ -251,14 +280,6 @@ INSERT INTO `users` (`id`, `email`, `user_type`, `instructor_id`, `user_key`, `d
 --
 ALTER TABLE `brand`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `computers`
---
-ALTER TABLE `computers`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `brand_id` (`brand`),
-  ADD KEY `lab_id` (`lab`);
 
 --
 -- Indexes for table `course`
@@ -311,6 +332,22 @@ ALTER TABLE `module`
   ADD KEY `course_fk_id` (`course_id`);
 
 --
+-- Indexes for table `monitor`
+--
+ALTER TABLE `monitor`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `brand_id_fk` (`brand`),
+  ADD KEY `lab_id__fk` (`lab`);
+
+--
+-- Indexes for table `system`
+--
+ALTER TABLE `system`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_brand_id` (`brand`),
+  ADD KEY `lab_id_fk` (`lab`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -327,12 +364,6 @@ ALTER TABLE `users`
 --
 ALTER TABLE `brand`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `computers`
---
-ALTER TABLE `computers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `course`
@@ -356,7 +387,7 @@ ALTER TABLE `instructors`
 -- AUTO_INCREMENT for table `issues`
 --
 ALTER TABLE `issues`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `lab`
@@ -371,6 +402,18 @@ ALTER TABLE `module`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
+-- AUTO_INCREMENT for table `monitor`
+--
+ALTER TABLE `monitor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `system`
+--
+ALTER TABLE `system`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -379,13 +422,6 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `computers`
---
-ALTER TABLE `computers`
-  ADD CONSTRAINT `brand_id` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `lab_id` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `course`
@@ -412,7 +448,7 @@ ALTER TABLE `instructors`
 -- Constraints for table `issues`
 --
 ALTER TABLE `issues`
-  ADD CONSTRAINT `computer_id` FOREIGN KEY (`computer`) REFERENCES `computers` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `computer_id` FOREIGN KEY (`computer`) REFERENCES `system` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fklab_id` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE;
 
 --
@@ -426,6 +462,20 @@ ALTER TABLE `lab`
 --
 ALTER TABLE `module`
   ADD CONSTRAINT `course_fk_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `monitor`
+--
+ALTER TABLE `monitor`
+  ADD CONSTRAINT `brand_id_fk` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `lab_id__fk` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `system`
+--
+ALTER TABLE `system`
+  ADD CONSTRAINT `fk_brand_id` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `lab_id_fk` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users`
