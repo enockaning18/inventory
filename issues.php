@@ -58,15 +58,15 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
                 <div class="col-md-4">
                     <label class="form-label">Device Type</label>
-                    <select required id="deviceType" name="computers" class="form-select">
+                    <select required id="deviceType" name="system" class="form-select">
                         <option value="">Select</option>
                         <?php
                         // fetch systems 
-                        $query_command = "SELECT * FROM computers ";
+                        $query_command = "SELECT * FROM `system` ";
                         $result = $conn->query($query_command);
                         ?>
                         <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($computer) && $computer ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['computer_name'] ?></option>
+                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($computer) && $computer ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['system_name'] ?></option>
                         <?php } ?>
 
                     </select>
@@ -275,6 +275,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     success: function(data) {
                         const issue = JSON.parse(data);
                         $("#dateReceived").val(issue.date_added);
+                        $("#dateReturned").val(issue.date_returned);
                         $("#modalIssueStatus").val(issue.issue_status || '');
                         $("#modalResolutionType").val(issue.resolved_type	 || '');
 

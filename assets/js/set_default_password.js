@@ -15,3 +15,5 @@ function setUserTypeText() {
       userInfo.value = "";
     }
   }
+
+  

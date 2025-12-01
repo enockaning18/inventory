@@ -170,7 +170,7 @@ $totalComputers  = $row['total_computers'] ?? 0;
             <?php
             if ($usertype == 'admin') {
             ?>
-            <a href="computers.php">
+            <a href="system.php">
             <?php } else { ?>
                 <a href="#">
                 <?php } ?>
@@ -187,7 +187,7 @@ $totalComputers  = $row['total_computers'] ?? 0;
             <?php
             if ($usertype == 'admin') {
             ?>
-            <a href="computers.php">
+            <a href="system.php">
             <?php } else { ?>
                 <a href="#">
                 <?php } ?>
@@ -204,7 +204,7 @@ $totalComputers  = $row['total_computers'] ?? 0;
             <?php
             if ($usertype == 'admin') {
             ?>
-                <a href="computers.php">
+                <a href="system.php">
                 <?php } else { ?>
                     <a href="#">
                     <?php } ?>

@@ -76,7 +76,6 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <label class="form-label">Device Name/Model</label>
                     <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>" class="form-control">
                     <input required type="text" name="system_name" value="<?php echo isset($system_name) ? $system_name : '' ?>" class="form-control">
-                    <input required type="text" name="system_name" value="<?php echo isset($computer_name) ? $computer_name : '' ?>" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">System Brand</label>

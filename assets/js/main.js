@@ -19,4 +19,10 @@ toggle.onclick = function () {
   navigation.classList.toggle("active");
   main.classList.toggle("active");
 };
-
+// Dropdown Menu
+document.querySelectorAll(".dropdown-toggle").forEach((drop) => {
+  drop.addEventListener("click", function (e) {
+    e.preventDefault();
+    this.parentElement.classList.toggle("open");
+  });
+});// Dropdown Menu

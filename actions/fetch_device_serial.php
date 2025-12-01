@@ -8,8 +8,8 @@ $response = ['serial_number' => '', 'lab_id' => null];
 if (isset($_POST['device_id']) && is_numeric($_POST['device_id'])) {
     $device_id = intval($_POST['device_id']);
     
-    // Try computers table
-    $stmt = $conn->prepare("SELECT serial_number, lab FROM computers WHERE id = ?");
+    // Try system table
+    $stmt = $conn->prepare("SELECT serial_number, lab FROM `system` WHERE id = ?");
     $stmt->bind_param("i", $device_id);
     $stmt->execute();
     $res = $stmt->get_result()->fetch_assoc();
@@ -22,7 +22,7 @@ if (isset($_POST['device_id']) && is_numeric($_POST['device_id'])) {
         exit;
     }
 
-    // If not found in computers, try monitors table
+    // If not found in system, try monitors table
     $stmt = $conn->prepare("SELECT serial_number, lab FROM monitors WHERE id = ?");
     $stmt->bind_param("i", $device_id);
     $stmt->execute();

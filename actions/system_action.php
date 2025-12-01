@@ -3,36 +3,25 @@ require_once('../baseConnect/dbConnect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $id              = mysqli_real_escape_string($conn, $_POST['id']);
-    $system_name   = mysqli_real_escape_string($conn, $_POST['system_name']);
-    $brand           = mysqli_real_escape_string($conn, $_POST['brand']);
-    $serial_number   = mysqli_real_escape_string($conn, $_POST['serial_number']);
-    $memory_size     = mysqli_real_escape_string($conn, $_POST['memory_size']);
-    $hard_drive_size = mysqli_real_escape_string($conn, $_POST['hard_drive_size']);
-    $processor_type            = mysqli_real_escape_string($conn, $_POST['processor_type']);
-    $iseries  = mysqli_real_escape_string($conn, $_POST['iseries']);
-    $speed            = mysqli_real_escape_string($conn, $_POST['speed']);
-    $generation            = mysqli_real_escape_string($conn, $_POST['generation']);
-    $lab            = mysqli_real_escape_string($conn, $_POST['lab']);
+    $id                = mysqli_real_escape_string($conn, $_POST['id']);
+    $system_name       = mysqli_real_escape_string($conn, $_POST['system_name']);
+    $brand             = mysqli_real_escape_string($conn, $_POST['brand']);
+    $serial_number     = mysqli_real_escape_string($conn, $_POST['serial_number']);
+    $memory_size       = mysqli_real_escape_string($conn, $_POST['memory_size']);
+    $hard_drive_size   = mysqli_real_escape_string($conn, $_POST['hard_drive_size']);
+    $processor_type    = mysqli_real_escape_string($conn, $_POST['processor_type']);
+    $iseries           = mysqli_real_escape_string($conn, $_POST['iseries']);
+    $speed             = mysqli_real_escape_string($conn, $_POST['speed']);
+    $generation        = mysqli_real_escape_string($conn, $_POST['generation']);
+    $lab               = mysqli_real_escape_string($conn, $_POST['lab']);
 
-
-
-
-    $id              = (int)($_POST['id']);
-    $system_name     = mysqli_real_escape_string($conn, $_POST['system_name']);
-    $brand           = (int)($_POST['brand']);
-    $serial_number   = mysqli_real_escape_string($conn, $_POST['serial_number']);
-    $memory_size     = mysqli_real_escape_string($conn, $_POST['memory_size']);
-    $hard_drive_size = mysqli_real_escape_string($conn, $_POST['hard_drive_size']);
-    $processor_type  = mysqli_real_escape_string($conn, $_POST['processor_type']);
-    $iseries         = mysqli_real_escape_string($conn, $_POST['iseries']);
-    $speed           = mysqli_real_escape_string($conn, $_POST['speed']);
-    $lab             = (int)($_POST['lab']);
-
+    // =============================
+    // UPDATE EXISTING SYSTEM
+    // =============================
 
     if (!empty($id)) {
 
-        // Check if serial number already exists for another computer
+        // Prevent duplicate serial numbers
         $check = $conn->prepare("SELECT id FROM `system` WHERE serial_number = ? AND id != ?");
         $check->bind_param("si", $serial_number, $id);
         $check->execute();
@@ -44,23 +33,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $check->close();
 
+
         $stmt = $conn->prepare("UPDATE system 
-                                SET system_name = ?, brand = ?, serial_number = ?, memory_size = ?, hard_drive_size = ?, lab = ?,  generation = ?, speed = ?, processor_type = ?, iseries = ? WHERE id = ?");
+                                SET system_name = ?,
+                                    brand = ?,
+                                    serial_number = ?,
+                                    memory_size = ?,
+                                    hard_drive_size = ?,
+                                    processor_type = ?,
+                                    generation = ?,
+                                    iseries = ?,
+                                    speed = ?,
+                                    lab = ?
+                                WHERE id = ?");
+
         if ($stmt) {
-            $stmt->bind_param("ssssssssssi", $system_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $generation, $speed, $processor_type, $iseries, $id);
-            $stmt->bind_param("sisssissssssssi", $computer_name, $brand, $serial_number, $memory_size, $hard_drive_size, $lab, $monitor, $size, $monitor_serial, $processor, $generation, $speed, $processor_type, $monitor_brand, $id);
+
+            // s i s s s s s s s i i
+            $stmt->bind_param(
+                "sissssssssi",
+                $system_name,
+                $brand,
+                $serial_number,
+                $memory_size,
+                $hard_drive_size,
+                $processor_type,
+                $generation,
+                $iseries,
+                $speed,
+                $lab,
+                $id
+            );
+
             if ($stmt->execute()) {
                 header("Location: ../system.php?status=update");
             } else {
                 header("Location: ../system.php?status=error");
             }
+
             $stmt->close();
         } else {
             header("Location: ../system.php?status=error");
         }
-    } else {
+    }
 
-        $check = $conn->prepare("SELECT id FROM system WHERE serial_number = ?");
+    // =============================
+    // INSERT NEW SYSTEM
+    // =============================
+
+    else {
+
+        // Prevent duplicate serial numbers
+        $check = $conn->prepare("SELECT id FROM `system` WHERE serial_number = ?");
         $check->bind_param("s", $serial_number);
         $check->execute();
         $check->store_result();
@@ -71,15 +95,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $check->close();
 
-        $stmt = $conn->prepare("INSERT INTO `system`( system_name, brand, serial_number, memory_size, hard_drive_size, processor, iseries, speed, lab)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        $stmt = $conn->prepare("INSERT INTO `system` 
+                (system_name, brand, serial_number, memory_size, hard_drive_size, processor_type, generation, iseries, speed, lab)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
         if ($stmt) {
-            $stmt->bind_param("sissssssi", $system_name, $brand, $serial_number, $memory_size, $hard_drive_size, $processor_type, $iseries, $speed, $lab);
+
+            // s i s s s s s s s i
+            $stmt->bind_param(
+                "sisssssssi",
+                $system_name,
+                $brand,
+                $serial_number,
+                $memory_size,
+                $hard_drive_size,
+                $processor_type,
+                $generation,
+                $iseries,
+                $speed,
+                $lab
+            );
+
             if ($stmt->execute()) {
                 header("Location: ../system.php?status=save");
             } else {
                 header("Location: ../system.php?status=error");
             }
+
             $stmt->close();
         } else {
             header("Location: ../system.php?status=error");

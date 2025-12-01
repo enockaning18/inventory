@@ -12,20 +12,18 @@ $search      = isset($_POST['search']) ? trim($_POST['search']) : '';
 $issue_type  = isset($_POST['issue_type']) ? trim($_POST['issue_type']) : '';
 $lab_type    = isset($_POST['lab_type']) ? trim($_POST['lab_type']) : '';
 
-$sql = "SELECT 
-            issues.*, 
-            computers.computer_name AS device_name, 
-            lab.lab_name AS labname 
-        FROM issues
-        LEFT JOIN computers ON issues.computer = computers.id
+$sql = "SELECT issues.*, system.system_name AS device_name, lab.lab_name AS labname FROM issues
+        LEFT JOIN `system` ON issues.computer = system.id
         LEFT JOIN lab ON issues.lab = lab.id
         WHERE 1";
+
+        
 
 //  Filter by search
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
     $sql .= " AND (
-                computers.computer_name LIKE '%$search%' 
+                system_name LIKE '%$search%' 
                 OR issues.issue_type LIKE '%$search%' 
                 OR lab.lab_name LIKE '%$search%' 
                 OR issues.issue_date LIKE '%$search%' 
@@ -84,6 +82,7 @@ if ($result && $result->num_rows > 0) {
                 <td>" . htmlspecialchars($row['issue_description']) . "</td>
                 <td>" . htmlspecialchars($row['issue_date']) . "</td>
                 <td><span class='badge {$badgeClass}'>" . htmlspecialchars(ucfirst($row['issue_status'])) . "</span></td>
+                <td>" . htmlspecialchars($row['resolved_type'] ?? 'N/A') . "</td>
                 <td>" . htmlspecialchars($row['date_added']) . "</td>
                 <td>
                     <a class='text-decoration-none' href='actions/edit_issue.php?id=" . $row['id'] . "'>
