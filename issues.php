@@ -151,7 +151,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
                 <div class="col-md-12">
                     <label class="form-label">Issue Description</label>
-                    <textarea class="form-control" cols='5' name="issue_description" id=""><?php echo isset($issue_description) ? $issue_description  : '' ?></textarea>
+                    <textarea class="form-control" style="resize:none;" rows=5 name="issue_description" id=""><?php echo isset($issue_description) ? $issue_description  : '' ?></textarea>
                 </div>
 
 
