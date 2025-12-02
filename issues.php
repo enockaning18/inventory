@@ -114,7 +114,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     </select>
                 </div>
 
-                <div class="col-md-7" id="resolutionTypeDiv" style="display: none;">
+                <div class="col-md-4" id="resolutionTypeDiv" style="display: none;">
                     <label class="form-label">Resolution Type</label>
                     <select id="resolutionType" name="resolved_type	" class="form-select">
                         <option value="">Select</option>
@@ -129,7 +129,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="date" name="issue_date" value="<?php echo isset($issue_date) ? $issue_date  : '' ?>" class="form-control">
                 </div>
 
-                <div class="col-md-4 " style="margin-left: 50px; margin-top: 30px">
+                <div class="col-md-3 " style="margin-left: 50px; margin-top: 30px">
                     <label class="form-label">Sent to Accra</label>
                     <div class="d-flex gap-4">
                         <div class="form-check">
@@ -161,7 +161,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script src="assets/js/jquery.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script>
+    <!-- <script>
         $(document).ready(function() {
             // Function to load issues
             function load_issues(search = '', issue_type = '', lab_type = '') {
@@ -369,7 +369,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 }
             });
         });
-    </script>
+    </script> -->
 
 
     <?php
