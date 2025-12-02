@@ -27,26 +27,15 @@ document.querySelectorAll(".dropdown-toggle").forEach((drop) => {
   });
 }); // Dropdown Menu
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* =============== issue scripts ================ */
 $(document).ready(function () {
   // Function to load issues
-  function load_issues(search = "", issue_type = "", lab_type = "") {
+  function load_issues(
+    search = "",
+    issue_type = "",
+    lab_type = "",
+    issue_status = ""
+  ) {
     $.ajax({
       url: "actions/fetch_issue.php",
       type: "POST",
@@ -54,6 +43,7 @@ $(document).ready(function () {
         search: search,
         issue_type: issue_type,
         lab_type: lab_type,
+        issue_status: issue_status,
       },
       success: function (data) {
         $("#issues_table").html(data);
@@ -69,7 +59,8 @@ $(document).ready(function () {
     const search = $(this).val();
     const issue_type = $("#issue_type").val();
     const lab_type = $("#lab_type").val();
-    load_issues(search, issue_type, lab_type);
+    const issue_status = $("#issue_status").val();
+    load_issues(search, issue_type, lab_type, issue_status);
   });
 
   // Filter dropdown change event by issue_type
@@ -77,14 +68,24 @@ $(document).ready(function () {
     const issue_type = $(this).val();
     const search = $("#searchBox").val();
     const lab_type = $("#lab_type").val();
-    load_issues(search, issue_type, lab_type);
+    const issue_status = $("#issue_status").val();
+    load_issues(search, issue_type, lab_type, issue_status);
   });
   // Filter dropdown change event by lab type
   $("#lab_type").on("change", function () {
     const issue_type = $("#issue_type").val();
     const search = $("#searchBox").val();
     const lab_type = $(this).val();
-    load_issues(search, issue_type, lab_type);
+    const issue_status = $("#issue_status").val();
+    load_issues(search, issue_type, lab_type, issue_status);
+  });
+  // Filter dropdown change event by issue status
+  $("#issues_status").on("change", function () {
+    const issue_type = $("#issue_type").val();
+    const search = $("#searchBox").val();
+    const lab_type = $(this).val();
+    const issue_status = $("#issue_status").val();
+    load_issues(search, issue_type, lab_type, issue_status);
   });
 
   // Show/hide resolution type dropdown based on issue status

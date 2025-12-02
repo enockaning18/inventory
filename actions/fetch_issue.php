@@ -8,9 +8,10 @@ if (!$conn) {
 }
 
 // Collect filters
-$search      = isset($_POST['search']) ? trim($_POST['search']) : '';
-$issue_type  = isset($_POST['issue_type']) ? trim($_POST['issue_type']) : '';
-$lab_type    = isset($_POST['lab_type']) ? trim($_POST['lab_type']) : '';
+$search         = isset($_POST['search']) ? trim($_POST['search']) : '';
+$issue_type     = isset($_POST['issue_type']) ? trim($_POST['issue_type']) : '';
+$issue_status   = isset($_POST['issue_status']) ? trim($_POST['issue_status']) : '';
+$lab_type       = isset($_POST['lab_type']) ? trim($_POST['lab_type']) : '';
 
 $sql = "SELECT issues.*, system.system_name AS device_name, lab.lab_name AS labname FROM issues
         LEFT JOIN `system` ON issues.computer = system.id
@@ -25,15 +26,22 @@ if (!empty($search)) {
     $sql .= " AND (
                 system_name LIKE '%$search%' 
                 OR issues.issue_type LIKE '%$search%' 
+                OR issues.issue_status LIKE '%$search%' 
                 OR lab.lab_name LIKE '%$search%' 
                 OR issues.issue_date LIKE '%$search%' 
                 OR issues.issue_description LIKE '%$search%'
                 OR issues.serial_number LIKE '%$search%'
                 OR issues.sent_to_accra LIKE '%$search%'
             )";
-}
+        }
 
 //  Filter by lab
+if (!empty($issue_status)) {
+    $issue_status = $conn->real_escape_string($issue_status);
+    $sql .= " AND issues.issue_status = '$issue_status' ";
+}
+
+// filter by issue status
 if (!empty($lab_type)) {
     $lab_type = $conn->real_escape_string($lab_type);
     $sql .= " AND lab.lab_name = '$lab_type' ";
