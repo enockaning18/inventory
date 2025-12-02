@@ -129,7 +129,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="date" name="issue_date" value="<?php echo isset($issue_date) ? $issue_date  : '' ?>" class="form-control">
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4 " style="margin-left: 50px; margin-top: 30px">
                     <label class="form-label">Sent to Accra</label>
                     <div class="d-flex gap-4">
                         <div class="form-check">
