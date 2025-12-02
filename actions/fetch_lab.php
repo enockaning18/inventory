@@ -17,7 +17,7 @@ $sql = "
         lab.*, 
         lab.id AS labid, 
         course.course_name, 
-        course.id  style='white-space: nowrap;'AS courseid 
+        course.id AS courseid 
     FROM lab 
     INNER JOIN course ON course.id = lab.course_id 
     WHERE 1

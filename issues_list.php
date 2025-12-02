@@ -86,6 +86,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <thead class="table-light">
                                 <tr>
                                     <th style="white-space: nowrap;">#</th>
+                                    <th style="white-space: nowrap;">Category</th>
                                     <th style="white-space: nowrap;">Device</th>
                                     <th style="white-space: nowrap;">Issue</th>
                                     <th style="white-space: nowrap;">Lab</th>
@@ -95,6 +96,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                     <th style="white-space: nowrap;">Issue Status</th>
                                     <th style="white-space: nowrap;">Resolved Type</th>
                                     <th style="white-space: nowrap;">Date Returned</th>
+                                    <th style="white-space: nowrap;">Sent to Accra</th>
                                     <th style="white-space: nowrap;">Date Added</th>
                                     <th style="white-space: nowrap;">Action</th>
                                 </tr>

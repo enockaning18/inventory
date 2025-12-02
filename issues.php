@@ -8,7 +8,7 @@ require_once('baseConnect/dbConnect.php');
 
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, issue_type, lab, issue_date, issue_description, computer FROM issues WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, issue_type, lab, issue_date, issue_description, computer, sent_to_accra, device_category, serial_number FROM issues WHERE id = ?");
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
@@ -19,6 +19,9 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         $lab = $row['lab'];
         $issue_date = $row['issue_date'];
         $issue_description = $row['issue_description'];
+        $sent_to_accra = $row['sent_to_accra'];
+        $device_category = $row['device_category'];
+        $serial_number = $row['serial_number'];
     }
     $stmt->close();
 } ?>
@@ -57,24 +60,24 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
 
                 <div class="col-md-4">
-                    <label class="form-label">Device Type</label>
-                    <select required id="deviceType" name="system" class="form-select">
-                        <option value="">Select</option>
-                        <?php
-                        // fetch systems 
-                        $query_command = "SELECT * FROM `system` ";
-                        $result = $conn->query($query_command);
-                        ?>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?php echo $row['id'] ?>" <?php echo (isset($computer) && $computer ==  $row['id']) ? 'selected' : '' ?>><?php echo $row['system_name'] ?></option>
-                        <?php } ?>
+                    <label class="form-label">Device Category</label>
+                    <select required id="deviceCategory" name="device_category" class="form-select">
+                        <option value="">Select Category</option>
+                        <option value="system" <?php echo (isset($device_category) && $device_category == 'system') ? 'selected' : '' ?>>System</option>
+                        <option value="monitor" <?php echo (isset($device_category) && $device_category == 'monitor') ? 'selected' : '' ?>>Monitor</option>
+                    </select>
+                </div>
 
+                <div class="col-md-4">
+                    <label class="form-label">Device</label>
+                    <select required id="deviceType" name="system" class="form-select" disabled>
+                        <option value="">Select Device Category </option>
                     </select>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Serial Number</label>
-                    <input type="text" id="serialNumber" name="serial_number" class="form-control" readonly>
+                    <input type="text" id="serialNumber" name="serial_number" class="form-control" value="<?php echo isset($serial_number) ? htmlspecialchars($serial_number) : '' ?>" readonly>
                 </div>
 
                 <div class="col-md-4">
@@ -136,11 +139,11 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <label class="form-label">Sent to Accra</label>
                     <div class="">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentYes" value="Yes">
+                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentYes" value="1" <?php echo (isset($sent_to_accra) && $sent_to_accra == 1 ? 'checked' : '') ?>>
                             <label class="form-check-label" for="sentYes">Yes</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentNo" value="No">
+                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentNo" value="0" <?php echo (isset($sent_to_accra) && $sent_to_accra == 0 ? 'checked' : '') ?>>
                             <label class="form-check-label" for="sentNo">No</label>
                         </div>
                     </div>
@@ -212,15 +215,68 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 }
             });
 
+            // Fetch devices based on category selection
+            $("#deviceCategory").on("change", function() {
+                const category = $(this).val();
+                const deviceTypeSelect = $("#deviceType");
+                const selectedDeviceId = "<?php echo isset($computer) ? $computer : '' ?>";
+                
+                if (category) {
+                    $.ajax({
+                        url: "actions/fetch_devices_by_category.php",
+                        type: "POST",
+                        dataType: "json",
+                        data: { category: category },
+                        success: function(data) {
+                            deviceTypeSelect.html('<option value="">Select Device</option>');
+                            if (data.length > 0) {
+                                data.forEach(function(device) {
+                                    const isSelected = selectedDeviceId && device.id == selectedDeviceId ? 'selected' : '';
+                                    deviceTypeSelect.append(
+                                        '<option value="' + device.id + '" ' + isSelected + '>' + 
+                                        device.name + 
+                                        '</option>'
+                                    );
+                                });
+                                deviceTypeSelect.prop("disabled", false);
+                                
+                                // If editing, trigger device change to populate serial and lab
+                                if (selectedDeviceId) {
+                                    deviceTypeSelect.trigger("change");
+                                }
+                            } else {
+                                deviceTypeSelect.html('<option value="">No devices found</option>');
+                                deviceTypeSelect.prop("disabled", true);
+                            }
+                        },
+                        error: function() {
+                            deviceTypeSelect.html('<option value="">Error loading devices</option>');
+                            deviceTypeSelect.prop("disabled", true);
+                        }
+                    });
+                } else {
+                    deviceTypeSelect.html('<option value="">Select Device Category First</option>');
+                    deviceTypeSelect.prop("disabled", true);
+                    $("#serialNumber").val("");
+                    $("#labSelect").prop("disabled", false);
+                    $("#labHidden").val("");
+                }
+            });
+
             // Fetch serial number and lab when device type is selected
             $("#deviceType").on("change", function() {
                 const deviceId = $(this).val();
-                if (deviceId) {
+                const category = $("#deviceCategory").val();
+                
+                if (deviceId && category) {
                     $.ajax({
                         url: "actions/fetch_device_serial.php",
                         type: "POST",
                         dataType: "json",
-                        data: { device_id: deviceId },
+                        data: { 
+                            device_id: deviceId,
+                            category: category
+                        },
                         success: function(data) {
                             // set serial
                             $("#serialNumber").val(data.serial_number || "");
@@ -253,6 +309,11 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             // If a device is already selected on load (edit flow), trigger change to populate lab & serial
             if ($("#deviceType").val()) {
                 $("#deviceType").trigger("change");
+            }
+
+            // If device category is already selected on load (edit flow), trigger change to populate devices
+            if ($("#deviceCategory").val()) {
+                $("#deviceCategory").trigger("change");
             }
 
             // If user manually changes lab (when enabled), keep hidden input in sync

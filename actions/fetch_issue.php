@@ -68,9 +68,16 @@ if ($result && $result->num_rows > 0) {
                 $badgeClass = 'bg-secondary';
         }
 
+        if($row['sent_to_accra'] === '0') {
+            $row['sent_to_accra'] = 'No';
+        } else {
+            $row['sent_to_accra'] = 'Yes';
+        }
+
 
         echo "<tr>
                 <th scope='row' style='white-space: nowrap;'>" . $counter++ . "</th>
+                <td style='white-space: nowrap;  text-transform: capitalize;' >" . htmlspecialchars($row['device_category']) . "</td>
                 <td style='white-space: nowrap;'>
                     <div>" . htmlspecialchars($row['device_name']) . "</div>
                     <div class='text-muted small'>" . htmlspecialchars($row['serial_number']) . "</div>                
@@ -83,6 +90,7 @@ if ($result && $result->num_rows > 0) {
                 <td style='white-space: nowrap;'><span class='badge {$badgeClass}'>" . htmlspecialchars(ucfirst($row['issue_status'])) . "</span></td>
                 <td style='white-space: nowrap;'>" . htmlspecialchars($row['resolved_type'] ?? 'N/A') . "</td>
                 <td style='white-space: nowrap;'>" . htmlspecialchars($row['date_returned'] ?? 'N/A') . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['sent_to_accra']) . "</td>
                 <td style='white-space: nowrap;'>" . htmlspecialchars($row['date_added']) . "</td>
                 <td style='white-space: nowrap;'>
                     <a class='text-decoration-none' href='actions/edit_issue.php?id=" . $row['id'] . "'>

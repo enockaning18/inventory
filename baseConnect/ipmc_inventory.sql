@@ -144,15 +144,16 @@ CREATE TABLE `issues` (
   `issue_description` varchar(500) NOT NULL,
   `sent_to_accra` varchar(50) NOT NULL,
   `date_added` datetime NOT NULL DEFAULT current_timestamp(),
-  `date_returned` date DEFAULT current_timestamp()
+  `date_returned` date DEFAULT current_timestamp(),
+  `device_category` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `issues`
 --
 
-INSERT INTO `issues` (`id`, `computer`, `serial_number`, `issue_type`, `resolved_type`, `lab`, `issue_status`, `issue_date`, `issue_description`, `sent_to_accra`, `date_added`, `date_returned`) VALUES
-(21, 5, 'ASDASADA23', 'Software', 'Unrepaired & Replaced', 3, 'Resolved', '2025-12-03', 'Software Update ', '0', '2025-12-01 00:00:00', '2025-12-18');
+INSERT INTO `issues` (`id`, `computer`, `serial_number`, `issue_type`, `resolved_type`, `lab`, `issue_status`, `issue_date`, `issue_description`, `sent_to_accra`, `date_added`, `date_returned`, `device_category`) VALUES
+(21, 5, 'ASDASADA23', 'Software', 'Unrepaired & Replaced', 3, 'Resolved', '2025-12-03', 'Software Update ', '0', '2025-12-01 00:00:00', '2025-12-18', NULL);
 
 -- --------------------------------------------------------
 

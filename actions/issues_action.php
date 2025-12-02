@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $serial_number     = mysqli_real_escape_string($conn, $_POST['serial_number']);
     $issue_status      = mysqli_real_escape_string($conn, $_POST['issue_status']);
     $sent_to_accra     = mysqli_real_escape_string($conn, $_POST['sent_to_accra']); 
+    $device_category     = mysqli_real_escape_string($conn, $_POST['device_category']); 
 
 
     // ============================================================
@@ -28,13 +29,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     issue_description = ?, 
                                     serial_number = ?, 
                                     issue_status = ?, 
-                                    sent_to_accra = ?  
+                                    sent_to_accra = ?,  
+                                    device_category = ?  
                                 WHERE id = ?");
 
         if ($stmt) {
 
             $stmt->bind_param(
-                "isissssii",
+                "isissssisi",
                 $computer,
                 $issue_type,
                 $lab,
@@ -43,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $serial_number,
                 $issue_status,
                 $sent_to_accra,
+                $device_category,
                 $id
             );
 
@@ -65,13 +68,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // INSERT ISSUE
     // ============================================================
     $stmt = $conn->prepare("INSERT INTO issues 
-                            (computer, issue_type, lab, issue_date, issue_description, serial_number, issue_status, sent_to_accra)
-                            VALUES (?,?,?,?,?,?,?,?)");
+                            (computer, issue_type, lab, issue_date, issue_description, serial_number, issue_status, sent_to_accra, device_category)
+                            VALUES (?,?,?,?,?,?,?,?,?)");
 
     if ($stmt) {
 
         $stmt->bind_param(
-            "isissssi",
+            "isissssis",
             $computer,
             $issue_type,
             $lab,
@@ -79,7 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $issue_description,
             $serial_number,
             $issue_status,
-            $sent_to_accra
+            $sent_to_accra,
+            $device_category
         );
 
         if ($stmt->execute()) {
