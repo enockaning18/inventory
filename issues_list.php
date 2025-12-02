@@ -81,22 +81,22 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             </select>
                         </form>
                     </div>
-                    <div class="table-responsive" style="height: 300px">
-                        <table class="table table-striped align-middle">
+                    <div class="table-responsive" style="overflow-x: auto; height: 300px;">
+                        <table class="table table-striped align-middle" style="min-width: 1200px;">
                             <thead class="table-light">
                                 <tr>
-                                    <th>#</th>
-                                    <th>Device</th>
-                                    <th>Issue </th>
-                                    <th>Lab</th>
-                                    <th>Issue Date </th>
-                                    <th>Issue Description</th>
-                                    <th>Issue Date</th>
-                                    <th>Issue Status</th>
-                                    <th>Date Returned</th>
-                                    <th>Resolved Type</th>
-                                    <th>Date Added</th>
-                                    <th>Action</th>
+                                    <th style="white-space: nowrap;">#</th>
+                                    <th style="white-space: nowrap;">Device</th>
+                                    <th style="white-space: nowrap;">Issue</th>
+                                    <th style="white-space: nowrap;">Lab</th>
+                                    <th style="white-space: nowrap;">Issue Date</th>
+                                    <th style="white-space: nowrap;">Issue Description</th>
+                                    <th style="white-space: nowrap;">Issue Date</th>
+                                    <th style="white-space: nowrap;">Issue Status</th>
+                                    <th style="white-space: nowrap;">Date Returned</th>
+                                    <th style="white-space: nowrap;">Resolved Type</th>
+                                    <th style="white-space: nowrap;">Date Added</th>
+                                    <th style="white-space: nowrap;">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="issues_table">

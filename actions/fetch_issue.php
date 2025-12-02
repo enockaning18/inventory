@@ -17,7 +17,7 @@ $sql = "SELECT issues.*, system.system_name AS device_name, lab.lab_name AS labn
         LEFT JOIN lab ON issues.lab = lab.id
         WHERE 1";
 
-        
+
 
 //  Filter by search
 if (!empty($search)) {
@@ -53,6 +53,7 @@ if ($result && $result->num_rows > 0) {
     $counter = 1;
     while ($row = $result->fetch_assoc()) {
 
+
         $status = htmlspecialchars($row['issue_status']);
         $badgeClass = '';
 
@@ -69,23 +70,21 @@ if ($result && $result->num_rows > 0) {
 
 
         echo "<tr>
-                <th scope='row'>" . $counter++ . "</th>
-
-                <td>
+                <th scope='row' style='white-space: nowrap;'>" . $counter++ . "</th>
+                <td style='white-space: nowrap;'>
                     <div>" . htmlspecialchars($row['device_name']) . "</div>
-                    <div class='text-muted small'>(" . htmlspecialchars($row['serial_number']) . ")</div>
+                    <div class='text-muted small'>" . htmlspecialchars($row['serial_number']) . "</div>                
                 </td>
-                </td>
-                <td>" . htmlspecialchars($row['issue_type']) . "</td>
-                <td>" . htmlspecialchars($row['labname']) . "</td>
-                <td>" . htmlspecialchars($row['issue_date']) . "</td>
-                <td>" . htmlspecialchars($row['issue_description']) . "</td>
-                <td>" . htmlspecialchars($row['issue_date']) . "</td>
-                <td><span class='badge {$badgeClass}'>" . htmlspecialchars(ucfirst($row['issue_status'])) . "</span></td>
-                <td>" . htmlspecialchars($row['resolved_type'] ?? 'N/A') . "</td>
-                <td>" . htmlspecialchars($row['date_returned'] ?? 'N/A') . "</td>
-                <td>" . htmlspecialchars($row['date_added']) . "</td>
-                <td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['issue_type']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['labname']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['issue_date']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['issue_description']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['issue_date']) . "</td>
+                <td style='white-space: nowrap;'><span class='badge {$badgeClass}'>" . htmlspecialchars(ucfirst($row['issue_status'])) . "</span></td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['resolved_type'] ?? 'N/A') . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['date_returned'] ?? 'N/A') . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['date_added']) . "</td>
+                <td style='white-space: nowrap;'>
                     <a class='text-decoration-none' href='actions/edit_issue.php?id=" . $row['id'] . "'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>
