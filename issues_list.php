@@ -93,8 +93,8 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                     <th style="white-space: nowrap;">Issue Description</th>
                                     <th style="white-space: nowrap;">Issue Date</th>
                                     <th style="white-space: nowrap;">Issue Status</th>
-                                    <th style="white-space: nowrap;">Date Returned</th>
                                     <th style="white-space: nowrap;">Resolved Type</th>
+                                    <th style="white-space: nowrap;">Date Returned</th>
                                     <th style="white-space: nowrap;">Date Added</th>
                                     <th style="white-space: nowrap;">Action</th>
                                 </tr>
