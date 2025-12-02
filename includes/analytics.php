@@ -35,14 +35,6 @@ $row = $result->fetch_assoc();
 
 $totalCancelled = $row['total_cancelled'] ?? 0;
 
-// Count total system
-$stmt = $conn->prepare("SELECT COUNT(*) AS total_computers FROM system");
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-
-$totalComputers = $row['total_computers'] ?? 0;
-
 // Count total faulty computers
 $stmt = $conn->prepare("SELECT COUNT(*) AS total_issues FROM issues");
 $stmt->execute();
@@ -78,10 +70,15 @@ $row = $result->fetch_assoc();
 
 $totalReplacements = $row['total_replacement'] ?? 0;
 
+// Count total computers
+// Count system units
+$stmt = $conn->prepare("SELECT COUNT(*) AS complete_computers FROM system
+                        WHERE id IS NOT NULL AND id <> ''");
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$totalComputers = $row['complete_computers'] ?? 0;
 
-
-// Count total monitors
-$stmt = $conn->prepare("SELECT COUNT(monitor_name) AS total_monitors FROM monitor");
 // Count total monitors
 $stmt = $conn->prepare("SELECT COUNT(*) AS total_monitors FROM monitor");
 $stmt->execute();
@@ -89,7 +86,7 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $totalMonitors = $row['total_monitors'] ?? 0;
 
-// Count system
+// Count system units
 $stmt = $conn->prepare("SELECT COUNT(system_name) AS total_systems FROM `system`");
 $stmt = $conn->prepare("SELECT COUNT(*) AS total_systems FROM `system`");
 $stmt->execute();
@@ -97,12 +94,6 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $totalSystems  = $row['total_systems'] ?? 0;
 
-// Count computers
-// $stmt = $conn->prepare("SELECT COUNT(*) AS total_computers FROM computers");
-// $stmt->execute();
-// $result = $stmt->get_result();
-// $row = $result->fetch_assoc();
-// $totalComputers  = $row['total_computers'] ?? 0;
 $stmt = $conn->prepare("SELECT 
                         (SELECT COUNT(*) FROM monitor) +
                         (SELECT COUNT(*) FROM system) 
@@ -174,7 +165,7 @@ $totalComputers  = $row['total_computers'] ?? 0;
             <?php } else { ?>
                 <a href="#">
                 <?php } ?>
-                    <div class="cardName" title="View All Computers">Computers</div>
+                    <div class="cardName" title="View All Computers">TotalDevices</div>
                 </a>
         </div>
         <div class="iconBx">

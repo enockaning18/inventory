@@ -54,7 +54,7 @@ if ($result && $result->num_rows > 0) {
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="my-auto">
                 <ion-icon name="book-outline"></ion-icon>
-                Systems
+                System Units
             </h3>
             <div>
                 <div class="btn text-white px-2 bg-primary ">Monitors: <?php echo $totalMonitors ?> </div>
@@ -101,7 +101,7 @@ if ($result && $result->num_rows > 0) {
                             <select name="memory_type" id="memory_type" class="form-select">
                                 <option value="">All Memory</option>
                                 <?php
-                                $query_command = "SELECT DISTINCT memory_size  FROM `system` ";
+                                $query_command = "SELECT DISTINCT memory_size  FROM `system`";
                                 $result = $conn->query($query_command);
                                 while ($memory = $result->fetch_assoc()) {
                                     echo '<option value="' . $memory['memory_size'] . '">' . $memory['memory_size'] . "GB" . '</option>';
@@ -112,7 +112,7 @@ if ($result && $result->num_rows > 0) {
                             <select name="drive_type" id="drive_type" class="form-select">
                                 <option value="">All HDD/SSD</option>
                                 <?php
-                                $query_command = "SELECT DISTINCT hard_drive_size FROM `system` ";
+                                $query_command = "SELECT DISTINCT hard_drive_size FROM `system`";
                                 $result = $conn->query($query_command);
                                 while ($drive = $result->fetch_assoc()) {
                                     echo '<option value="' . $drive['hard_drive_size'] . '">' . $drive['hard_drive_size'] . "GB" . '</option>';
@@ -131,7 +131,7 @@ if ($result && $result->num_rows > 0) {
                                     <th>SystemInfo</th>
                                     <th>Brand</th>
                                     <th>Serial_No</th>
-                                    <th>Iseries</th>
+                                    <th>Series</th>
                                     <th>Processor</th>
                                     <th>Speed</th>
                                     <th>Generation</th>
