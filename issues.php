@@ -51,9 +51,14 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     require("includes/topbar.php");
     ?>
     <div class=" mx-auto" style="margin-top: 4rem; width:85%">
-        <div class="d-flex justify-content-between align-items-center">
-            <h3><ion-icon name="alert-circle-outline"></ion-icon> Issues </h3>
-            <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Issue </button>
+        <div class="d-flex justify-content-between ">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3><ion-icon name="alert-circle-outline"></ion-icon> Issues </h3>
+            </div>
+            <div class="d-flex align-items-center">
+                <button type="submit" form="Form" class="btn text-white px-4" style="background-color:rgb(200, 72, 105)">Save/Update Issue </button>
+                <a href="issues_list.php" class="ms-3 btn text-white px-4 bg-success ">View Issues</a>
+            </div>
         </div>
         <hr style="margin-bottom: 3rem;">
         <div class="g-3" style="margin-bottom: 7rem">
