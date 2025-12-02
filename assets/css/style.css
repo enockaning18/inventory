@@ -71,10 +71,7 @@ body {
   color: maroon !important;
 }
 
-/* .navigation ul li.active .icon,
-.navigation ul li.active .title {
-  color: maroon !important;
-} */
+
 
 /* Curved hover effect for dropdown parent */
 .navigation ul li.dropdown:hover,
@@ -124,12 +121,12 @@ body {
 /* Disable hover for dropdown parents */
 .navigation ul li.dropdown:hover,
 .navigation ul li.dropdown.hovered {
-  background-color: rgb(186, 20, 20) !important; /* keep original bg */
+  background-color: rgb(186, 20, 20) !important; 
 }
 
 .navigation ul li.dropdown:hover a,
 .navigation ul li.dropdown.hovered a {
-  color: #fff !important; /* keep original text color */
+  color: #fff !important;
 }
 
 /* Remove hover curve for dropdown parents */
@@ -165,7 +162,7 @@ body {
 /* Dropdown Menu */
 .navigation ul li .dropdown-menu {
   display: none;
-  background: rgb(186, 20, 20) !important; /* FIXED */
+  background: rgb(186, 20, 20) !important; 
   position: relative;
   width: 100%;
   padding-left: 15px;
@@ -184,14 +181,14 @@ body {
   display: block;
 }
 
-/* ❗ Prevent submenu hover from turning white */
+/*  Prevent submenu hover from turning white */
 .navigation ul li .dropdown-menu li:hover,
 .navigation ul li .dropdown-menu li.hovered {
   background: rgb(186, 20, 20) !important;
   color: #fff !important;
 }
 
-/* ❗ Parent dropdown should NOT turn white */
+/*  Parent dropdown should NOT turn white */
 .navigation ul li.dropdown.active {
   background: rgb(186, 20, 20) !important;
 }
@@ -213,10 +210,6 @@ body {
    END DROPDOWN FIXES
 ------------------------------------------- */
 
-/* .navigation ul li:nth-child(1) {
-  margin-bottom: 40px;
-  pointer-events: none;
-} */
 
 /* General Link Styles */
 .navigation ul li a {
