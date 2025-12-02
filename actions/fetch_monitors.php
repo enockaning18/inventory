@@ -51,13 +51,13 @@ if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
-                <td>" . htmlspecialchars($row['monitor_name']) . "</td>
-                <td>" . htmlspecialchars($row['brand_name']) . "</td>
-                <td>" . htmlspecialchars($row['monitor_serial']) . "</td>
-                <td>" . htmlspecialchars($row['size']) . "</td>
-                <td>" . htmlspecialchars($row['lab_name']) . "</td>
-                <td>" . htmlspecialchars($row['date_added']) . "</td>
-                <td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['monitor_name']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['brand_name']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['monitor_serial']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['size']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['lab_name']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['date_added']) . "</td>
+                <td style='white-space: nowrap;'>
                 <a class='text-decoration-none'href='actions/edit_monitor.php?id=" . $row['id'] . "'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>

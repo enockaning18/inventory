@@ -119,18 +119,18 @@ if ($result->num_rows > 0) {
 
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
-                <td>" . htmlspecialchars($row['device_name']) ?? '' . "</td>
-                <td>" . htmlspecialchars($row['brand_name']) ?? ''. "</td>
-                <td>" . htmlspecialchars($row['serial_number']) ?? ''. "</td>
-                <td>" . htmlspecialchars($row['iseries']) ?? ''. "</td>
-                <td>" . htmlspecialchars($row['processor_type']) ?? ''. "</td>
-                <td>" . htmlspecialchars($row['speed']) ?? ''. "</td>
-                <td>" . htmlspecialchars($row['generation']) ?? ''. "</td>
-                <td>" . htmlspecialchars($row['memory_size']) ?? ''. "</td>
-                <td>" . htmlspecialchars($row['hard_drive_size']) ?? ''. "</td>
-                <td>" . htmlspecialchars($row['lab_name']) ?? ''. "</td>
-                <td>" . htmlspecialchars($row['date_added']) ?? ''. "</td>
-                <td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['device_name']) ?? '' . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['brand_name']) ?? '' . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['serial_number']) ?? '' . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['iseries']) ?? '' . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['processor_type']) ?? '' . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['speed']) ?? '' . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['generation']) ?? '' . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['memory_size']) ?? '' . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['hard_drive_size']) ?? '' . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['lab_name']) ?? '' . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['date_added']) ?? '' . "</td>
+                <td style='white-space: nowrap;'>
                     <a class='text-decoration-none' href='actions/edit_system.php?id=" . $row['id'] . "'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>

@@ -17,7 +17,7 @@ $sql = "
         lab.*, 
         lab.id AS labid, 
         course.course_name, 
-        course.id AS courseid 
+        course.id  style='white-space: nowrap;'AS courseid 
     FROM lab 
     INNER JOIN course ON course.id = lab.course_id 
     WHERE 1
@@ -50,11 +50,11 @@ if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
-                <td>" . htmlspecialchars($row['lab_name']) . "</td>
-                <td>" . htmlspecialchars($row['course_name']) . "</td>
-                <td>" . htmlspecialchars($row['number_computers']) . " pcs</td>
-                <td>" . htmlspecialchars($row['date_added']) . "</td>
-                <td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['lab_name']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['course_name']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['number_computers']) . " pcs</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['date_added']) . "</td>
+                <td style='white-space: nowrap;'>
                     <a class='text-decoration-none' href='actions/edit_lab.php?id=" . $row['labid'] . "' title='Edit'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>

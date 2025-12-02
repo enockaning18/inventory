@@ -35,11 +35,11 @@ if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
                 <th scope='row'>" . $counter++ . "</th>
-                <td>" . htmlspecialchars($row['modname']) . "</td>
-                <td>" . htmlspecialchars($row['semester']) . "</td>
-                <td>" . htmlspecialchars($row['coursename']) . "</td>
-                <td>" . htmlspecialchars($row['datecreated']) . "</td>
-                <td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['modname']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['semester']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['coursename']) . "</td>
+                <td style='white-space: nowrap;'>" . htmlspecialchars($row['datecreated']) . "</td>
+                <td style='white-space: nowrap;'>
                     <a class='text-decoration-none' href='actions/edit_module.php?id=" . $row['modid'] . "'>
                         <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                     </a>

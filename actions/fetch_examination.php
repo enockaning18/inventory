@@ -67,7 +67,7 @@ $result = $conn->query($sql);
 if ($result && $result->num_rows > 0) {
     $counter = 1;
     while ($row = $result->fetch_assoc()) {
-        
+
         $status = htmlspecialchars($row['status']);
         $badgeClass = '';
 
@@ -87,17 +87,17 @@ if ($result && $result->num_rows > 0) {
 
         echo "<tr>
             <th scope='row'>{$counter}</th>
-            <td>" . htmlspecialchars($row['examination_date']) . "</td>
-            <td>" . htmlspecialchars($row['course']) . "</td>
-            <td>" . htmlspecialchars($row['module']) . "</td>
-            <td>" . htmlspecialchars($row['batch_time']) . "</td>
-            <td>" . htmlspecialchars($row['session']) . "</td>            
-            <td>" . htmlspecialchars($row['start_time']) . "</td>
-            <td>" . htmlspecialchars($row['batch_semester']) . "</td>
-            <td>" . htmlspecialchars($row['instructor_name']) . "</td>
-            <td><span class='badge {$badgeClass}'>" . htmlspecialchars(ucfirst($status)) . "</span></td>
-            <td>" . htmlspecialchars($row['date_booked']) . "</td>
-            <td>";
+            <td style='white-space: nowrap;'>" . htmlspecialchars($row['examination_date']) . "</td>
+            <td style='white-space: nowrap;'>" . htmlspecialchars($row['course']) . "</td>
+            <td style='white-space: nowrap;'>" . htmlspecialchars($row['module']) . "</td>
+            <td style='white-space: nowrap;'>" . htmlspecialchars($row['batch_time']) . "</td>
+            <td style='white-space: nowrap;'>" . htmlspecialchars($row['session']) . "</td>            
+            <td style='white-space: nowrap;'>" . htmlspecialchars($row['start_time']) . "</td>
+            <td style='white-space: nowrap;'>" . htmlspecialchars($row['batch_semester']) . "</td>
+            <td style='white-space: nowrap;'>" . htmlspecialchars($row['instructor_name']) . "</td>
+            <td style='white-space: nowrap;'><span class='badge {$badgeClass}'>" . htmlspecialchars(ucfirst($status)) . "</span></td>
+            <td style='white-space: nowrap;'>" . htmlspecialchars($row['date_booked']) . "</td>
+            <td style='white-space: nowrap;'>";
 
         // Role-based actions
         if ($usertype === 'admin') {
@@ -114,7 +114,7 @@ if ($result && $result->num_rows > 0) {
                 <a href='actions/update_exam_status.php?id={$row['id']}&status=pending' class='text-decoration-none'>
                     <i class='bi bi-hourglass-split text-warning fs-5 ms-1'></i>
                 </a>
-                <a href='actions/update_exam_status.php?id={$row['id']}&status=cancelled' class='text-decoration-none'>
+                <a' href='actions/update_exam_status.php?id={$row['id']}&status=cancelled' class='text-decoration-none'>
                     <i class='bi bi-x-circle-fill text-danger fs-5 ms-1'></i>
                 </a>
             ";
