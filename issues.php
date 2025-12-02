@@ -8,7 +8,7 @@ require_once('baseConnect/dbConnect.php');
 
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, issue_type, lab, issue_date, issue_description, computer, sent_to_accra, device_category, serial_number FROM issues WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, issue_type, lab, issue_date, issue_description, computer, sent_to_accra, device_category, serial_number, issue_status FROM issues WHERE id = ?");
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
@@ -22,6 +22,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         $sent_to_accra = $row['sent_to_accra'];
         $device_category = $row['device_category'];
         $serial_number = $row['serial_number'];
+        $issue_status = $row['issue_status'];
     }
     $stmt->close();
 } ?>
@@ -108,13 +109,12 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 <div class="col-md-4">
                     <label class="form-label">Issue Status</label>
                     <select required id="issueStatus" name="issue_status" class="form-select">
-                        <option value="">Select</option>
-                        <option value="Pending" selected>Pending</option>
-                        <option value="Resolved">Resolved</option>
+                        <option value="Pending" <?php echo (isset($issue_status) && $issue_status == 'Pending') ? 'selected' : '' ?>>Pending</option>
+                        <option value="Resolved" <?php echo (isset($issue_status) && $issue_status == 'Resolved') ? 'selected' : '' ?>>Resolved</option>
                     </select>
                 </div>
 
-                <div class="col-md-4" id="resolutionTypeDiv" style="display: none;">
+                <div class="col-md-7" id="resolutionTypeDiv" style="display: none;">
                     <label class="form-label">Resolution Type</label>
                     <select id="resolutionType" name="resolved_type	" class="form-select">
                         <option value="">Select</option>
@@ -129,15 +129,9 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <input required type="date" name="issue_date" value="<?php echo isset($issue_date) ? $issue_date  : '' ?>" class="form-control">
                 </div>
 
-
-                <div class="col-md-8">
-                    <label class="form-label">Issue Description</label>
-                    <textarea class="form-control" name="issue_description" id=""><?php echo isset($issue_description) ? $issue_description  : '' ?></textarea>
-                </div>
-
                 <div class="col-md-4">
                     <label class="form-label">Sent to Accra</label>
-                    <div class="">
+                    <div class="d-flex gap-4">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="sent_to_accra" id="sentYes" value="1" <?php echo (isset($sent_to_accra) && $sent_to_accra == 1 ? 'checked' : '') ?>>
                             <label class="form-check-label" for="sentYes">Yes</label>
@@ -149,11 +143,19 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     </div>
                 </div>
 
+
+                <div class="col-md-12">
+                    <label class="form-label">Issue Description</label>
+                    <textarea class="form-control" cols='5' name="issue_description" id=""><?php echo isset($issue_description) ? $issue_description  : '' ?></textarea>
+                </div>
+
+
+
             </form>
         </div>
     </div>
 
-    
+
     <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/jquery.js"></script>
@@ -220,26 +222,28 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 const category = $(this).val();
                 const deviceTypeSelect = $("#deviceType");
                 const selectedDeviceId = "<?php echo isset($computer) ? $computer : '' ?>";
-                
+
                 if (category) {
                     $.ajax({
                         url: "actions/fetch_devices_by_category.php",
                         type: "POST",
                         dataType: "json",
-                        data: { category: category },
+                        data: {
+                            category: category
+                        },
                         success: function(data) {
                             deviceTypeSelect.html('<option value="">Select Device</option>');
                             if (data.length > 0) {
                                 data.forEach(function(device) {
                                     const isSelected = selectedDeviceId && device.id == selectedDeviceId ? 'selected' : '';
                                     deviceTypeSelect.append(
-                                        '<option value="' + device.id + '" ' + isSelected + '>' + 
-                                        device.name + 
+                                        '<option value="' + device.id + '" ' + isSelected + '>' +
+                                        device.name +
                                         '</option>'
                                     );
                                 });
                                 deviceTypeSelect.prop("disabled", false);
-                                
+
                                 // If editing, trigger device change to populate serial and lab
                                 if (selectedDeviceId) {
                                     deviceTypeSelect.trigger("change");
@@ -267,13 +271,13 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
             $("#deviceType").on("change", function() {
                 const deviceId = $(this).val();
                 const category = $("#deviceCategory").val();
-                
+
                 if (deviceId && category) {
                     $.ajax({
                         url: "actions/fetch_device_serial.php",
                         type: "POST",
                         dataType: "json",
-                        data: { 
+                        data: {
                             device_id: deviceId,
                             category: category
                         },
@@ -338,7 +342,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                         $("#dateReceived").val(issue.date_added);
                         $("#dateReturned").val(issue.date_returned);
                         $("#modalIssueStatus").val(issue.issue_status || '');
-                        $("#modalResolutionType").val(issue.resolved_type	 || '');
+                        $("#modalResolutionType").val(issue.resolved_type || '');
 
                         // Show/hide resolution type based on status
                         if (issue.issue_status === 'Resolved') {
