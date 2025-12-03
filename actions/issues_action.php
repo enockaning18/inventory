@@ -1,19 +1,28 @@
 <?php
+ob_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 
 require_once('../baseConnect/dbConnect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $id                = mysqli_real_escape_string($conn, $_POST['id']);
-    $computer          = mysqli_real_escape_string($conn, $_POST['system']);       
-    $issue_type        = mysqli_real_escape_string($conn, $_POST['issue_type']);   
-    $lab               = mysqli_real_escape_string($conn, $_POST['lab']);          
-    $issue_date        = mysqli_real_escape_string($conn, $_POST['issue_date']);   
+    $device_type       = mysqli_real_escape_string($conn, $_POST['device_type']);
+    $issue_type        = mysqli_real_escape_string($conn, $_POST['issue_type']);
+    $lab               = mysqli_real_escape_string($conn, $_POST['lab']);
+    $issue_date        = mysqli_real_escape_string($conn, $_POST['issue_date']);
     $issue_description = mysqli_real_escape_string($conn, $_POST['issue_description']);
     $serial_number     = mysqli_real_escape_string($conn, $_POST['serial_number']);
     $issue_status      = mysqli_real_escape_string($conn, $_POST['issue_status']);
-    $sent_to_accra     = mysqli_real_escape_string($conn, $_POST['sent_to_accra']); 
-    $device_category     = mysqli_real_escape_string($conn, $_POST['device_category']); 
+    $sent_to_accra     = mysqli_real_escape_string($conn, $_POST['sent_to_accra']);
+    $device_category   = mysqli_real_escape_string($conn, $_POST['device_category']);
+    $resolved_type     = isset($_POST['resolved_type']) ? mysqli_real_escape_string($conn, $_POST['resolved_type']) : null;
+
+    // Determine which column to use based on category
+    $system_id = ($device_category == 'system') ? $device_type : null;
+    $monitor_id = ($device_category == 'monitor') ? $device_type : null;
 
 
     // ============================================================
@@ -22,7 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($id)) {
 
         $stmt = $conn->prepare("UPDATE issues 
-                                SET computer = ?, 
+                                SET `system` = ?, 
+                                    monitor = ?, 
                                     issue_type = ?, 
                                     lab = ?, 
                                     issue_date = ?, 
@@ -30,14 +40,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     serial_number = ?, 
                                     issue_status = ?, 
                                     sent_to_accra = ?,  
-                                    device_category = ?  
+                                    device_category = ?,
+                                    resolved_type = ?  
                                 WHERE id = ?");
 
         if ($stmt) {
 
             $stmt->bind_param(
-                "isissssisi",
-                $computer,
+                "iisissssissi",
+                $system_id,
+                $monitor_id,
                 $issue_type,
                 $lab,
                 $issue_date,
@@ -46,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $issue_status,
                 $sent_to_accra,
                 $device_category,
+                $resolved_type,
                 $id
             );
 
@@ -67,15 +80,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // ============================================================
     // INSERT ISSUE
     // ============================================================
-    $stmt = $conn->prepare("INSERT INTO issues 
-                            (computer, issue_type, lab, issue_date, issue_description, serial_number, issue_status, sent_to_accra, device_category)
-                            VALUES (?,?,?,?,?,?,?,?,?)");
 
+    $stmt = $conn->prepare("INSERT INTO issues 
+                            (`system`, monitor, issue_type, lab, issue_date, issue_description, serial_number, issue_status, sent_to_accra, device_category, resolved_type)
+                            VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+    
     if ($stmt) {
 
         $stmt->bind_param(
-            "isissssis",
-            $computer,
+            "iisisssssss",
+            $system_id,
+            $monitor_id,
             $issue_type,
             $lab,
             $issue_date,
@@ -83,7 +98,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $serial_number,
             $issue_status,
             $sent_to_accra,
-            $device_category
+            $device_category,
+            $resolved_type
         );
 
         if ($stmt->execute()) {
@@ -99,3 +115,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: ../issues.php?status=error");
     exit();
 }
+?>

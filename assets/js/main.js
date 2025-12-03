@@ -99,11 +99,17 @@ $(document).ready(function () {
     }
   });
 
+  // Trigger resolution type visibility on page load if status is already Resolved
+  if ($("#issueStatus").val() === "Resolved") {
+    $("#resolutionTypeDiv").show();
+    $("#resolutionType").prop("required", true);
+  }
+
   // Fetch devices based on category selection
   $("#deviceCategory").on("change", function () {
     const category = $(this).val();
     const deviceTypeSelect = $("#deviceType");
-    const selectedDeviceId = "<?php echo isset($computer) ? $computer : '' ?>";
+    const selectedDeviceId = window.editMode ? window.editMode.deviceId : "";
 
     if (category) {
       $.ajax({
@@ -262,5 +268,9 @@ $(document).ready(function () {
     }
   });
 });
+
+
+
+
 
 /* =============== issue scripts ================ */

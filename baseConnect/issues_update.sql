@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 02, 2025 at 12:44 PM
+-- Generation Time: Dec 03, 2025 at 12:44 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -29,7 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `issues` (
   `id` int(11) NOT NULL,
-  `computer` int(11) NOT NULL,
+  `system` int(11) DEFAULT NULL,
+  `monitor` int(11) DEFAULT NULL,
   `serial_number` varchar(100) NOT NULL,
   `issue_type` varchar(100) NOT NULL,
   `resolved_type` varchar(50) DEFAULT NULL,
@@ -44,13 +45,6 @@ CREATE TABLE `issues` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `issues`
---
-
-INSERT INTO `issues` (`id`, `computer`, `serial_number`, `issue_type`, `resolved_type`, `lab`, `issue_status`, `issue_date`, `issue_description`, `sent_to_accra`, `date_added`, `date_returned`, `device_category`) VALUES
-(22, 5, 'ASDASADA24', 'Hardware', 'Repaired & Returned', 7, 'Resolved', '2025-12-19', 'Ram replacement ', 1, '2025-12-02 11:39:37', '2025-12-02', 'monitor');
-
---
 -- Indexes for dumped tables
 --
 
@@ -60,7 +54,8 @@ INSERT INTO `issues` (`id`, `computer`, `serial_number`, `issue_type`, `resolved
 ALTER TABLE `issues`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fklab_id` (`lab`),
-  ADD KEY `computer_id` (`computer`);
+  ADD KEY `computer_id` (`system`),
+  ADD KEY `fk_monitor_id` (`monitor`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -80,7 +75,8 @@ ALTER TABLE `issues`
 -- Constraints for table `issues`
 --
 ALTER TABLE `issues`
-  ADD CONSTRAINT `computer_id` FOREIGN KEY (`computer`) REFERENCES `system` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_monitor_id` FOREIGN KEY (`monitor`) REFERENCES `monitor` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_system_id` FOREIGN KEY (`system`) REFERENCES `system` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fklab_id` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE;
 COMMIT;
 

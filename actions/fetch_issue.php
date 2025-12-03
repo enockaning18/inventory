@@ -13,7 +13,8 @@ $issue_type  = isset($_POST['issue_type']) ? trim($_POST['issue_type']) : '';
 $lab_type    = isset($_POST['lab_type']) ? trim($_POST['lab_type']) : '';
 
 $sql = "SELECT issues.*, system.system_name AS device_name, lab.lab_name AS labname FROM issues
-        LEFT JOIN `system` ON issues.computer = system.id
+        LEFT JOIN `system` ON issues.system = system.id
+        LEFT JOIN `monitor` ON issues.monitor = monitor.id
         LEFT JOIN lab ON issues.lab = lab.id
         WHERE 1";
 
@@ -107,7 +108,7 @@ if ($result && $result->num_rows > 0) {
     }
 } else {
     // table in issues.php has 10 columns now, use colspan=10
-    echo "<tr><td colspan='10' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Issue Record(s) Found</td></tr>";
+    echo "<tr><td colspan='20' class='text-center' style='color: maroon; font-size: 18px;'>Oops! No Issue Record(s) Found</td></tr>";
 }
 
 $conn->close();
