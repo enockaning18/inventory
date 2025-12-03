@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 03, 2025 at 12:44 PM
+-- Generation Time: Dec 03, 2025 at 02:42 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -40,9 +40,17 @@ CREATE TABLE `issues` (
   `issue_description` varchar(500) NOT NULL,
   `sent_to_accra` tinyint(1) NOT NULL,
   `date_added` datetime NOT NULL DEFAULT current_timestamp(),
-  `date_returned` date DEFAULT current_timestamp(),
+  `date_returned` date DEFAULT NULL,
   `device_category` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `issues`
+--
+
+INSERT INTO `issues` (`id`, `system`, `monitor`, `serial_number`, `issue_type`, `resolved_type`, `lab`, `issue_status`, `issue_date`, `issue_description`, `sent_to_accra`, `date_added`, `date_returned`, `device_category`) VALUES
+(33, 5, NULL, 'ASDASADA23', 'Software', 'Unrepaired & Replaced', 3, 'Resolved', '2025-12-14', 'Software Update ', 1, '2025-12-03 13:25:01', '2025-12-03', 'system'),
+(34, NULL, 9, 'ASDASADA661', 'Hardware', 'N/A', 7, 'Pending', '2025-12-12', 'Screen Replacement ', 0, '2025-12-03 13:27:20', NULL, 'monitor');
 
 --
 -- Indexes for dumped tables
@@ -65,7 +73,7 @@ ALTER TABLE `issues`
 -- AUTO_INCREMENT for table `issues`
 --
 ALTER TABLE `issues`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- Constraints for dumped tables
