@@ -69,7 +69,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                                 <option value="Hardware">Hardware </option>
                             </select>
 
-                            <select name="issues_status" id="issues_status" class="form-select">
+                            <select name="issue_status" id="issue_status" class="form-select">
                                 <option value="">Issue Status</option>
                                 <option value="Pending">Pending </option>
                                 <option value="Resolved">Resolved </option>
