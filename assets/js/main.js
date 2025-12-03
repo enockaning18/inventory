@@ -2,11 +2,13 @@
 let list = document.querySelectorAll(".navigation li");
 
 function activeLink() {
-  list.forEach((item) => item.classList.remove("hovered"));
+  list.forEach((item) => {
+    item.classList.remove("hovered");
+  });
   this.classList.add("hovered");
 }
 
-list.forEach((item) => item.addEventListener("click", activeLink));
+list.forEach((item) => item.addEventListener("mouseover", activeLink));
 
 // Menu Toggle
 let toggle = document.querySelector(".toggle");
@@ -25,15 +27,26 @@ document.querySelectorAll(".dropdown-toggle").forEach((drop) => {
   });
 }); // Dropdown Menu
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* =============== issue scripts ================ */
 $(document).ready(function () {
   // Function to load issues
-  function load_issues(
-    search = "",
-    issue_type = "",
-    lab_type = "",
-    issue_status = ""
-  ) {
+  function load_issues(search = "", issue_type = "", lab_type = "", issue_status = "") {
     $.ajax({
       url: "actions/fetch_issue.php",
       type: "POST",
@@ -61,14 +74,13 @@ $(document).ready(function () {
     load_issues(search, issue_type, lab_type, issue_status);
   });
 
-  // filteration by lab, issue type and status
+  // Filter dropdown change event by issue_type, lab_type, and issue_status
   $("#issue_type, #lab_type, #issue_status").on("change", function () {
-    load_issues(
-      $("#searchBox").val(),
-      $("#issue_type").val(),
-      $("#lab_type").val(),
-      $("#issue_status").val()
-    );
+    const search = $("#searchBox").val();
+    const issue_type = $("#issue_type").val();
+    const lab_type = $("#lab_type").val();
+    const issue_status = $("#issue_status").val();
+    load_issues(search, issue_type, lab_type, issue_status);
   });
 
   // Show/hide resolution type dropdown based on issue status
@@ -83,7 +95,13 @@ $(document).ready(function () {
     }
   });
 
-  // Trigger resolution type visibility on page load if status is already Resolved
+  // Trigger on page load if status is already Resolved
+  if (window.editMode && window.editMode.issueStatus === "Resolved") {
+    $("#resolutionTypeDiv").show();
+    $("#resolutionType").prop("required", true);
+  }
+
+  // Also trigger immediately on DOM ready based on current select value
   if ($("#issueStatus").val() === "Resolved") {
     $("#resolutionTypeDiv").show();
     $("#resolutionType").prop("required", true);
@@ -91,13 +109,9 @@ $(document).ready(function () {
 
   // Fetch devices based on category selection
   $("#deviceCategory").on("change", function () {
-    computer = document.getElementById("deviceCategory");
-    if (category != "") {
-      categoryid = category;
-    }
     const category = $(this).val();
     const deviceTypeSelect = $("#deviceType");
-    const selectedDeviceId = window.editMode ? window.editMode.deviceId : "";
+    const selectedDeviceId = window.editMode ? window.editMode.deviceId : '';
 
     if (category) {
       $.ajax({
@@ -203,7 +217,7 @@ $(document).ready(function () {
   }
 
   // If device category is already selected on load (edit flow), trigger change to populate devices
-  if ($("#deviceCategory").val()) {
+  if ($("#deviceCategory").val() && window.editMode && window.editMode.deviceCategory) {
     $("#deviceCategory").trigger("change");
   }
 
@@ -256,9 +270,5 @@ $(document).ready(function () {
     }
   });
 });
-
-
-
-
 
 /* =============== issue scripts ================ */

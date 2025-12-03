@@ -18,8 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $issue_status      = mysqli_real_escape_string($conn, $_POST['issue_status']);
     $sent_to_accra     = mysqli_real_escape_string($conn, $_POST['sent_to_accra']);
     $device_category   = mysqli_real_escape_string($conn, $_POST['device_category']);
-    $resolved_type     = isset($_POST['resolved_type']) ? mysqli_real_escape_string($conn, $_POST['resolved_type']) : null;
-
+    $resolved_type     = mysqli_real_escape_string($conn, $_POST['resolved_type'] ?? 'N/A');
     // Determine which column to use based on category
     $system_id = ($device_category == 'system') ? $device_type : null;
     $monitor_id = ($device_category == 'monitor') ? $device_type : null;
@@ -84,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare("INSERT INTO issues 
                             (`system`, monitor, issue_type, lab, issue_date, issue_description, serial_number, issue_status, sent_to_accra, device_category, resolved_type)
                             VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-    
+
     if ($stmt) {
 
         $stmt->bind_param(
@@ -115,4 +114,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: ../issues.php?status=error");
     exit();
 }
-?>

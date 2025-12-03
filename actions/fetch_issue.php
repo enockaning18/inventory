@@ -10,8 +10,8 @@ if (!$conn) {
 // Collect filters
 $search         = isset($_POST['search']) ? trim($_POST['search']) : '';
 $issue_type     = isset($_POST['issue_type']) ? trim($_POST['issue_type']) : '';
-$issue_status   = isset($_POST['issue_status']) ? trim($_POST['issue_status']) : '';
 $lab_type       = isset($_POST['lab_type']) ? trim($_POST['lab_type']) : '';
+$issue_status   = isset($_POST['issue_status']) ? trim($_POST['issue_status']) : '';
 
 $sql = "SELECT issues.*, system.system_name AS device_name, lab.lab_name AS labname FROM issues
         LEFT JOIN `system` ON issues.system = system.id
@@ -55,6 +55,12 @@ if (!empty($issue_type)) {
     $sql .= " AND issues.issue_type = '$issue_type' ";
 }
 
+// Filter by issue status
+if (!empty($issue_status)) {
+    $issue_status = $conn->real_escape_string($issue_status);
+    $sql .= " AND issues.issue_status = '$issue_status' ";
+}
+
 $sql .= " ORDER BY issues.id DESC";
 $result = $conn->query($sql);
 
@@ -88,7 +94,7 @@ if ($result && $result->num_rows > 0) {
                 <th scope='row' style='white-space: nowrap;'>" . $counter++ . "</th>
                 <td style='white-space: nowrap;  text-transform: capitalize;' >" . htmlspecialchars($row['device_category']) . "</td>
                 <td style='white-space: nowrap;'>
-                    <div>" . htmlspecialchars($row['device_name']) . "</div>
+                    <div>" . htmlspecialchars($row['device_name']?? '') . "</div>
                     <div class='text-muted small'>" . htmlspecialchars($row['serial_number']) . "</div>                
                 </td>
                 <td style='white-space: nowrap;'>" . htmlspecialchars($row['issue_type']) . "</td>

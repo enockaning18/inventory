@@ -8,7 +8,7 @@ require_once('baseConnect/dbConnect.php');
 
 if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     $edit_id = intval($_GET['edit_id']);
-    $stmt = $conn->prepare("SELECT id, issue_type, lab, issue_date, issue_description, `system`, monitor, sent_to_accra, device_category, serial_number, issue_status FROM issues WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, issue_type, lab, issue_date, issue_description, `system`, monitor, sent_to_accra, device_category, serial_number, issue_status, resolved_type FROM issues WHERE id = ?");
     $stmt->bind_param("i", $edit_id);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
@@ -24,6 +24,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
         $device_category = $row['device_category'];
         $serial_number = $row['serial_number'];
         $issue_status = $row['issue_status'];
+        $resolved_type = $row['resolved_type'];
     }
     $stmt->close();
 } ?>
@@ -121,11 +122,11 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                 </div>
 
                 <div class="col-md-4" id="resolutionTypeDiv" style="display: none;">
-                    <label class="form-label">Resolution Type</label>
-                    <select id="resolutionType" name="resolved_type	" class="form-select">
-                        <option value="">Select</option>
-                        <option value="Repaired & Returned">Repaired & Returned</option>
-                        <option value="Unrepaired & Replaced">Unrepaired & Replaced</option>
+                    <label class="form-label">Resolved Type</label>
+                    <select id="resolutionType" name="resolved_type" class="form-select">
+                        <option value="N/A">Select</option>
+                        <option value="Repaired & Returned" <?php echo (isset($resolved_type) && $resolved_type == 'Repaired & Returned') ? 'selected' : '' ?>>Repaired & Returned</option>
+                        <option value="Unrepaired & Replaced" <?php echo (isset($resolved_type) && $resolved_type == 'Unrepaired & Replaced') ? 'selected' : '' ?>>Unrepaired & Replaced</option>
                     </select>
                 </div>
 
@@ -139,11 +140,11 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                     <label class="form-label">Sent to Accra</label>
                     <div class="d-flex gap-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentYes" value="1" <?php echo (isset($sent_to_accra) && $sent_to_accra == 1 ? 'checked' : '') ?>>
+                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentYes" value="1" <?php echo (isset($sent_to_accra) && $sent_to_accra == 1 ? 'checked' : '') ?> required>
                             <label class="form-check-label" for="sentYes">Yes</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentNo" value="0" <?php echo (isset($sent_to_accra) && $sent_to_accra == 0 ? 'checked' : '') ?>>
+                            <input class="form-check-input" type="radio" name="sent_to_accra" id="sentNo" value="0" <?php echo (isset($sent_to_accra) && $sent_to_accra == 0 ? 'checked' : '') ?> required>
                             <label class="form-check-label" for="sentNo">No</label>
                         </div>
                     </div>
@@ -222,18 +223,19 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script>
         // Pass PHP variables to JavaScript for edit mode
         <?php if (isset($id)): ?>
-        window.editMode = {
-            deviceCategory: "<?php echo isset($device_category) ? $device_category : ''; ?>",
-            deviceId: "<?php echo isset($system) ? $system : (isset($monitor) ? $monitor : ''); ?>",
-            serialNumber: "<?php echo isset($serial_number) ? htmlspecialchars($serial_number) : ''; ?>",
-            labId: "<?php echo isset($lab) ? $lab : ''; ?>",
-            issueStatus: "<?php echo isset($issue_status) ? $issue_status : ''; ?>"
-        };
+            window.editMode = {
+                deviceCategory: "<?php echo isset($device_category) ? $device_category : ''; ?>",
+                deviceId: "<?php echo isset($system) ? $system : (isset($monitor) ? $monitor : ''); ?>",
+                serialNumber: "<?php echo isset($serial_number) ? htmlspecialchars($serial_number) : ''; ?>",
+                labId: "<?php echo isset($lab) ? $lab : ''; ?>",
+                issueStatus: "<?php echo isset($issue_status) ? $issue_status : ''; ?>",
+                resolvedType: "<?php echo isset($resolved_type) ? $resolved_type : ''; ?>"
+            };
         <?php else: ?>
-        window.editMode = null;
+            window.editMode = null;
         <?php endif; ?>
     </script>
 
 </body>
 
-</html> 
+</html>
