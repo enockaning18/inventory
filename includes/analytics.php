@@ -43,6 +43,30 @@ $row = $result->fetch_assoc();
 
 $totalIssues = $row['total_issues'] ?? 0;
 
+// Count total faulty computers sent to accra
+$stmt = $conn->prepare("SELECT COUNT(*) AS total_issuesto_accra FROM issues WHERE sent_to_accra = 1");
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+
+$totalIssuestoAccra = $row['total_issuesto_accra'] ?? 0;
+
+// Count total computers returned
+$stmt = $conn->prepare("SELECT COUNT(*) AS total_computers_returned FROM issues WHERE resolved_type = 'Repaired & Returned'");
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+
+$totalReturns = $row['total_computers_returned'] ?? 0;
+
+// Count total computers replaced
+$stmt = $conn->prepare("SELECT COUNT(*) AS total_computers_replaced FROM issues WHERE resolved_type = 'Unrepaired & Replaced'");
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+
+$totalReplacements = $row['total_computers_replaced'] ?? 0;
+
 // Count total instructors
 $stmt = $conn->prepare("SELECT COUNT(*) AS total_instructors FROM instructors");
 $stmt->execute();
@@ -59,16 +83,6 @@ $row = $result->fetch_assoc();
 
 $totalCourses = $row['total_courses'] ?? 0;
 
-// Count total replacement computers
-$word = 'replace';
-$word = "%{$word}%";
-$stmt = $conn->prepare("SELECT COUNT(*) AS total_replacement FROM issues WHERE issue_description LIKE ?");
-$stmt->bind_param("s", $word);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-
-$totalReplacements = $row['total_replacement'] ?? 0;
 
 // Count total computers
 // Count system units
@@ -281,7 +295,7 @@ $totalComputers  = $row['total_computers'] ?? 0;
     </div>
     <div class="card-toFlex">
         <div class="cardContent">
-            <div class="numbers"><?php echo isset($totalIssues) ? $totalIssues : '0'; ?></div>
+            <div class="numbers"><?php echo isset($totalIssuestoAccra) ? $totalIssuestoAccra : '0'; ?></div>
             <?php
             if ($usertype == 'admin') {
             ?>
@@ -298,7 +312,7 @@ $totalComputers  = $row['total_computers'] ?? 0;
     </div>
     <div class="card-toFlex">
         <div class="cardContent">
-            <div class="numbers"><?php echo isset($totalIssues) ? $totalIssues : '0'; ?></div>
+            <div class="numbers"><?php echo isset($totalReturns) ? $totalReturns : '0'; ?></div>
             <?php
             if ($usertype == 'admin') {
             ?>
@@ -306,7 +320,7 @@ $totalComputers  = $row['total_computers'] ?? 0;
                 <?php } else { ?>
                     <a href="#">
                     <?php } ?>
-                    <div class="cardName" title="View Faulty Computers">Returned</div>
+                    <div class="cardName" title="View Faulty Computers">Returns</div>
                     </a>
         </div>
         <div class="iconBx">

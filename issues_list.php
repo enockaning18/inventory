@@ -64,9 +64,15 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
                             <input type="search" class="form-control" style="padding-right: 150px" id="searchBox" name="search" placeholder="Search..">
 
                             <select name="issue_type" id="issue_type" class="form-select">
-                                <option value="">All Issues </option>
+                                <option value="">Issues Type</option>
                                 <option value="Software">Software </option>
                                 <option value="Hardware">Hardware </option>
+                            </select>
+
+                            <select name="issue_status" id="issue_status" class="form-select">
+                                <option value="">Issue Status</option>
+                                <option value="Pending">Pending </option>
+                                <option value="Resolved">Resolved </option>
                             </select>
 
                             <select name="lab_type" id="lab_type" class="form-select">
@@ -123,8 +129,6 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-
-
     <?php
     $title = "Issue ";
     successAlert($title);
@@ -175,5 +179,4 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
     </div>
 
 </body>
-
 </html>
