@@ -63,7 +63,7 @@
     </div>
 
     <!-- ================= computer ================ -->
-    <div class="recentCustomers">
+    <div class="recentCustomers" style="height: 400px;">
         <div class="cardHeader">
             <h2>Computers Info</h2>
         </div>

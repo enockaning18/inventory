@@ -12,6 +12,7 @@ if (isset($_POST['generate_report'])) {
 
     $table = $_POST['report_type'];
     $start = $_POST['start_date'];
+    $issue_status = $_POST['issue_status'];
     $end   = $_POST['end_date'];
 
     if (empty($table)) {
@@ -20,7 +21,7 @@ if (isset($_POST['generate_report'])) {
     }
 
     // Valid tables
-    $validTables = ['computers','lab','issues','instructors','users','examination'];
+    $validTables = ['system', 'monitor', 'lab', 'issues', 'instructors', 'users', 'examination'];
     if (!in_array($table, $validTables)) {
         echo "<!--SPLIT--><tr><td colspan='10' class='text-center text-danger'>Invalid Report</td></tr>";
         exit;
@@ -29,13 +30,19 @@ if (isset($_POST['generate_report'])) {
     // Build SQL
     switch ($table) {
 
-        case 'computers':
-            $sql = "SELECT computers.id, computer_name, serial_number, memory_size,
-                           lab.lab_name, brand.brand_name, computers.date_added, hard_drive_size
-                    FROM computers 
-                    INNER JOIN lab   ON computers.lab   = lab.id
-                    INNER JOIN brand ON computers.brand = brand.id 
-                    WHERE computers.date_added BETWEEN ? AND ?";
+        case 'system':
+            $sql = "SELECT system.id, system_name, brand.brand_name AS brand_name, serial_number, memory_size, hard_drive_size, 
+                    processor_type, iseries, speed, generation, lab.lab_name AS lab_name, system.date_added FROM system
+                    INNER JOIN lab   ON system.lab   = lab.id
+                    INNER JOIN brand ON system.brand = brand.id 
+                    WHERE system.date_added BETWEEN ? AND ?";
+            break;
+
+        case 'monitor':
+            $sql = "SELECT monitor.id, monitor_name, `size`, monitor_serial, brand.brand_name AS brand_name, lab.lab_name AS lab_name, monitor.date_added FROM monitor 
+                    INNER JOIN lab   ON monitor.lab   = lab.id
+                    INNER JOIN brand ON monitor.brand = brand.id 
+                    WHERE monitor.date_added BETWEEN ? AND ?";
             break;
 
         case 'lab':
@@ -46,11 +53,14 @@ if (isset($_POST['generate_report'])) {
             break;
 
         case 'issues':
-            $sql = "SELECT issues.*, computers.computer_name AS pc, lab.lab_name AS labname 
-                    FROM issues
-                    INNER JOIN computers ON issues.computer = computers.id
-                    INNER JOIN lab       ON issues.lab      = lab.id
-                    WHERE issues.date_added BETWEEN ? AND ?";
+            $sql = "SELECT issues.id, issues.serial_number, issues.issue_type, issues.resolved_type, issues.lab, issues.issue_status,
+                    issues.issue_date, issues.issue_description,issues.sent_to_accra,issues.date_added, issues.date_returned, issues.device_category,
+                    system.system_name AS system_name, monitor.monitor_name AS monitor_name,lab.lab_name
+                    FROM issues 
+                    LEFT JOIN system ON issues.system = system.id 
+                    LEFT JOIN monitor ON issues.monitor = monitor.id
+                    LEFT JOIN lab ON issues.lab = lab.id 
+                    WHERE issues.date_added BETWEEN ? AND ? AND issues.issue_status = '$issue_status'";
             break;
 
         case 'instructors':
@@ -74,7 +84,7 @@ if (isset($_POST['generate_report'])) {
                         INNER JOIN course      ON examination.course_id    = course.id
                         INNER JOIN module      ON examination.module_id    = module.id
                         INNER JOIN instructors ON examination.instructor_id = instructors.id
-                        WHERE examination.date_added BETWEEN ? AND ?
+                        WHERE examination.examination_date BETWEEN ? AND ?
                         AND examination.instructor_id = $instructorid";
             } else {
                 $sql = "SELECT examination.*,
@@ -86,7 +96,7 @@ if (isset($_POST['generate_report'])) {
                         INNER JOIN module      ON examination.module_id    = module.id
                         INNER JOIN instructors ON examination.instructor_id = instructors.id
                         WHERE status = 'approve'
-                        AND examination.date_added BETWEEN ? AND ?";
+                        AND examination.examination_date BETWEEN ? AND ?";
             }
             break;
     }
@@ -118,18 +128,42 @@ if (isset($_POST['generate_report'])) {
         // TABLE PROCESSING
         switch ($table) {
 
-            case 'computers':
+            case 'monitor':
                 $thead = "<tr>
-                    <th>#</th><th>Computer Name</th><th>Brand</th><th>Serial Number</th>
-                    <th>Memory</th><th>Drive</th><th>Lab</th><th>Date Added</th>
+                    <th>#</th><th>Monitor Name</th><th>Size</th>
+                    <th>Serial Number</th><th>Brand</th><th>Lab</th><th>Date Added</th>
                 </tr>";
 
                 while ($row = $result->fetch_assoc()) {
                     $tbody .= "<tr>
                         <td>{$counter}</td>
-                        <td>{$row['computer_name']}</td>
+                        <td>{$row['monitor_name']}</td>
+                        <td>{$row['size']}</td>
+                        <td>{$row['monitor_serial']}</td>
                         <td>{$row['brand_name']}</td>
+                        <td>{$row['lab_name']}</td>
+                        <td>{$row['date_added']}</td>
+                    </tr>";
+                    $counter++;
+                }
+                break;
+
+            case 'system':
+                $thead = "<tr>
+                    <th>#</th><th>SystemInfo</th><th>Brand</th><th>Series</th>
+                    <th>Processor</th><th>Speed</th><th>Generation</th><th>Memory</th>
+                    <th>HDD/SSD</th><th>Lab</th><th>Date Added</th>
+                </tr>";
+
+                while ($row = $result->fetch_assoc()) {
+                    $tbody .= "<tr>
+                        <td>{$counter}</td>
                         <td>{$row['serial_number']}</td>
+                        <td>{$row['brand_name']}</td>
+                        <td>{$row['iseries']}</td>
+                        <td>{$row['processor_type']}</td>
+                        <td>{$row['speed']}</td>
+                        <td>{$row['generation']}</td>
                         <td>{$row['memory_size']}</td>
                         <td>{$row['hard_drive_size']}</td>
                         <td>{$row['lab_name']}</td>
@@ -158,18 +192,38 @@ if (isset($_POST['generate_report'])) {
 
             case 'issues':
                 $thead = "<tr>
-                    <th>#</th><th>Computer</th><th>Issue Type</th><th>Lab</th>
-                    <th>Issue Date</th><th>Description</th><th>Date Added</th>
+                    <th>#</th>
+                    <th>Category</th>
+                    <th>Device</th>
+                    <th>Issue</th>
+                    <th>Lab</th>
+                    <th>Issue Description</th>
+                    <th>Issue Status</th>
+                    <th>Resolved Type</th>
+                    <th>Date Returned</th>
+                    <th>Sent to Accra</th>
+                    <th>Date Added</th>
                 </tr>";
 
                 while ($row = $result->fetch_assoc()) {
+                    $sentToAccra = (!empty($row['sent_to_accra']) && $row['sent_to_accra'] !== '0') ? 'Yes' : 'No';
+                    $deviceName = $row['system_name'] ?? $row['monitor_name'] ?? 'N/A';
+                    $dateReturned = ($row['date_returned'] ?? 'N/A');
+
                     $tbody .= "<tr>
                         <td>{$counter}</td>
-                        <td>{$row['pc']}</td>
+                        <td>{$row['device_category']}</td>
+                        <td>
+                            <div>{$deviceName}</div>
+                            <div class='text-muted small'>{$row['serial_number']}</div>                
+                        </td>
                         <td>{$row['issue_type']}</td>
-                        <td>{$row['labname']}</td>
-                        <td>{$row['issue_date']}</td>
+                        <td>{$row['lab_name']}</td>
                         <td>{$row['issue_description']}</td>
+                        <td>{$row['issue_status']}</td>
+                        <td>{$row['resolved_type']}</td>
+                        <td>{$dateReturned}</td>
+                        <td>{$sentToAccra}</td>
                         <td>{$row['date_added']}</td>
                     </tr>";
                     $counter++;
@@ -239,7 +293,6 @@ if (isset($_POST['generate_report'])) {
                         </tr>";
                         $counter++;
                     }
-
                 } else {
 
                     $thead = "<tr>
@@ -264,7 +317,7 @@ if (isset($_POST['generate_report'])) {
                             <td>{$row['batch_time']}</td>
                             <td>{$row['instructor_name']}</td>
                             <td>{$row['session']}</td>
-                        </tr>";   
+                        </tr>";
                         $counter++;
                     }
                 }
@@ -272,7 +325,6 @@ if (isset($_POST['generate_report'])) {
         }
 
         echo $caption . "<!--SPLIT-->" . $thead . "<!--SPLIT-->" . $tbody;
-
     } else {
         echo "<!--SPLIT--><tr><td colspan='10' class='text-center text-danger'>No records found for this date.</td></tr>";
     }
@@ -280,4 +332,3 @@ if (isset($_POST['generate_report'])) {
     $stmt->close();
 }
 $conn->close();
-?>

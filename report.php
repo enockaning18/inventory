@@ -32,7 +32,7 @@ require_once('baseConnect/dbConnect.php');
     }
     $usertype = $_SESSION['type'];
 
-?>
+    ?>
 
     <div class="mx-auto" style="margin-top: 4rem; width:85%">
         <div class="d-flex justify-content-between align-items-center">
@@ -47,15 +47,27 @@ require_once('baseConnect/dbConnect.php');
                     <select id="reportType" name="report_type" class="form-select" required>
                         <option value="">Select Report Type:</option>
                         <option value="examination">Examinations</option>
-                <?php
-                    if($usertype == 'admin')
-                    {
-                    ?>
-                        <option value="computers">Computers</option>
-                        <option value="instructors">Instructors</option>
-                        <option value="issues">Issues</option>
-                        <option value="lab">Labs</option> 
+                        <?php
+                        if ($usertype == 'admin') {
+                        ?>
+                            <option value="system">System</option>
+                            <option value="monitor">Monitor</option>
+                            <option value="instructors">Instructors</option>
+                            <option value="issues">Issues</option>
+                    </select>
+
+
+
+
                 <?php } ?>
+                </select>
+                </div>
+                <div id="issueStatusContainer" class="col-md-4" style="display:none;">
+                    <label class="form-label">Issue Status</label>
+                    <select name="issue_status" id="issueStatus" class="form-select">
+                        <option value="">Select Status:</option>
+                        <option value="pending">Pending</option>
+                        <option value="resolved">Resolved</option>
                     </select>
                 </div>
 
@@ -105,44 +117,56 @@ require_once('baseConnect/dbConnect.php');
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <!-- export report to excel -->
-    <?php   include('actions/export_xslx.php'); ?>
+    <?php include('actions/export_xslx.php'); ?>
 
-<script>
-    $(document).ready(function() {
-        $('#ReportForm').on('submit', function(e) {
-            e.preventDefault();
+    <script>
+        $(document).ready(function() {
+            $('#ReportForm').on('submit', function(e) {
+                e.preventDefault();
 
-            // Add manual key to emulate submit button name
-            let formData = $(this).serialize() + '&generate_report=true';
+                // Add manual key to emulate submit button name
+                let formData = $(this).serialize() + '&generate_report=true';
 
-            $.ajax({
-                url: 'actions/system_report_action.php',
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    const parts = response.split('<!--SPLIT-->');
-                    $('#reportCaption').html(parts[0]);
-                    $('#reportHead').html(parts[1]);
-                    $('#reportTable').html(parts[2]);
-                },
+                $.ajax({
+                    url: 'actions/system_report_action.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        const parts = response.split('<!--SPLIT-->');
+                        $('#reportCaption').html(parts[0]);
+                        $('#reportHead').html(parts[1]);
+                        $('#reportTable').html(parts[2]);
+                    },
 
-                error: function(xhr, status, error) {
-                    console.error("Error:", status, error, xhr.responseText);
-                    alert('Error generating report. Check console for details.');
+                    error: function(xhr, status, error) {
+                        console.error("Error:", status, error, xhr.responseText);
+                        alert('Error generating report. Check console for details.');
+                    }
+                });
+            });
+        });
+
+        $(function() {
+            $('#reportType').on('change', function() {
+                if ($(this).val() === 'issues') {
+                    $('#issueStatusContainer').show();
+                    $('#issueStatus').prop('required', true);
+                } else {
+                    $('#issueStatusContainer').hide();
+                    $('#issueStatus').prop('required', false).val('');
                 }
             });
         });
-    });
-</script>
+    </script>
 
-<script>
-    document.getElementById('printReport').addEventListener('click', function() {
-        let printCaption = document.getElementById('reportCaption').innerHTML;
-        let printHead = document.getElementById('reportHead').innerHTML;
-        let printContent = document.getElementById('reportTable').innerHTML;
-        let originalContent = document.body.innerHTML;
+    <script>
+        document.getElementById('printReport').addEventListener('click', function() {
+            let printCaption = document.getElementById('reportCaption').innerHTML;
+            let printHead = document.getElementById('reportHead').innerHTML;
+            let printContent = document.getElementById('reportTable').innerHTML;
+            let originalContent = document.body.innerHTML;
 
-        document.body.innerHTML = `
+            document.body.innerHTML = `
         <html>
         <head>
             <title>Print Report</title>
@@ -168,11 +192,12 @@ require_once('baseConnect/dbConnect.php');
         </html>
     `;
 
-        window.print();
-        document.body.innerHTML = originalContent;
-        location.reload();
-    });
-</script>
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload();
+        });
+    </script>
 
 </body>
+
 </html>
