@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Dec 01, 2025 at 08:02 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Jan 14, 2026 at 03:34 PM
+-- Server version: 10.4.16-MariaDB
+-- PHP Version: 7.4.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `brand` (
   `id` int(11) NOT NULL,
   `brand_name` varchar(100) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `brand`
@@ -53,7 +53,7 @@ CREATE TABLE `course` (
   `course_name` varchar(100) NOT NULL,
   `createdby` int(11) NOT NULL,
   `datecreated` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `course`
@@ -88,7 +88,7 @@ CREATE TABLE `examination` (
   `batch_semester` varchar(100) NOT NULL,
   `status` enum('approve','pending','cancelled') NOT NULL DEFAULT 'pending' COMMENT '1-approved\r\n2-pending\r\n3-cancelled',
   `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `examination`
@@ -97,7 +97,7 @@ CREATE TABLE `examination` (
 INSERT INTO `examination` (`id`, `examination_date`, `batch_time`, `session`, `course_id`, `date_booked`, `start_time`, `module_id`, `instructor_id`, `batch_semester`, `status`, `date_added`) VALUES
 (12, '2025-11-14', '1pm - 3pm', 'Weekday', 6, '2025-10-30', '13:00', 1, 7, 'Sem-2', 'cancelled', '2025-10-30'),
 (13, '2025-11-03', '11am - 1pm', 'Weekday', 8, '2025-10-30', '11:00', 8, 7, 'Sem-2', 'approve', '2025-10-30'),
-(14, '2025-11-05', '3pm - 5pm', 'Weekday', 6, '2025-10-31', '15:00', 2, 7, 'Sem-1', 'pending', '2025-10-31'),
+(14, '2025-11-05', '3pm - 5pm', 'Weekday', 6, '2025-10-31', '15:00', 2, 7, 'Sem-1', 'approve', '2025-10-31'),
 (15, '2025-11-14', '9am - 11am', 'Weekday', 6, '2025-11-12', '09:00', 1, 15, 'Sem-2', 'pending', '2025-11-12');
 
 -- --------------------------------------------------------
@@ -115,7 +115,7 @@ CREATE TABLE `instructors` (
   `email` varchar(100) NOT NULL,
   `course_id` int(11) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `instructors`
@@ -134,7 +134,8 @@ INSERT INTO `instructors` (`id`, `first_name`, `last_name`, `lab_id`, `phone`, `
 
 CREATE TABLE `issues` (
   `id` int(11) NOT NULL,
-  `computer` int(11) NOT NULL,
+  `system` int(11) DEFAULT NULL,
+  `monitor` int(11) DEFAULT NULL,
   `serial_number` varchar(100) NOT NULL,
   `issue_type` varchar(100) NOT NULL,
   `resolved_type` varchar(50) DEFAULT NULL,
@@ -142,18 +143,19 @@ CREATE TABLE `issues` (
   `issue_status` varchar(100) NOT NULL,
   `issue_date` date NOT NULL DEFAULT current_timestamp(),
   `issue_description` varchar(500) NOT NULL,
-  `sent_to_accra` varchar(50) NOT NULL,
+  `sent_to_accra` tinyint(1) NOT NULL,
   `date_added` datetime NOT NULL DEFAULT current_timestamp(),
-  `date_returned` date DEFAULT current_timestamp(),
+  `date_returned` date DEFAULT NULL,
   `device_category` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `issues`
 --
 
-INSERT INTO `issues` (`id`, `computer`, `serial_number`, `issue_type`, `resolved_type`, `lab`, `issue_status`, `issue_date`, `issue_description`, `sent_to_accra`, `date_added`, `date_returned`, `device_category`) VALUES
-(21, 5, 'ASDASADA23', 'Software', 'Unrepaired & Replaced', 3, 'Resolved', '2025-12-03', 'Software Update ', '0', '2025-12-01 00:00:00', '2025-12-18', NULL);
+INSERT INTO `issues` (`id`, `system`, `monitor`, `serial_number`, `issue_type`, `resolved_type`, `lab`, `issue_status`, `issue_date`, `issue_description`, `sent_to_accra`, `date_added`, `date_returned`, `device_category`) VALUES
+(33, 5, NULL, 'ASDASADA23', 'Software', 'Unrepaired & Replaced', 3, 'Resolved', '2025-12-14', 'Software Update ', 1, '2025-12-03 13:25:01', '2025-12-03', 'system'),
+(34, NULL, 5, 'MON9832901', 'Hardware', 'N/A', 1, 'Pending', '2025-12-12', 'Screen Replacement ', 0, '2025-12-03 13:27:20', NULL, 'monitor');
 
 -- --------------------------------------------------------
 
@@ -167,7 +169,7 @@ CREATE TABLE `lab` (
   `course_id` int(11) NOT NULL,
   `number_computers` varchar(100) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `lab`
@@ -191,7 +193,7 @@ CREATE TABLE `module` (
   `semester` varchar(20) NOT NULL,
   `course_id` int(11) NOT NULL,
   `date_created` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `module`
@@ -218,7 +220,15 @@ CREATE TABLE `monitor` (
   `brand` int(11) NOT NULL,
   `lab` int(11) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `monitor`
+--
+
+INSERT INTO `monitor` (`id`, `monitor_name`, `size`, `monitor_serial`, `brand`, `lab`, `date_added`) VALUES
+(5, 'Dell Monitor', '22', 'MON9832901', 3, 1, '2025-12-01'),
+(6, 'Dell Monitor', '19', 'FDGW678298012', 2, 1, '2025-12-01');
 
 -- --------------------------------------------------------
 
@@ -239,14 +249,15 @@ CREATE TABLE `system` (
   `generation` varchar(50) NOT NULL,
   `lab` int(11) NOT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `system`
 --
 
 INSERT INTO `system` (`id`, `system_name`, `brand`, `serial_number`, `memory_size`, `hard_drive_size`, `processor_type`, `iseries`, `speed`, `generation`, `lab`, `date_added`) VALUES
-(5, 'XUAJJA ', 3, 'ASDASADA23', '16', '500GIG', 'NVDIA', 'i5', '2.0', '6th ', 3, '2025-12-01');
+(5, 'XUAJJA ', 3, 'ASDASADA23', '16', '500GIG', 'NVDIA', 'i5', '2.0', '6th ', 3, '2025-12-01'),
+(6, 'Desktop7918', 3, 'D001', '8', '500GB', 'Intel', 'i7', '2.4GHz', '12', 1, '2025-12-01');
 
 -- --------------------------------------------------------
 
@@ -262,7 +273,7 @@ CREATE TABLE `users` (
   `user_key` varchar(255) NOT NULL,
   `defaultkey` varchar(50) NOT NULL,
   `date_created` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
@@ -315,7 +326,8 @@ ALTER TABLE `instructors`
 ALTER TABLE `issues`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fklab_id` (`lab`),
-  ADD KEY `computer_id` (`computer`);
+  ADD KEY `computer_id` (`system`),
+  ADD KEY `fk_monitor_id` (`monitor`);
 
 --
 -- Indexes for table `lab`
@@ -388,7 +400,7 @@ ALTER TABLE `instructors`
 -- AUTO_INCREMENT for table `issues`
 --
 ALTER TABLE `issues`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `lab`
@@ -406,13 +418,13 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `monitor`
 --
 ALTER TABLE `monitor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `system`
 --
 ALTER TABLE `system`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -444,13 +456,6 @@ ALTER TABLE `examination`
 ALTER TABLE `instructors`
   ADD CONSTRAINT `fk_course_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_lab_id` FOREIGN KEY (`lab_id`) REFERENCES `lab` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `issues`
---
-ALTER TABLE `issues`
-  ADD CONSTRAINT `computer_id` FOREIGN KEY (`computer`) REFERENCES `system` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fklab_id` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `lab`
