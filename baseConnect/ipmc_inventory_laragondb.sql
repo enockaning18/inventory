@@ -23,9 +23,9 @@ USE `ipmc_inventory`;
 CREATE TABLE IF NOT EXISTS `brand` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `brand_name` varchar(100) NOT NULL,
-  `date_added` date NOT NULL DEFAULT current_timestamp(),
+  `date_added` date DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
@@ -34,12 +34,10 @@ CREATE TABLE IF NOT EXISTS `course` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `course_name` varchar(100) NOT NULL,
   `createdby` int(11) NOT NULL,
-  `datecreated` date NOT NULL DEFAULT current_timestamp(),
+  `datecreated` date DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `course_name` (`course_name`),
-  KEY `createdby_fk` (`createdby`),
-  CONSTRAINT `createdby_fk` FOREIGN KEY (`createdby`) REFERENCES `users` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
+  UNIQUE KEY `course_name` (`course_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
@@ -55,16 +53,16 @@ CREATE TABLE IF NOT EXISTS `examination` (
   `module_id` int(11) NOT NULL,
   `instructor_id` int(11) NOT NULL,
   `batch_semester` varchar(100) NOT NULL,
-  `status` enum('approve','pending','cancelled') NOT NULL DEFAULT 'pending' COMMENT '1-approved\r\n2-pending\r\n3-cancelled',
-  `date_added` date NOT NULL DEFAULT current_timestamp(),
+  `status` enum('approve','pending','cancelled') DEFAULT 'pending',
+  `date_added` date DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `courseid_fk` (`course_id`),
-  KEY `moduleid_fk` (`module_id`),
-  KEY `instructorid_fk` (`instructor_id`),
-  CONSTRAINT `courseid_fk` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `instructorid_fk` FOREIGN KEY (`instructor_id`) REFERENCES `instructors` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `moduleid_fk` FOREIGN KEY (`module_id`) REFERENCES `module` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+  KEY `course_id` (`course_id`),
+  KEY `module_id` (`module_id`),
+  KEY `instructor_id` (`instructor_id`),
+  CONSTRAINT `examination_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `examination_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `module` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `examination_ibfk_3` FOREIGN KEY (`instructor_id`) REFERENCES `instructors` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
@@ -77,15 +75,15 @@ CREATE TABLE IF NOT EXISTS `instructors` (
   `phone` varchar(20) NOT NULL,
   `email` varchar(100) NOT NULL,
   `course_id` int(11) NOT NULL,
-  `date_added` date NOT NULL DEFAULT current_timestamp(),
+  `date_added` date DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone` (`phone`),
   UNIQUE KEY `email` (`email`),
-  KEY `fk_lab_id` (`lab_id`),
-  KEY `fk_course_id` (`course_id`),
-  CONSTRAINT `fk_course_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_lab_id` FOREIGN KEY (`lab_id`) REFERENCES `lab` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+  KEY `lab_id` (`lab_id`),
+  KEY `course_id` (`course_id`),
+  CONSTRAINT `instructors_ibfk_1` FOREIGN KEY (`lab_id`) REFERENCES `lab` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `instructors_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
@@ -99,17 +97,14 @@ CREATE TABLE IF NOT EXISTS `issues` (
   `resolved_type` varchar(50) DEFAULT NULL,
   `lab` int(11) DEFAULT NULL,
   `issue_status` varchar(100) NOT NULL,
-  `issue_date` date NOT NULL DEFAULT current_timestamp(),
+  `issue_date` date DEFAULT current_timestamp(),
   `issue_description` varchar(500) NOT NULL,
   `sent_to_accra` tinyint(1) NOT NULL,
-  `date_added` datetime NOT NULL DEFAULT current_timestamp(),
+  `date_added` datetime DEFAULT current_timestamp(),
   `date_returned` date DEFAULT NULL,
   `device_category` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fklab_id` (`lab`),
-  KEY `computer_id` (`system`),
-  KEY `fk_monitor_id` (`monitor`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
@@ -119,11 +114,11 @@ CREATE TABLE IF NOT EXISTS `lab` (
   `lab_name` varchar(100) NOT NULL,
   `course_id` int(11) NOT NULL,
   `number_computers` varchar(100) NOT NULL,
-  `date_added` date NOT NULL DEFAULT current_timestamp(),
+  `date_added` date DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `fk_course_id` (`course_id`) USING BTREE,
-  CONSTRAINT `fk_courseid` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+  KEY `course_id` (`course_id`),
+  CONSTRAINT `lab_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
@@ -133,12 +128,12 @@ CREATE TABLE IF NOT EXISTS `module` (
   `name` varchar(100) NOT NULL,
   `semester` varchar(20) NOT NULL,
   `course_id` int(11) NOT NULL,
-  `date_created` date NOT NULL DEFAULT current_timestamp(),
+  `date_created` date DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  KEY `course_fk_id` (`course_id`),
-  CONSTRAINT `course_fk_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+  KEY `course_id` (`course_id`),
+  CONSTRAINT `module_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
@@ -150,13 +145,13 @@ CREATE TABLE IF NOT EXISTS `monitor` (
   `monitor_serial` varchar(100) NOT NULL,
   `brand` int(11) NOT NULL,
   `lab` int(11) NOT NULL,
-  `date_added` date NOT NULL DEFAULT current_timestamp(),
+  `date_added` date DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `brand_id_fk` (`brand`),
-  KEY `lab_id__fk` (`lab`),
-  CONSTRAINT `brand_id_fk` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `lab_id__fk` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+  KEY `brand` (`brand`),
+  KEY `lab` (`lab`),
+  CONSTRAINT `monitor_ibfk_1` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `monitor_ibfk_2` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
@@ -173,13 +168,13 @@ CREATE TABLE IF NOT EXISTS `system` (
   `speed` varchar(100) NOT NULL,
   `generation` varchar(50) NOT NULL,
   `lab` int(11) NOT NULL,
-  `date_added` date NOT NULL DEFAULT current_timestamp(),
+  `date_added` date DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `fk_brand_id` (`brand`),
-  KEY `lab_id_fk` (`lab`),
-  CONSTRAINT `fk_brand_id` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `lab_id_fk` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+  KEY `brand` (`brand`),
+  KEY `lab` (`lab`),
+  CONSTRAINT `system_ibfk_1` FOREIGN KEY (`brand`) REFERENCES `brand` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `system_ibfk_2` FOREIGN KEY (`lab`) REFERENCES `lab` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
@@ -187,15 +182,14 @@ CREATE TABLE IF NOT EXISTS `system` (
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL,
-  `user_type` varchar(30) NOT NULL COMMENT '1-admin\r\n2-instructor\r\n3-student',
+  `user_type` enum('admin','instructor','student') NOT NULL,
   `instructor_id` int(11) NOT NULL,
   `user_key` varchar(255) NOT NULL,
   `defaultkey` varchar(50) NOT NULL,
-  `date_created` date NOT NULL DEFAULT current_timestamp(),
+  `date_created` date DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
-  KEY `instructor_id_fk` (`instructor_id`),
-  CONSTRAINT `instructor_id_fk` FOREIGN KEY (`instructor_id`) REFERENCES `instructors` (`id`) ON UPDATE CASCADE
+  KEY `instructor_id` (`instructor_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
