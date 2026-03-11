@@ -120,7 +120,9 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
             <div class="col-md-4">
                 <label class="form-label">Examination Date</label>
-                <input required type="date" name="examination_date" id="exam_date" value="<?php echo isset($examination_date) ? htmlspecialchars($examination_date) : '' ?>" class="form-control">
+                <input required type="date" name="examination_date" id="exam_date" 
+                value="<?php echo isset($examination_date) ? htmlspecialchars($examination_date) : '' ?>" 
+                class="form-control">
             </div>
 
             <div class="col-md-4">
@@ -243,6 +245,7 @@ if (isset($_GET['edit_id']) && is_numeric($_GET['edit_id'])) {
 
 
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/booking_restricter.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
