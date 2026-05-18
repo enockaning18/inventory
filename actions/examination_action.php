@@ -1,4 +1,4 @@
-\<?php
+<?php
 require_once('../baseConnect/dbConnect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -51,14 +51,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // --- Prevent duplicate (course + module + date + batch) ---
     if ($id > 0) {
         $dupCheck = $conn->prepare("SELECT id FROM examination 
-                                    WHERE examination_date = ? AND batch_time = ? 
+                                    WHERE examination_date = ? AND start_time = ? AND batch_time = ? 
                                     AND module_id = ? AND course_id = ? AND id != ?");
-        $dupCheck->bind_param("ssiii", $examination_date, $batch_time, $module_id, $course_id, $id);
+        $dupCheck->bind_param("sssiii", $examination_date, $start_time, $batch_time, $module_id, $course_id, $id);
     } else {
         $dupCheck = $conn->prepare("SELECT id FROM examination 
-                                    WHERE examination_date = ? AND batch_time = ? 
+                                    WHERE examination_date = ? AND start_time = ? AND batch_time = ? 
                                     AND module_id = ? AND course_id = ?");
-        $dupCheck->bind_param("ssii", $examination_date, $batch_time, $module_id, $course_id);
+        $dupCheck->bind_param("sssii", $examination_date, $start_time, $batch_time, $module_id, $course_id);
     }
     $dupCheck->execute();
     $dupResult = $dupCheck->get_result();
