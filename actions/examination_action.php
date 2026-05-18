@@ -31,13 +31,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // --- Prevent duplicate date + batch ---
+    // --- Prevent duplicate exam_date + start_time + batch_time ---
     if ($id > 0) {
-        $checkDateBatch = $conn->prepare("SELECT id FROM examination WHERE examination_date = ? AND batch_time = ? AND id != ?");
-        $checkDateBatch->bind_param("ssi", $examination_date, $batch_time, $id);
+        $checkDateBatch = $conn->prepare("SELECT id FROM examination WHERE examination_date = ? AND start_time = ? AND batch_time = ? AND id != ?");
+        $checkDateBatch->bind_param("sssi", $examination_date, $start_time, $batch_time, $id);
     } else {
         $checkDateBatch = $conn->prepare("SELECT id FROM examination WHERE examination_date = ? AND batch_time = ?");
-        $checkDateBatch->bind_param("ss", $examination_date, $batch_time);
+        $checkDateBatch->bind_param("sss", $examination_date, $start_time, $batch_time);
     }
     $checkDateBatch->execute();
     $resultDateBatch = $checkDateBatch->get_result();
