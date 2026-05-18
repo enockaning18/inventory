@@ -105,7 +105,7 @@ if ($result && $result->num_rows > 0) {
                 <a href='actions/edit_examination.php?id={$row['id']}' class='text-decoration-none'>
                     <i class='bi bi-pencil-square text-primary fs-5 me-2'></i>
                 </a>
-                <a href='actions/delete_examination.php?id={$row['id']}' onclick=\"return confirm('Delete this record?');\" class='text-decoration-none'>
+                <a href='actions/delete_examination.php?id={$row['id']}' onclick=\"return confirm('Delete this Record?');\" class='text-decoration-none'>
                     <i class='bi bi-trash-fill text-danger fs-5 ms-1'></i>
                 </a>
                 <a href='actions/update_exam_status.php?id={$row['id']}&status=approve' class='text-decoration-none'>

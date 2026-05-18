@@ -146,6 +146,22 @@ function successAlert($title)
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
+            <?php elseif ($_GET['status'] == 'daily_limit_reached'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Error! Maximum 3 Exams are allowed per day. Cannot add more <?php echo $title; ?> on this date.',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
+            <?php elseif ($_GET['status'] == 'acca_inprogress'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Oops! ACCA Exams scheduled already. <?php echo $title; ?> is not allowed on this date.',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
             <?php elseif ($_GET['status'] == 'emailexists'): ?>
                 Swal.fire({
                     icon: 'error',
@@ -174,7 +190,15 @@ function successAlert($title)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Error! <?php echo $title; ?> already exist on the selected date and batch time, try again',
+                    text: 'Error! <?php echo $title; ?> already exist on the selected exams date, start time or batch time, try again',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
+            <?php elseif ($_GET['status'] == 'invalid_date_time'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Error! <?php echo $title; ?> already exist on the selected exams date, start time or batch time, try again',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
@@ -192,6 +216,14 @@ function successAlert($title)
                     icon: 'error',
                     title: 'Oops... can\'t delete',
                     text: 'Instructor has been assigned to exams/account',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Retry'
+                });
+            <?php elseif ($_GET['status'] == 'examination_fk_error'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops... can\'t delete',
+                    text: 'Examination is linked to another record preventing deletion',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Retry'
                 });
